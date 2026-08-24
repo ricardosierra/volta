@@ -7,6 +7,10 @@ config/version="0.1.0"
 config/features=PackedStringArray("4.3", "Mobile")
 run/main_scene="res://scenes/boot.tscn"
 
+[autoload]
+
+Log="*res://src/core/log/log.gd"
+
 [display]
 
 window/size/viewport_width=1080
