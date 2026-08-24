@@ -12,13 +12,7 @@ if [ -z "$GODOT_BIN" ]; then
   fi
 fi
 out=$("$GODOT_BIN" --headless --path apps/mobile --import 2>&1; "$GODOT_BIN" --headless --path apps/mobile --quit 2>&1)
-# Exceção temporária e documentada (Plano 01-01 / Tarefa 2): apps/mobile/tests/**/*.gd usa
-# `extends GutTest`, classe que só existe depois que o addon GUT for instalado no Plano 01-03
-# (REPO-006). Até lá, --import não resolve a classe base e reporta os dois erros abaixo para
-# CADA teste GUT já escrito — não é um bug do projeto. Remover este filtro no Plano 01-03.
-filtered=$(echo "$out" | grep -v 'Could not find base class "GutTest"' \
-  | grep -v 'Failed to load script "res://tests/.*" with error "Parse error"')
-problems=$(echo "$filtered" | grep -E 'SCRIPT ERROR|ERROR:|WARNING:' || true)
+problems=$(echo "$out" | grep -E 'SCRIPT ERROR|ERROR:|WARNING:' || true)
 if [ -n "$problems" ]; then
   echo "❌ check-project: apps/mobile reporta erro/aviso:"
   echo "$problems" | sed 's/^/    /'

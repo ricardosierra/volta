@@ -8,7 +8,7 @@ igual na máquina de qualquer pessoa. Se só funciona no runner, é armadilha.
 | `ci/validate-repo.sh` | estrutura, nomes proibidos, TODO/mock/placeholder, links | ✅ GSD 00 |
 | `ci/check_links.sh` | links relativos quebrados em `docs/` e `.gsd/` | ✅ GSD 00 |
 | `ci/lint.sh` | lint de GDScript + markdown | GSD 01 / REPO-010 |
-| `ci/test-client.sh` | GUT headless (unit + integration) | GSD 01 / REPO-006 |
+| `ci/test-client.sh` | GUT headless (unit + integration + gameplay) | ✅ GSD 01 / REPO-006 |
 | `ci/setup_godot.sh` | baixa a versão de `.godot-version` + export templates | GSD 01 / REPO-011 |
 | `ci/check_layering.gd` | regra de dependência entre camadas | GSD 01 / REPO-009 |
 | `ci/make_export_presets.sh` | gera `export_presets.cfg` a partir de template | GSD 01 / REPO-012 |
