@@ -18,7 +18,7 @@ static func validate(resource: Resource) -> Array[String]:
 			continue
 		var min_v := float(parts[0])
 		var max_v := float(parts[1])
-		var value = resource.get(prop["name"])
+		var value: Variant = resource.get(prop["name"])
 		if typeof(value) != TYPE_FLOAT and typeof(value) != TYPE_INT:
 			continue
 		if float(value) < min_v or float(value) > max_v:
