@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SurgeBalance" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/core/config/surge_balance.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+surge_step = 0.15
+surge_max_level = 6
+seal_chain_window = 8.0
+break_chain_window = 10.0
+surge_decay_interval = 8.0
