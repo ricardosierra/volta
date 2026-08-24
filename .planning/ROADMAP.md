@@ -55,7 +55,7 @@ de descoberta.
 
 Plans:
 - [ ] 01-01-PLAN.md — Scaffold do projeto Godot 4.3 (project.godot, .godot-version, estrutura de src/) + Build/BuildFlags
-- [ ] 01-02-PLAN.md — Log (autoload, categorias/níveis, rotação de arquivo) + ServiceRegistry/Bootstrap (cena principal)
+- [ ] 01-02-PLAN.md — Log (autoload, categorias/níveis, rotação de arquivo) + ServiceRegistry/Bootstrap (autoload)
 - [ ] 01-03-PLAN.md — GUT instalado em addons/ + tools/ci/test-client.sh
 - [ ] 01-04-PLAN.md — 6 Resources de balance + ConfigService/ConfigValidator + sync_config.sh
 - [ ] 01-05-PLAN.md — SaveService (escrita atômica, recuperação de corrupção, migração encadeada)
