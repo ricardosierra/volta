@@ -38,3 +38,11 @@ está com peso alto demais".
 3. Toda ferramenta nova entra nesta lista no mesmo PR.
 4. O menu de debug não pode depender de sistema de UI de produção (para continuar funcionando
    quando a UI estiver quebrada — que é justamente quando ele é mais necessário).
+
+## API de Build (GSD 01)
+
+`Build.is_debug()` / `Build.version()` / `Build.commit()` / `Build.env()` — implementado
+em `apps/mobile/src/core/build.gd`. `debug_tools_enabled` vem de
+`apps/mobile/resources/build_flags.tres` (`BuildFlags`), regenerado com `false` no
+export de release (# TODO(GSD-21/ANDR-001): regenerar build_flags.tres com
+debug_tools_enabled=false para export de release).
