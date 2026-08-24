@@ -24,10 +24,10 @@ git checkout -b release/v0.1.0
 
 # 4. QA em dispositivos (ver docs/mobile/device-matrix.md)
 # 5. merge
-git checkout main && git merge --no-ff release/v0.1.0
+git checkout master && git merge --no-ff release/v0.1.0
 git tag -a v0.1.0 -m "VOLTA v0.1.0"
-git push origin main --tags
-git checkout develop && git merge --no-ff main
+git push origin master --tags
+git checkout develop && git merge --no-ff master
 ```
 
 O CHANGELOG segue o formato **Release Notes** deste repositório (`### ✨ Novidades`,

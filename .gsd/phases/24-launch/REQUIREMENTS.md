@@ -4,7 +4,7 @@
 |---|---|---|
 | R24-01 | Versão `0.1.0` em `project.godot`, Android e iOS | inspeção |
 | R24-02 | CHANGELOG no formato Release Notes, com a seção da versão e link de comparação | inspeção |
-| R24-03 | Tag anotada `v0.1.0` criada em `main` | git |
+| R24-03 | Tag anotada `v0.1.0` criada em `master` | git |
 | R24-04 | Release no GitHub com as notas da versão | GitHub |
 | R24-05 | Checklist de release 100 % marcada | documento |
 | R24-06 | Rollout gradual: 5 % → 20 % → 50 % → 100 %, com 24 h entre degraus | Play Console |

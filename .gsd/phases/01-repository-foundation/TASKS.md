@@ -207,7 +207,7 @@ por segundo em debug.
 4. Badges no README.
 5. Gate de merge: os dois workflows obrigatórios.
 **Testes:** um PR de teste com erro proposital precisa ser reprovado pelo CI.
-**DoD:** CI verde em `main` e `develop`; tempo total < 8 min; nada exclusivo do runner.
+**DoD:** CI verde em `master` e `develop`; tempo total < 8 min; nada exclusivo do runner.
 
 ---
 

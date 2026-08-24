@@ -17,7 +17,7 @@ Todas aceitas em 2026-08-24, na GSD 00. Documento completo em [`../docs/decision
 | 0009 | **Control nativo + design system em tokens** | Um lugar para mudar a aparência inteira; sem dependência externa |
 | 0010 | **Analytics por interface + adapters** | Nenhum SDK dentro do gameplay; privacidade auditável |
 | 0011 | **Tema como Resource; cosmético é dado** | Acessibilidade e monetização pelo mesmo motor; zero vantagem |
-| 0012 | **Git Flow simplificado, uma fase por branch** | Rastreabilidade fase↔PR↔handoff; `main` sempre publicável |
+| 0012 | **Git Flow simplificado, uma fase por branch** | Rastreabilidade fase↔PR↔handoff; `master` sempre publicável |
 | 0013 | **GUT + runner headless próprio + benchmarks próprios** | Testar o jogo, não só funções |
 | 0014 | **Simulação 60 Hz fixa, render livre, interpolação manual** | Determinismo + fluidez em 120 Hz |
 

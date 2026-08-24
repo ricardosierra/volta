@@ -384,7 +384,7 @@ de descoberta.
 **Requirements**: QLT-06
 **Canonical refs**: `.gsd/phases/24-launch/`, `docs/deployment/release-process.md`, `CHANGELOG.md`
 **Success Criteria** (what must be TRUE):
-  1. Versão `0.1.0` coerente em `project.godot`, Android e iOS; CHANGELOG no formato Release Notes com a seção da versão; tag anotada `v0.1.0` criada em `main`
+  1. Versão `0.1.0` coerente em `project.godot`, Android e iOS; CHANGELOG no formato Release Notes com a seção da versão; tag anotada `v0.1.0` criada em `master`
   2. A checklist de release de `docs/deployment/release-process.md` está marcada item a item **com evidência** — nenhum "provavelmente ok"
   3. As builds finais foram geradas a partir da tag pelo CI, com símbolos guardados para desofuscar crash
   4. Rollout gradual respeitado: 5 % → 20 % → 50 % → 100 %, com 24 h de métrica saudável entre degraus

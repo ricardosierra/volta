@@ -18,7 +18,7 @@ guardar os artefatos e os mapas de símbolo (para desofuscar crash).
 **DoD:** builds reprodutíveis a partir da tag.
 
 ### LNCH-004 — Tag e release
-**Passos:** merge `release/v0.1.0` → `main` com `--no-ff` → tag anotada `v0.1.0` → release no
+**Passos:** merge `release/v0.1.0` → `master` com `--no-ff` → tag anotada `v0.1.0` → release no
 GitHub com as notas → merge de volta em `develop`.
 **DoD:** histórico limpo e rastreável.
 

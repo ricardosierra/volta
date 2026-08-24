@@ -8,7 +8,7 @@ leia [`.gsd/MASTER_PLAN.md`](.gsd/MASTER_PLAN.md) e [`.gsd/STATUS.md`](.gsd/STAT
 ## 1. Fluxo de trabalho
 
 ```text
-main       ← só recebe merge de release/*  (sempre publicável, sempre com tag)
+master     ← só recebe merge de release/*  (sempre publicável, sempre com tag)
 develop    ← integração contínua das fases
 feature/*  ← uma fase ou uma tarefa grande: feature/gsd-03-territory-engine
 fix/*      ← correção: fix/territory-edge-seal
@@ -19,7 +19,7 @@ Regras (ver [`ADR-0012`](docs/decisions/ADR-0012-branching-and-release-flow.md))
 
 - Uma fase GSD = um branch `feature/gsd-XX-nome` = um PR para `develop`.
 - Commits atômicos e semânticos dentro do branch. Nada de "wip" no histórico final.
-- `main` nunca recebe commit direto.
+- `master` nunca recebe commit direto.
 - Nenhum `Co-Authored-By` de IA nas mensagens de commit.
 
 ## 2. Commits

@@ -29,7 +29,7 @@ O escopo completo — o que entra e o que não entra — está em `.gsd/phases/2
 ### Versão
 - O projeto **começa em v0.1.0**. `v1.0.0` é reservado para maturidade em produção com base de usuários relevante — **não** é o primeiro release.
 - CHANGELOG no formato **Release Notes** deste repositório: `### ✨ Novidades`, `### 🎨 Melhorias`, `### 🐛 Correções`, `### 🔧 Técnico`, itens em `- [x]`, cabeçalho `## [vX.Y.Z (AAAA-MM-DD)]` com link de comparação. Nunca Keep-a-Changelog.
-- Tag anotada criada em `main`, com merge `--no-ff` e merge de volta em `develop`.
+- Tag anotada criada em `master`, com merge `--no-ff` e merge de volta em `develop`.
 
 ### Builds
 - Geradas **a partir da tag**, pelo CI, com símbolos guardados para desofuscar crash depois.
