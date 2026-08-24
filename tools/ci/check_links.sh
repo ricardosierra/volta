@@ -6,8 +6,11 @@ cd "$(dirname "$0")/../.." || exit 1
 fail=0
 while IFS= read -r file; do
   dir=$(dirname "$file")
-  # extrai alvos de links markdown, ignorando http(s), mailto, âncoras puras e imagens externas
-  grep -oE '\]\([^)]+\)' "$file" 2>/dev/null | sed -E 's/^\]\(//; s/\)$//' | while IFS= read -r target; do
+  # extrai alvos de links markdown, ignorando http(s), mailto, âncoras puras e imagens externas.
+  # Blocos de código cercados (``` ou ~~~) são ignorados: um link dentro de código nunca é
+  # renderizado como link (ex.: exemplos e heredocs dentro de planos/docs).
+  awk '/^[[:space:]]*(```|~~~)/ { in_code = !in_code; next } !in_code' "$file" 2>/dev/null \
+    | grep -oE '\]\([^)]+\)' | sed -E 's/^\]\(//; s/\)$//' | while IFS= read -r target; do
     case "$target" in
       http://*|https://*|mailto:*|"#"*|"") continue ;;
     esac

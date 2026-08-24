@@ -43,3 +43,5 @@ was never meant to be in scope), or teach it to skip fenced code blocks / heredo
 
 **Replacement Phase:** GSD 01
 **Replacement Task:** 01-09 (REPO-009 — verificadores de arquitetura e repositório)
+
+**Resolvido (orquestrador, após 01-01):** `tools/ci/check_links.sh` agora ignora blocos de código cercados; os dois "links" eram exemplos dentro de heredocs/templates em `01-07-PLAN.md` e `01-10-PLAN.md`. `validate-repo.sh` volta a exit 0.
