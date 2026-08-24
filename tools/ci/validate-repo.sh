@@ -33,15 +33,20 @@ for p in .gsd/phases/*/; do
 done
 [ $missing -eq 0 ] && ok "$(ls -d .gsd/phases/*/ | wc -l | tr -d ' ') fases com 7 documentos cada"
 
+# apps/mobile/addons/**: dependências de terceiros pinadas (ex.: GUT, Plano 01-03/REPO-006).
+# Não são código nosso — não seguem nossas convenções de nome/TODO/tamanho, e não devem.
+VENDOR_PRUNE=(-path '*/addons/*' -prune -o)
+
 echo "== 3. Nomes de arquivo proibidos =="
-banned=$(find "${SRC_GLOBS[@]}" -type f \( -iname 'utils.gd' -o -iname 'helpers.gd' \
-  -o -iname 'manager.gd' -o -iname 'global.gd' -o -iname 'misc.gd' -o -iname 'common.gd' \) 2>/dev/null || true)
+banned=$(find "${SRC_GLOBS[@]}" "${VENDOR_PRUNE[@]}" -type f \( -iname 'utils.gd' -o -iname 'helpers.gd' \
+  -o -iname 'manager.gd' -o -iname 'global.gd' -o -iname 'misc.gd' -o -iname 'common.gd' \) -print 2>/dev/null || true)
 if [ -n "$banned" ]; then fail "arquivo-depósito proibido:"; echo "$banned" | sed 's/^/    /'
 else ok "nenhum arquivo-depósito"; fi
 
 echo "== 4. TODO com referência de tarefa =="
 bad_todo=$(grep -rnE '(^|[^A-Za-z])TODO' --include='*.gd' --include='*.php' --include='*.sh' \
   "${SRC_GLOBS[@]}" 2>/dev/null | grep -v 'tools/ci/validate-repo.sh' \
+  | grep -v '/addons/' \
   | grep -vE 'TODO\(GSD-[0-9]{2}/[A-Z0-9]+-[0-9]{3}\)' || true)
 if [ -n "$bad_todo" ]; then fail "TODO sem (GSD-XX/TASK-YYY):"; echo "$bad_todo" | sed 's/^/    /'
 else ok "todo TODO tem referência de tarefa"; fi
@@ -74,7 +79,7 @@ fi
 
 echo "== 8. Tamanho de arquivo =="
 if have_code; then
-  big=$(find "${SRC_GLOBS[@]}" -name '*.gd' -o -name '*.php' 2>/dev/null | while read -r f; do
+  big=$(find "${SRC_GLOBS[@]}" "${VENDOR_PRUNE[@]}" \( -name '*.gd' -o -name '*.php' \) -print 2>/dev/null | while read -r f; do
     n=$(wc -l < "$f"); [ "$n" -gt 600 ] && echo "$f ($n linhas)"; done)
   if [ -n "$big" ]; then fail "arquivo acima de 600 linhas:"; echo "$big" | sed 's/^/    /'
   else ok "nenhum arquivo acima de 600 linhas"; fi
