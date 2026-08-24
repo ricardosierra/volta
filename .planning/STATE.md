@@ -4,17 +4,17 @@ milestone: v0.1
 milestone_name: milestone
 current_phase: 01
 current_phase_name: Repository Foundation
-current_plan: 7
+current_plan: 8
 status: executing
-stopped_at: Completed 01-05-PLAN.md
-last_updated: "2026-08-24T21:09:45.859Z"
+stopped_at: Completed 01-06-PLAN.md
+last_updated: "2026-08-24T21:17:11.534Z"
 last_activity: 2026-08-24
 progress:
   total_phases: 25
   completed_phases: 0
   total_plans: 11
-  completed_plans: 6
-  percent: 36
+  completed_plans: 7
+  percent: 64
 ---
 
 # Project State
@@ -31,12 +31,12 @@ See: .planning/PROJECT.md (updated 2026-08-24)
 Current Phase: 01
 Current Phase Name: Repository Foundation
 Total Phases: 25
-Current Plan: 7
+Current Plan: 8
 Total Plans in Phase: 11
 Status: In progress
 Last Activity: 2026-08-24
 
-Progress: [████░░░░░░] 36%
+Progress: [██████░░░░] 64%
 
 ## Performance Metrics
 
@@ -56,6 +56,7 @@ Progress: [████░░░░░░] 36%
 | Phase 01 P04 | 12min | 2 tasks | 22 files |
 | Phase 01 P8 | 8min | 2 tasks | 9 files |
 | Phase 01 P05 | 28min | 2 tasks | 6 files |
+| Phase 01 P6 | 6min | 1 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -83,6 +84,7 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 - [Phase 01]: test_bootstrap.gd (Plano 01-02) corrigido para := no lugar de var sem tipo; config_validator.gd (Plano 01-04) deixado fora de escopo, resolvido pelo proprio 01-04 em paralelo
 - [Phase 01]: [Phase 01-05]: profile.json e settings.json sao arquivos independentes com a mesma primitiva _write_atomic/_load_with_recovery; corrupcao de um nunca afeta o outro (verificado por teste)
 - [Phase 01]: [Phase 01-05]: JSON nao distingue int/float, e Dictionary/Array == no Godot e type-strict por elemento; testes de round-trip usam comparacao recursiva tolerante a numero em vez de == cru
+- [Phase 01]: [Phase 01-06]: EventBus com 4 sinais tipados (sem emit por string) e trava de debug (5 emissoes/seg) via Build.is_debug(); GDScript captura lambda por valor, testes usam Array de 1 elemento como caixa mutavel
 
 ### Pending Todos
 
@@ -98,6 +100,6 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 
 ## Session Continuity
 
-Last session: 2026-08-24T21:09:37.127Z
-Stopped at: Completed 01-05-PLAN.md
+Last session: 2026-08-24T21:17:11.532Z
+Stopped at: Completed 01-06-PLAN.md
 Resume file: None
