@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CameraBalance" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/core/config/camera_balance.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+zoom_base = 1.0
+zoom_min = 0.75
+zoom_max = 1.35
+follow_smoothing = 8.0
+lookahead = 90.0
+punch_seal_amplitude = 0.03
+punch_seal_duration = 0.12
+punch_break_amplitude = 0.06
+punch_break_duration = 0.18
+shake_max = 4.0

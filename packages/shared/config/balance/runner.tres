@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="RunnerBalance" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/core/config/runner_balance.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+base_speed = 220.0
+turn_rate = 540.0
+collision_radius = 10.0
+arc_visual_width = 6.0
+spawn_invuln = 2.0
+respawn_delay = 1.5
+respawn_delay_time_attack = 3.0
+arc_max_cells = 1200
+overload_decay = 8.0
