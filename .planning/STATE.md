@@ -4,16 +4,16 @@ milestone: v0.1
 milestone_name: milestone
 current_phase: 01
 current_phase_name: Repository Foundation
-current_plan: 2
+current_plan: 4
 status: executing
-stopped_at: Completed 01-01-PLAN.md
-last_updated: "2026-08-24T20:34:24.146Z"
+stopped_at: Completed 01-03-PLAN.md
+last_updated: "2026-08-24T20:50:14.398Z"
 last_activity: 2026-08-24
 progress:
   total_phases: 25
   completed_phases: 0
   total_plans: 11
-  completed_plans: 1
+  completed_plans: 3
   percent: 9
 ---
 
@@ -31,7 +31,7 @@ See: .planning/PROJECT.md (updated 2026-08-24)
 Current Phase: 01
 Current Phase Name: Repository Foundation
 Total Phases: 25
-Current Plan: 2
+Current Plan: 4
 Total Plans in Phase: 11
 Status: In progress
 Last Activity: 2026-08-24
@@ -51,6 +51,8 @@ Progress: [█░░░░░░░░░] 9%
 | Phase | Duration | Tasks | Files |
 |-------|----------|-------|-------|
 | Phase 01 P01 | 15min | 2 tasks | 28 files |
+| Phase 01 P02 | 20min | 2 tasks | 10 files |
+| Phase 01 P03 | 21min | 2 tasks | 223 files |
 
 ## Accumulated Context
 
@@ -68,6 +70,10 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 - **Nada comprável altera a simulação.**
 - [Phase 01-01]: check-project.sh ganhou filtro temporario e documentado para 'GutTest nao encontrado', ate o addon GUT ser instalado no Plano 01-03
 - [Phase 01-01]: 2 links quebrados pre-existentes em 01-07-PLAN.md e 01-10-PLAN.md (falsos positivos de check_links.sh) logados em deferred-items.md, nao corrigidos por estarem fora do escopo deste plano
+- [Phase 01]: [Phase 01-02]: Log e Bootstrap sem class_name (excecao de engine documentada); [autoload] fechado com exatamente Log entao Bootstrap
+- [Phase 01]: [Phase 01-02]: flakiness transitoria em check-project.sh durante execucao paralela com 01-03 (race no cache .godot/ compartilhado), resolvida por retry, sem alterar script
+- [Phase 01]: GUT pinado corrigido de v9.7.1 (exige Godot 4.7+) para v9.4.0 (compatível com Godot 4.3), conforme versions.json do proprio addon
+- [Phase 01]: validate-repo.sh passou a excluir apps/mobile/addons/** (codigo de terceiros vendorizado) das checagens de nome/TODO/tamanho de arquivo
 
 ### Pending Todos
 
@@ -83,6 +89,6 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 
 ## Session Continuity
 
-Last session: 2026-08-24T20:34:24.144Z
-Stopped at: Completed 01-01-PLAN.md
+Last session: 2026-08-24T20:48:26.995Z
+Stopped at: Completed 01-03-PLAN.md
 Resume file: None

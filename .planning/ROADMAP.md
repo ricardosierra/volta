@@ -51,12 +51,12 @@ de descoberta.
   4. `./tools/ci/validate-repo.sh` detecta as 8 violações que promete — provado por 8 casos plantados em `tests/tools/` que fazem o script **falhar**
   5. `./tools/ci/test-client.sh` roda GUT headless e retorna código ≠ 0 quando um teste falha; `./tools/ci/lint.sh` reprova arquivo GDScript sem tipagem estática
   6. Um APK de debug instala num Android real, abre em menos de 1,5 s, mostra versão e FPS, mantém 60 FPS e respeita safe area; resultado registrado em `docs/performance/device-results.md`
-**Plans:** 1/11 plans executed
+**Plans:** 3/11 plans executed
 
 Plans:
 - [x] 01-01-PLAN.md — Scaffold do projeto Godot 4.3 (project.godot, .godot-version, estrutura de src/) + Build/BuildFlags
-- [ ] 01-02-PLAN.md — Log (autoload, categorias/níveis, rotação de arquivo) + ServiceRegistry/Bootstrap (autoload)
-- [ ] 01-03-PLAN.md — GUT instalado em addons/ + tools/ci/test-client.sh
+- [x] 01-02-PLAN.md — Log (autoload, categorias/níveis, rotação de arquivo) + ServiceRegistry/Bootstrap (autoload)
+- [x] 01-03-PLAN.md — GUT instalado em addons/ + tools/ci/test-client.sh
 - [ ] 01-04-PLAN.md — 6 Resources de balance + ConfigService/ConfigValidator + sync_config.sh
 - [ ] 01-05-PLAN.md — SaveService (escrita atômica, recuperação de corrupção, migração encadeada)
 - [ ] 01-06-PLAN.md — EventBus (sinais tipados, limite de emissão em debug)
