@@ -7,6 +7,9 @@ Saia da sua zona, desenhe o arco, feche a volta e o terreno é seu.
 
 `Godot 4.3` · `Android / iOS` · `Laravel 11 + PostgreSQL (opcional, fase 15+)` · `working title`
 
+![validate](https://github.com/ricardosierra/volta/actions/workflows/validate.yml/badge.svg)
+![client-ci](https://github.com/ricardosierra/volta/actions/workflows/client-ci.yml/badge.svg)
+
 </div>
 
 ---

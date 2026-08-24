@@ -12,3 +12,5 @@ jobs:
       - uses: actions/checkout@v4
       - name: validate-repo
         run: ./tools/ci/validate-repo.sh
+      - name: lint de docs
+        run: ./tools/ci/lint_docs.sh

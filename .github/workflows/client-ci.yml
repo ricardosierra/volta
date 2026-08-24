@@ -18,18 +18,26 @@ jobs:
         run: |
           if [ -f apps/mobile/project.godot ]; then echo "ready=true" >> "$GITHUB_OUTPUT";
           else echo "ready=false" >> "$GITHUB_OUTPUT"; echo "Projeto Godot ainda não existe (GSD 01 / REPO-001)."; fi
+      - name: Cache Godot
+        if: steps.guard.outputs.ready == 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/godot-ci
+          key: godot-${{ hashFiles('.godot-version') }}
       - name: Instalar Godot
         if: steps.guard.outputs.ready == 'true'
         run: ./tools/ci/setup_godot.sh "$(cat .godot-version)"
       - name: Importar assets
         if: steps.guard.outputs.ready == 'true'
         run: godot --headless --path apps/mobile --import
+      - name: Verificar projeto (abre sem erro/warning)
+        if: steps.guard.outputs.ready == 'true'
+        run: ./tools/ci/check-project.sh
       - name: Lint
         if: steps.guard.outputs.ready == 'true'
         run: ./tools/ci/lint.sh
       - name: Testes (GUT)
         if: steps.guard.outputs.ready == 'true'
         run: ./tools/ci/test-client.sh
-      - name: Amostra de gameplay (20 partidas)
-        if: steps.guard.outputs.ready == 'true'
-        run: ./tools/dev/simulate.sh 20
+      # tools/dev/simulate.sh chega em GSD 03 / TERR-014 — este passo volta aqui
+      # quando ele existir.
