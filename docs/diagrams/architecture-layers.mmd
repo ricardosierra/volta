@@ -1,0 +1,35 @@
+flowchart TB
+    subgraph APRESENTACAO["apresentação — só LÊ a simulação"]
+        UI[ui/]
+        PRES[presentation/]
+    end
+    subgraph SIMULACAO["simulação — sem nó visual, headless, determinística"]
+        GP[gameplay/]
+        TER[territory/]
+        RUN[runner/]
+        AI[ai/]
+        ARE[arena/]
+    end
+    subgraph SUPORTE["suporte"]
+        INP[input/]
+        PRO[progression/]
+        PLA[platform/]
+    end
+    CORE[core/ — bootstrap, event bus, config, log, save, DI]
+
+    UI --> GP
+    PRES --> GP
+    PRES --> TER
+    GP --> TER
+    GP --> RUN
+    GP --> AI
+    GP --> ARE
+    AI --> TER
+    RUN --> TER
+    INP --> GP
+    PRO --> CORE
+    PLA --> CORE
+    GP --> CORE
+    TER --> CORE
+
+    linkStyle default stroke-width:1px

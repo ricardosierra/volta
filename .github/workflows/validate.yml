@@ -1,0 +1,14 @@
+name: validate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  repo:
+    name: Estrutura, convenções e links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: validate-repo
+        run: ./tools/ci/validate-repo.sh

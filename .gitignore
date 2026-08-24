@@ -1,0 +1,58 @@
+# ── Godot ────────────────────────────────────────────────────────────────────
+.godot/
+.import/
+export_presets.cfg
+*.translation
+apps/mobile/android/build/
+apps/mobile/ios/build/
+apps/mobile/.godot/
+
+# ── Builds / artefatos ───────────────────────────────────────────────────────
+build/
+dist/
+*.apk
+*.aab
+*.ipa
+*.dSYM/
+assets/exported/**/*.png
+!assets/exported/.gitkeep
+
+# ── Assinatura (NUNCA versionar) ─────────────────────────────────────────────
+*.keystore
+*.jks
+*.p12
+*.mobileprovision
+*.cer
+keystore.properties
+fastlane/report.xml
+fastlane/*.json
+
+# ── Backend ──────────────────────────────────────────────────────────────────
+services/api/vendor/
+services/api/node_modules/
+services/api/storage/*.key
+services/api/.env
+services/api/public/storage
+services/api/.phpunit.result.cache
+
+# ── Ambiente ─────────────────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.local
+
+# ── Ferramentas / relatórios ─────────────────────────────────────────────────
+tools/**/out/
+.reports/
+coverage/
+*.log
+*.tmp
+
+# ── SO / editores ────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.shared.json
+*.swp

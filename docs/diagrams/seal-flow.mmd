@@ -1,0 +1,18 @@
+flowchart TD
+    A[Runner em DrawingTrail] --> B{célula atual é do próprio Claim?}
+    B -- não --> C[marca célula do Arc<br/>traçado supercover] --> A
+    B -- sim, arc >= 2 --> D[estado: Sealing]
+    D --> E[barreiras = Claim ∪ Arc]
+    E --> F[região de busca = bbox do Arc ∪ Claim adjacente, +1 célula]
+    F --> G[flood fill 4-vizinhos<br/>a partir da borda externa da região]
+    G --> H[capturado = não alcançado e não-barreira]
+    H --> I[aplica: owner, contadores, roubo]
+    I --> J{engoliu Arc inimigo?}
+    J -- sim --> K[Backwash no inimigo + bônus Cut]
+    J -- não --> L
+    K --> L{algum Claim zerou?}
+    L -- sim --> M[Squeeze: elimina + respawn]
+    L -- não --> N
+    M --> N[Arc vira Claim, limpa Arc]
+    N --> O[emite seal_completed<br/>score, VFX, SFX, háptico, câmera]
+    O --> P[estado: Safe — mesmo tick, controle nunca bloqueia]

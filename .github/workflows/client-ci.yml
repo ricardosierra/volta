@@ -1,0 +1,35 @@
+name: client-ci
+
+# Criado em GSD 01 / REPO-011. Habilitado quando apps/mobile/project.godot existir.
+on:
+  push:
+    paths: ['apps/mobile/**', 'packages/shared/**', 'tools/ci/**']
+  pull_request:
+    paths: ['apps/mobile/**', 'packages/shared/**', 'tools/ci/**']
+
+jobs:
+  client:
+    name: Lint e testes do cliente
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Projeto Godot existe?
+        id: guard
+        run: |
+          if [ -f apps/mobile/project.godot ]; then echo "ready=true" >> "$GITHUB_OUTPUT";
+          else echo "ready=false" >> "$GITHUB_OUTPUT"; echo "Projeto Godot ainda não existe (GSD 01 / REPO-001)."; fi
+      - name: Instalar Godot
+        if: steps.guard.outputs.ready == 'true'
+        run: ./tools/ci/setup_godot.sh "$(cat .godot-version)"
+      - name: Importar assets
+        if: steps.guard.outputs.ready == 'true'
+        run: godot --headless --path apps/mobile --import
+      - name: Lint
+        if: steps.guard.outputs.ready == 'true'
+        run: ./tools/ci/lint.sh
+      - name: Testes (GUT)
+        if: steps.guard.outputs.ready == 'true'
+        run: ./tools/ci/test-client.sh
+      - name: Amostra de gameplay (20 partidas)
+        if: steps.guard.outputs.ready == 'true'
+        run: ./tools/dev/simulate.sh 20

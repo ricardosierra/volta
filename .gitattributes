@@ -1,0 +1,16 @@
+* text=auto eol=lf
+
+*.png  binary
+*.jpg  binary
+*.webp binary
+*.ogg  binary
+*.wav  binary
+*.ttf  binary
+*.otf  binary
+*.aab  binary
+*.apk  binary
+*.ipa  binary
+
+*.gd   text diff=gdscript
+*.tscn text
+*.tres text
