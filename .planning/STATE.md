@@ -7,7 +7,7 @@ current_phase_name: Repository Foundation
 current_plan: 7
 status: executing
 stopped_at: Completed 01-05-PLAN.md
-last_updated: "2026-08-24T21:09:37.129Z"
+last_updated: "2026-08-24T21:09:45.859Z"
 last_activity: 2026-08-24
 progress:
   total_phases: 25
@@ -81,6 +81,8 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 - [Phase 01]: [Phase 01-04]: ConfigValidator range bounds come from @export_range introspection, not hardcoded — same mechanism catches out-of-range and 'missing field' (zeroed below floor)
 - [Phase 01]: lint.sh: heuristica de tipagem estatica (var/param/retorno) + H1 de docs, provada com 3 fixtures negativas reais
 - [Phase 01]: test_bootstrap.gd (Plano 01-02) corrigido para := no lugar de var sem tipo; config_validator.gd (Plano 01-04) deixado fora de escopo, resolvido pelo proprio 01-04 em paralelo
+- [Phase 01]: [Phase 01-05]: profile.json e settings.json sao arquivos independentes com a mesma primitiva _write_atomic/_load_with_recovery; corrupcao de um nunca afeta o outro (verificado por teste)
+- [Phase 01]: [Phase 01-05]: JSON nao distingue int/float, e Dictionary/Array == no Godot e type-strict por elemento; testes de round-trip usam comparacao recursiva tolerante a numero em vez de == cru
 
 ### Pending Todos
 
