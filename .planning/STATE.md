@@ -4,17 +4,17 @@ milestone: v0.1
 milestone_name: milestone
 current_phase: 01
 current_phase_name: Repository Foundation
-current_plan: 4
+current_plan: 5
 status: executing
-stopped_at: Completed 01-03-PLAN.md
-last_updated: "2026-08-24T20:54:35.966Z"
+stopped_at: Completed 01-04-PLAN.md
+last_updated: "2026-08-24T21:05:00.496Z"
 last_activity: 2026-08-24
 progress:
   total_phases: 25
   completed_phases: 0
   total_plans: 11
-  completed_plans: 3
-  percent: 9
+  completed_plans: 4
+  percent: 36
 ---
 
 # Project State
@@ -31,12 +31,12 @@ See: .planning/PROJECT.md (updated 2026-08-24)
 Current Phase: 01
 Current Phase Name: Repository Foundation
 Total Phases: 25
-Current Plan: 4
+Current Plan: 5
 Total Plans in Phase: 11
 Status: In progress
 Last Activity: 2026-08-24
 
-Progress: [█░░░░░░░░░] 9%
+Progress: [████░░░░░░] 36%
 
 ## Performance Metrics
 
@@ -53,6 +53,7 @@ Progress: [█░░░░░░░░░] 9%
 | Phase 01 P01 | 15min | 2 tasks | 28 files |
 | Phase 01 P02 | 20min | 2 tasks | 10 files |
 | Phase 01 P03 | 21min | 2 tasks | 223 files |
+| Phase 01 P04 | 12min | 2 tasks | 22 files |
 
 ## Accumulated Context
 
@@ -74,6 +75,8 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 - [Phase 01]: [Phase 01-02]: flakiness transitoria em check-project.sh durante execucao paralela com 01-03 (race no cache .godot/ compartilhado), resolvida por retry, sem alterar script
 - [Phase 01]: GUT pinado corrigido de v9.7.1 (exige Godot 4.7+) para v9.4.0 (compatível com Godot 4.3), conforme versions.json do proprio addon
 - [Phase 01]: validate-repo.sh passou a excluir apps/mobile/addons/** (codigo de terceiros vendorizado) das checagens de nome/TODO/tamanho de arquivo
+- [Phase 01]: [Phase 01-04]: .tres hand-written in Godot text-resource format for byte-exact balance.md values, no ResourceSaver round-trip
+- [Phase 01]: [Phase 01-04]: ConfigValidator range bounds come from @export_range introspection, not hardcoded — same mechanism catches out-of-range and 'missing field' (zeroed below floor)
 
 ### Pending Todos
 
@@ -89,6 +92,6 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 
 ## Session Continuity
 
-Last session: 2026-08-24T20:48:26.995Z
-Stopped at: Completed 01-03-PLAN.md
+Last session: 2026-08-24T21:03:51.137Z
+Stopped at: Completed 01-04-PLAN.md
 Resume file: None
