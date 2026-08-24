@@ -45,3 +45,37 @@ was never meant to be in scope), or teach it to skip fenced code blocks / heredo
 **Replacement Task:** 01-09 (REPO-009 — verificadores de arquitetura e repositório)
 
 **Resolvido (orquestrador, após 01-01):** `tools/ci/check_links.sh` agora ignora blocos de código cercados; os dois "links" eram exemplos dentro de heredocs/templates em `01-07-PLAN.md` e `01-10-PLAN.md`. `validate-repo.sh` volta a exit 0.
+
+## Plan 01-04 — `apps/mobile/src/core/config/config_validator.gd:21` (var sem tipagem estática)
+
+**Found during:** Plan 01-08, Task 1, `./tools/ci/lint.sh` verification run.
+
+**Issue:** `lint_gdscript.sh`'s new heuristic (created in this plan) correctly flags
+`var value = resource.get(prop["name"])` (line 21) — a `var` with neither `: Tipo` nem `:=`,
+violating CLAUDE.md regra 1 (tipagem estática obrigatória, sem exceção). At the moment this
+was found, the file was still untracked (`??`, Plan 01-04 mid-execution); after waiting
+~90s and re-checking, Plan 01-04 had committed it (`38c1add feat(config): implement
+ConfigService, ConfigValidator, sync_config.sh`), so it is now a real, persistent violation
+in committed code.
+
+**Why deferred, not fixed:** `apps/mobile/src/core/config/config_validator.gd` is entirely
+outside Plan 01-08's `files_modified` scope — it belongs to Plan 01-04, which was executing
+concurrently with this plan in the same working tree (per this plan's own
+`<environment_facts>`, which explicitly instructs: "if it persists on committed code, report
+it in SUMMARY.md rather than editing another plan's files"). Not fixed here.
+
+**Verified:** with only this one file excluded, a manual tracked-files-only scan using the
+same heuristic (`git ls-files ... | xargs grep -nE '\bvar[[:space:]]+...' | grep -vE ':='`)
+shows zero other untyped-var/return/param violations anywhere else in the tracked codebase —
+confirming `lint_gdscript.sh`'s logic is sound and this is the only real violation, not a
+false positive.
+
+**Suggested resolution:** change line 21 to `var value: Variant = resource.get(prop["name"])`
+(the value's type is genuinely dynamic — `resource.get()` returns `Variant` — so an explicit
+`Variant` annotation, not `:=`, is the correct fix, since `:=` on a `Variant`-returning call
+still infers `Variant` but the explicit form is clearer intent). Any future plan touching
+`config_validator.gd` (or a dedicated lint-cleanup task) should apply this one-line fix and
+confirm `./tools/ci/lint.sh` exits 0 again.
+
+**Replacement Phase:** GSD 01
+**Replacement Task:** next plan that touches `apps/mobile/src/core/config/config_validator.gd`, or a dedicated follow-up lint-cleanup task

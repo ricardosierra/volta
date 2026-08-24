@@ -4,8 +4,8 @@ extends GutTest
 ## falha essencial para o boot ali. Bootstrap no jogo é o singleton autoload; aqui criamos
 ## instâncias novas via preload("res://src/core/bootstrap.gd").new(), fora da árvore, e
 ## chamamos configure_steps()/boot() diretamente, sem depender de _ready(). Sem class_name
-## em Bootstrap (ver <autoload_rules> do plano), então as instâncias ficam sem tipo estático
-## nos testes — consequência documentada da exceção de engine, não de escolha nossa.
+## em Bootstrap (ver <autoload_rules> do plano), então o tipo estático das instâncias vem de
+## inferência (":=") sobre o script pré-carregado, não de um nome de classe global.
 
 const BootstrapScript := preload("res://src/core/bootstrap.gd")
 
@@ -19,11 +19,11 @@ func _three_ok_steps() -> Array[Dictionary]:
 
 
 func test_boot_order_is_deterministic() -> void:
-	var first = BootstrapScript.new()
+	var first := BootstrapScript.new()
 	first.configure_steps(_three_ok_steps())
 	first.boot()
 
-	var second = BootstrapScript.new()
+	var second := BootstrapScript.new()
 	second.configure_steps(_three_ok_steps())
 	second.boot()
 
@@ -32,7 +32,7 @@ func test_boot_order_is_deterministic() -> void:
 
 
 func test_non_essential_failure_does_not_abort_boot() -> void:
-	var bootstrap = BootstrapScript.new()
+	var bootstrap := BootstrapScript.new()
 	watch_signals(bootstrap)
 	var steps: Array[Dictionary] = [
 		{"name": "a", "essential": true, "factory": func() -> Object: return RefCounted.new()},
@@ -48,7 +48,7 @@ func test_non_essential_failure_does_not_abort_boot() -> void:
 
 
 func test_essential_failure_stops_boot() -> void:
-	var bootstrap = BootstrapScript.new()
+	var bootstrap := BootstrapScript.new()
 	var steps: Array[Dictionary] = [
 		{"name": "a", "essential": true, "factory": func() -> Object: return null},
 		{"name": "b", "essential": true, "factory": func() -> Object: return RefCounted.new()},
