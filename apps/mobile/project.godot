@@ -10,6 +10,7 @@ run/main_scene="res://scenes/boot.tscn"
 [autoload]
 
 Log="*res://src/core/log/log.gd"
+Bootstrap="*res://src/core/bootstrap.gd"
 
 [display]
 
