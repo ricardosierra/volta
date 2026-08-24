@@ -79,3 +79,8 @@ confirm `./tools/ci/lint.sh` exits 0 again.
 
 **Replacement Phase:** GSD 01
 **Replacement Task:** next plan that touches `apps/mobile/src/core/config/config_validator.gd`, or a dedicated follow-up lint-cleanup task
+
+**Resolvido (concorrente, durante 01-08):** ao reverificar durante a Task 2 deste plano, a
+linha 21 já estava corrigida (`var value: Variant = resource.get(prop["name"])`, exatamente a
+resolução sugerida acima) — mudança feita e ainda não commitada pelo próprio Plano 01-04 (fora
+do escopo de 01-08, não tocada por este executor). `./tools/ci/lint.sh` volta a exit 0.
