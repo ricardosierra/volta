@@ -9,7 +9,7 @@ Requisitos derivados de `docs/` e de `.gsd/phases/*/REQUIREMENTS.md`. IDs usados
 - [x] FND-03 — Save versionado com escrita atômica, backup e migrações
 - [x] FND-04 — Logging estruturado por categoria e nível
 - [ ] FND-05 — CI com lint, validação de convenções e testes headless
-- [ ] FND-06 — Verificadores de convenção que falham de verdade (8 regras)
+- [x] FND-06 — Verificadores de convenção que falham de verdade (8 regras)
 
 ## Movimento e controle (MOV)
 
