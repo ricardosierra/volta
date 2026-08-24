@@ -4,7 +4,7 @@ Requisitos derivados de `docs/` e de `.gsd/phases/*/REQUIREMENTS.md`. IDs usados
 
 ## Fundação (FND)
 
-- [ ] FND-01 — Projeto Godot 4.3 abre, roda em mobile e tem versão pinada
+- [x] FND-01 — Projeto Godot 4.3 abre, roda em mobile e tem versão pinada
 - [ ] FND-02 — Configuração orientada a dados (`.tres`) com validação de faixa
 - [ ] FND-03 — Save versionado com escrita atômica, backup e migrações
 - [ ] FND-04 — Logging estruturado por categoria e nível

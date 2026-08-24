@@ -1,17 +1,20 @@
 ---
 gsd_state_version: 1.0
-milestone: v0.1.0
-milestone_name: v0.1.0
-status: ready
-stopped_at: Planejamento completo — pronto para executar a Phase 1
-last_updated: "2026-08-24T00:00:00.000Z"
-last_activity: 2026-08-24 — Master plan criado (25 fases, 245 tarefas, 14 ADRs, 63 documentos)
+milestone: v0.1
+milestone_name: milestone
+current_phase: 01
+current_phase_name: Repository Foundation
+current_plan: 2
+status: executing
+stopped_at: Completed 01-01-PLAN.md
+last_updated: "2026-08-24T20:34:24.146Z"
+last_activity: 2026-08-24
 progress:
   total_phases: 25
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
-  percent: 0
+  total_plans: 11
+  completed_plans: 1
+  percent: 9
 ---
 
 # Project State
@@ -21,29 +24,33 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-24)
 
 **Core value:** Arcade mobile de conquista territorial em partidas de 90–180 s — sair da zona segura, desenhar o arco, fechar a volta e capturar — com controle que responde, bots com intenção legível e monetização que nunca vende vantagem.
-**Current focus:** Phase 1 — Repository Foundation
+**Current focus:** Phase 01 — Repository Foundation
 
 ## Current Position
 
-Phase: 1 of 25 (Repository Foundation)
-Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-08-24 — Master plan criado
+Current Phase: 01
+Current Phase Name: Repository Foundation
+Total Phases: 25
+Current Plan: 2
+Total Plans in Phase: 11
+Status: In progress
+Last Activity: 2026-08-24
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [█░░░░░░░░░] 9%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
-- Average duration: —
-- Total execution time: —
+
+- Total plans completed: 1
+- Average duration: 15min
+- Total execution time: 15min
 
 **By Phase:**
 
-| Phase | Plans | Status |
-|-------|-------|--------|
-| — | — | — |
+| Phase | Duration | Tasks | Files |
+|-------|----------|-------|-------|
+| Phase 01 P01 | 15min | 2 tasks | 28 files |
 
 ## Accumulated Context
 
@@ -59,6 +66,8 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 - **Nenhum número de gameplay no código.** Tudo em `.tres` sob `packages/shared/config/`, com os valores de `docs/design/balance.md`.
 - **Dificuldade de bot por comportamento**, nunca por velocidade. `enemySpeed *= 2` é proibido.
 - **Nada comprável altera a simulação.**
+- [Phase 01-01]: check-project.sh ganhou filtro temporario e documentado para 'GutTest nao encontrado', ate o addon GUT ser instalado no Plano 01-03
+- [Phase 01-01]: 2 links quebrados pre-existentes em 01-07-PLAN.md e 01-10-PLAN.md (falsos positivos de check_links.sh) logados em deferred-items.md, nao corrigidos por estarem fora do escopo deste plano
 
 ### Pending Todos
 
@@ -74,6 +83,6 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 
 ## Session Continuity
 
-Last session: 2026-08-24
-Stopped at: Planejamento completo
-Resume file: .planning/ROADMAP.md
+Last session: 2026-08-24T20:34:24.144Z
+Stopped at: Completed 01-01-PLAN.md
+Resume file: None
