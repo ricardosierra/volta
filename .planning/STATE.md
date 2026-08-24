@@ -4,16 +4,16 @@ milestone: v0.1
 milestone_name: milestone
 current_phase: 01
 current_phase_name: Repository Foundation
-current_plan: 5
+current_plan: 7
 status: executing
-stopped_at: Completed 01-04-PLAN.md
-last_updated: "2026-08-24T21:05:00.496Z"
+stopped_at: Completed 01-05-PLAN.md
+last_updated: "2026-08-24T21:09:37.129Z"
 last_activity: 2026-08-24
 progress:
   total_phases: 25
   completed_phases: 0
   total_plans: 11
-  completed_plans: 4
+  completed_plans: 6
   percent: 36
 ---
 
@@ -31,7 +31,7 @@ See: .planning/PROJECT.md (updated 2026-08-24)
 Current Phase: 01
 Current Phase Name: Repository Foundation
 Total Phases: 25
-Current Plan: 5
+Current Plan: 7
 Total Plans in Phase: 11
 Status: In progress
 Last Activity: 2026-08-24
@@ -54,6 +54,8 @@ Progress: [████░░░░░░] 36%
 | Phase 01 P02 | 20min | 2 tasks | 10 files |
 | Phase 01 P03 | 21min | 2 tasks | 223 files |
 | Phase 01 P04 | 12min | 2 tasks | 22 files |
+| Phase 01 P8 | 8min | 2 tasks | 9 files |
+| Phase 01 P05 | 28min | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -77,6 +79,8 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 - [Phase 01]: validate-repo.sh passou a excluir apps/mobile/addons/** (codigo de terceiros vendorizado) das checagens de nome/TODO/tamanho de arquivo
 - [Phase 01]: [Phase 01-04]: .tres hand-written in Godot text-resource format for byte-exact balance.md values, no ResourceSaver round-trip
 - [Phase 01]: [Phase 01-04]: ConfigValidator range bounds come from @export_range introspection, not hardcoded — same mechanism catches out-of-range and 'missing field' (zeroed below floor)
+- [Phase 01]: lint.sh: heuristica de tipagem estatica (var/param/retorno) + H1 de docs, provada com 3 fixtures negativas reais
+- [Phase 01]: test_bootstrap.gd (Plano 01-02) corrigido para := no lugar de var sem tipo; config_validator.gd (Plano 01-04) deixado fora de escopo, resolvido pelo proprio 01-04 em paralelo
 
 ### Pending Todos
 
@@ -92,6 +96,6 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 
 ## Session Continuity
 
-Last session: 2026-08-24T21:03:51.137Z
-Stopped at: Completed 01-04-PLAN.md
+Last session: 2026-08-24T21:09:37.127Z
+Stopped at: Completed 01-05-PLAN.md
 Resume file: None
