@@ -32,6 +32,22 @@ reinterpretar o projeto inteiro.
 └── HANDOFF.md        preenchido ao FIM da fase
 ```
 
+## Relação com `.planning/`
+
+`.gsd/` é **o plano**. [`.planning/`](../.planning/) é a **interface** que os comandos
+`/gsd:*` leem e escrevem (ROADMAP, STATE, CONTEXT, PLAN, SUMMARY).
+
+O conteúdo de `.planning/` é derivado daqui:
+
+| `.gsd/` | → | `.planning/` |
+|---|---|---|
+| `MASTER_PLAN.md` + `phases/*/README.md` | → | `ROADMAP.md` (Goal, Depends on, Success Criteria) |
+| `phases/*/REQUIREMENTS.md` | → | `REQUIREMENTS.md` (IDs por grupo) |
+| `phases/*/README.md` + `TASKS.md` + ADRs | → | `phases/NN-*/NN-CONTEXT.md` |
+| `STATUS.md` | ↔ | `STATE.md` |
+
+**Em caso de divergência, `.gsd/` e `docs/` vencem.**
+
 ## Regra de ouro
 
 > Uma fase não está concluída porque o código compila. Ela está concluída quando o

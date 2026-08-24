@@ -1,0 +1,120 @@
+# Phase 20: Accessibility & Device Compatibility - Context
+
+**Gathered:** 2026-08-24
+**Status:** Ready for planning
+
+> **Este contexto foi pré-gravado no planejamento mestre, não numa conversa.** As decisões
+> abaixo já estão fechadas e documentadas — o planner e o executor devem **segui-las**, não
+> revisitá-las. Se algo parecer faltar, a resposta está nos documentos canônicos listados
+> mais abaixo. Não invente decisão nova.
+
+<domain>
+## Phase Boundary
+
+Funcionar para mais gente e em mais aparelhos, e fechar o marco Beta
+
+**Requisitos cobertos:** QLT-02, QLT-03
+
+**Fora do escopo desta fase** (vai para a fase indicada ou para `.gsd/BACKLOG.md`):
+
+- (ver o README da fase em `.gsd/`)
+
+O escopo completo — o que entra e o que não entra — está em `.gsd/phases/20-accessibility-compat/README.md`.
+
+</domain>
+
+<decisions>
+## Implementation Decisions
+
+### Acessibilidade não é "desligar coisas"
+- Com `Reduce shake` + `Reduce flashes` + `Reduzir sons intensos` + `Haptics off` + escala 1,25 + tema de daltonismo, o jogo precisa continuar **divertido**, não apenas jogável.
+- Auditoria obrigatória: nenhuma informação existe só na cor, só no som ou só no háptico. Sempre há redundância de canal.
+- Temas de daltonismo ficam em `Settings > Accessibility`, **nunca** na loja e nunca atrás de desbloqueio.
+
+### Dispositivos
+- Matriz de `docs/mobile/device-matrix.md` executada em 4 Android (Low, Mid, High, tablet) e 3 iPhone + 1 iPad, com resultado por aparelho.
+- Tablet **reflui**, não estica.
+- 60/90/120 Hz e LTPO mudam apenas a suavidade — o comportamento é idêntico, porque a simulação é fixa a 60 Hz.
+
+### Upgrade da engine (BL-011)
+- Avaliar a versão estável mais recente contra a 4.3 em **branch separado**: ganho de interpolação 2D nativa vs custo e risco de migração.
+- Decidir com dado: ADR novo se migrar, registro fundamentado no backlog se não. **Não migrar é uma resposta válida.**
+
+### Gate da Beta
+- Crash-free ≥ 99 % em teste fechado com ≥ 30 aparelhos distintos. Item não marcado impede o fechamento do marco.
+
+### Claude's Discretion
+Nomes internos de variáveis e métodos, organização de arquivos dentro da pasta já definida
+pela arquitetura, ordem interna de implementação dentro de uma tarefa, e detalhes de teste
+além dos exigidos. **Tudo o mais já está decidido** nos documentos canônicos.
+
+</decisions>
+
+<specifics>
+## Specific Ideas
+
+As tarefas desta fase já estão quebradas, numeradas e com passos em `.gsd/phases/20-accessibility-compat/TASKS.md`.
+Cada tarefa traz objetivo, contexto, dependências, arquivos prováveis, passos de
+implementação, testes e Definition of Done.
+
+**Use aquele arquivo como fonte das tarefas do plano.** Não re-derive a decomposição.
+
+</specifics>
+
+<canonical_refs>
+## Canonical References
+
+**Downstream agents MUST read these before planning or implementing.**
+
+### Plano desta fase (ler primeiro, na ordem)
+- `.gsd/phases/20-accessibility-compat/README.md` — escopo, e principalmente o que NÃO entra
+- `.gsd/phases/20-accessibility-compat/TASKS.md` — as tarefas com passos e Definition of Done
+- `.gsd/phases/20-accessibility-compat/ACCEPTANCE.md` — como se prova que ficou pronto
+- `.gsd/phases/20-accessibility-compat/TESTS.md` — os testes que precisam existir
+- `.gsd/phases/20-accessibility-compat/RISKS.md` — o que costuma dar errado aqui
+
+### Especificação do produto
+- `.gsd/phases/20-accessibility-compat/`
+- `docs/ui/accessibility.md`
+- `docs/mobile/device-matrix.md`
+- `.gsd/BACKLOG.md` (BL-011)
+
+### Regras que valem em toda fase
+- `CLAUDE.md` — as 10 regras de código verificadas por máquina
+- `docs/architecture/overview.md` — camadas, convenções, o que não fazer
+- `docs/design/balance.md` — **o único lugar com números de gameplay**
+- `.gsd/QUALITY_GATES.md` — o que precisa ser verdade para a fase fechar
+
+</canonical_refs>
+
+<code_context>
+## Existing Code Insights
+
+### Padrões estabelecidos
+- Simulação (`territory/`, `runner/`, `ai/`, `gameplay/`) **não importa** `presentation/` nem `ui/` — verificado pelo CI.
+- Toda dependência externa entra por interface (`*Repository`, `*Service`), com implementação `Local*` antes de `Remote*`.
+- Nenhum número de gameplay no código: tudo em `.tres` sob `packages/shared/config/`.
+- Nenhum arquivo-depósito (`utils.gd`, `manager.gd`, `global.gd`…) — o CI reprova pelo nome.
+
+### Verificação antes de fechar qualquer tarefa
+```bash
+./tools/ci/validate-repo.sh
+./tools/ci/lint.sh
+./tools/ci/test-client.sh
+```
+
+</code_context>
+
+<deferred>
+## Deferred Ideas
+
+Tudo que estiver fora do escopo declarado acima vai para `.gsd/BACKLOG.md` com uma linha —
+nunca para o código desta fase. O backlog já contém 18 itens deliberadamente adiados,
+7 placeholders e 5 mocks, todos com fase de destino.
+
+</deferred>
+
+---
+
+*Phase: 20-accessibility-compat*
+*Context gathered: 2026-08-24 (pré-gravado no planejamento mestre)*

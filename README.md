@@ -228,8 +228,23 @@ Audit GSD 03
 Show project status
 ```
 
-O estado atual sempre vive em [`.gsd/STATUS.md`](.gsd/STATUS.md).
-Regras de contribuição em [`CONTRIBUTING.md`](CONTRIBUTING.md).
+Ou, usando as ferramentas GSD instaladas:
+
+```text
+/gsd:autonomous          executa todas as fases restantes (discuss→plan→execute por fase)
+/gsd:plan-phase 1        planeja apenas a fase 1
+/gsd:execute-phase 1     executa os planos da fase 1
+/gsd:progress            mostra onde o projeto está
+```
+
+Dois diretórios, um plano: [`.gsd/`](.gsd/) é a **fonte autoritativa** (26 fases × 7
+documentos, ADRs, riscos, quality gates); [`.planning/`](.planning/) é a **interface** que os
+comandos `/gsd:*` leem e escrevem. Em caso de divergência, `.gsd/` e `docs/` vencem.
+
+O estado atual vive em [`.gsd/STATUS.md`](.gsd/STATUS.md) e em
+[`.planning/STATE.md`](.planning/STATE.md).
+Regras de contribuição em [`CONTRIBUTING.md`](CONTRIBUTING.md) e no
+[`CLAUDE.md`](CLAUDE.md).
 
 ## 16. Licença
 
