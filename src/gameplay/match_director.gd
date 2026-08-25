@@ -42,3 +42,17 @@ func setup_match(mode_config: Resource) -> void:
 		var profile = BotProfile.new() # Default for now
 		var brain = BotBrain.new(profile)
 		ai_scheduler.register_bot(r, brain)
+
+var time_limit_sec: float = 180.0
+var time_elapsed: float = 0.0
+var is_final_push: bool = false
+signal final_push_started
+
+func update_time(delta: float) -> void:
+	if game_state.current_state() == GameState.Id.PLAYING:
+		time_elapsed += delta
+		var remaining = time_limit_sec - time_elapsed
+		
+		if remaining <= 30.0 and not is_final_push:
+			is_final_push = true
+			final_push_started.emit()

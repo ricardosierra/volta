@@ -1,0 +1,10 @@
+[gd_resource type="Resource" format=3 uid="uid://surge_balance"]
+
+[resource]
+resource_name = "Surge Balance"
+metadata/max_level = 5
+metadata/base_mult = 1.0
+metadata/level_mult_step = 0.5
+metadata/decay_rate_per_sec = 0.5
+metadata/seal_boost = 1.0
+metadata/break_boost = 2.0
