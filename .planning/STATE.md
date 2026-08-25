@@ -6,15 +6,15 @@ current_phase: 01
 current_phase_name: Repository Foundation
 current_plan: 11
 status: executing
-stopped_at: Completed 01-10-PLAN.md
-last_updated: "2026-08-25T01:12:31.000Z"
-last_activity: 2026-08-24
+stopped_at: Completed 01-11-PLAN.md
+last_updated: "2026-08-25T01:30:00.000Z"
+last_activity: 2026-08-25
 progress:
   total_phases: 25
   completed_phases: 0
   total_plans: 11
-  completed_plans: 10
-  percent: 91
+  completed_plans: 11
+  percent: 100
 ---
 
 # Project State
@@ -34,9 +34,9 @@ Total Phases: 25
 Current Plan: 11
 Total Plans in Phase: 11
 Status: In progress
-Last Activity: 2026-08-24
+Last Activity: 2026-08-25
 
-Progress: [█████████░] 91%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -60,6 +60,7 @@ Progress: [█████████░] 91%
 | Phase 01 P07 | 12min | 2 tasks | 3 files |
 | Phase 01 P09 | 6min | 2 tasks | 5 files |
 | Phase 01 P10 | 20min | 3 tasks | 8 files |
+| Phase 01 P11 | 15min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -93,6 +94,7 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 - [Phase 01]: [Phase 01-09]: client-ci.yml ganhou passo check-project.sh (Rule 2 - nao estava no texto literal da tarefa, mas fecha a lacuna entre 'pipeline completo' e o que realmente rodava); branch protection documentada como pendencia humana, nao fabricada como feita (sem git remote configurado)
 - [Phase 01]: [Phase 01-10]: export_presets.template.cfg precisa de export_filter/include_filter/exclude_filter/script_export_mode (Godot 4.3 le sem default, nao estava no texto literal do plano); project.godot precisa de rendering/textures/vram_compression/import_etc2_astc=true ou o export Android falha com config_error vazio (bug de mensagem do Godot 4.3, rastreado no source upstream) — sem essa flag, build_android.sh debug nunca produz APK
 - [Phase 01]: [Phase 01-10]: PLACEHOLDER-ART-006 documentado em dev_overlay.gd, nao em main.tscn, porque .tscn nao aceita comentario de linha arbitrario — exatamente o fallback que o proprio plano ja previa
+- [Phase 01]: [Phase 01-11]: nenhum Android real conectado (adb devices vazio em 2026-08-25); checkpoint humano DEFERIDO conforme fallback do risco F01-07 — device-results.md linha Phase 1 permanece _pendente_, gate registrado explicitamente em Blockers/Concerns, A01-12/A01-13/A01-14 e Success Criterion 6 do ROADMAP continuam abertos ate um humano rodar o APK num aparelho fisico
 
 ### Pending Todos
 
@@ -100,7 +102,7 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 
 ### Blockers/Concerns
 
-- [Phase 1] ~~Export templates do Godot 4.3 precisam estar instalados para a tarefa REPO-012 (APK de debug).~~ Resolvido no Plano 01-10: templates 4.3.stable confirmados instalados, `tools/ci/build_android.sh debug` produz `dist/android/volta-debug.apk` (47 MB, assinado) nesta máquina. Falta apenas a confirmação em aparelho físico real, isolada e esperada no Plano 01-11 (checkpoint humano) — nenhum dispositivo Android conectado no momento deste plano.
+- [Phase 1] GATE ABERTO (F01-07): `dist/android/volta-debug.apk` foi gerado (Plano 01-10) mas ainda NÃO foi instalado/verificado num Android real — A01-12/A01-13/A01-14 e Success Criterion 6 pendentes. Para fechar: conectar um Android (tier Mid), `./tools/ci/build_android.sh debug` se o APK não existir mais, `adb install -r dist/android/volta-debug.apk`, seguir o roteiro de 01-11-PLAN.md Task 2 e preencher a linha Phase 1 de docs/performance/device-results.md.
 - [Phase 2] É necessário um aparelho Android intermediário real para medir latência de input (< 50 ms) — sem ele, a Phase 2 não fecha.
 - [Phase 15] Hospedagem da API e domínio dependem de decisão humana (H-03). Desenvolvimento roda em Docker local, então não bloqueia.
 - [Phase 21] Busca de anterioridade da marca "VOLTA" é decisão humana (H-01) com prazo **antes** desta fase.
