@@ -20,7 +20,7 @@ de descoberta.
 - [ ] **Phase 7: UI/UX Foundation** — design system, telas, navegação, settings, i18n, onboarding
 - [ ] **Phase 8: Art Direction** — paletas, shaders, zero placeholder, presets de qualidade
 - [ ] **Phase 9: Game Feel & Polish** — VFX, câmera, háptico, SFX, música adaptativa
-- [ ] **Phase 10: Progression** — perfil, XP, ranks, estatísticas, conquistas, desafios
+- [x] **Phase 10: Progression** — perfil, XP, ranks, estatísticas, conquistas, desafios (completed 2026-08-25)
 - [ ] **Phase 11: Cosmetics** — skins, Arc styles, temas, efeitos de Seal, desbloqueio
 - [ ] **Phase 12: Additional Game Modes** — Time Attack, Survival, Domination, Endless
 - [ ] **Phase 13: Maps & Arena Variations** — Archipelago, Rift, Crossroads, Halo
