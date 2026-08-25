@@ -6,9 +6,16 @@ completo por aparelho.
 
 ## Phase 1 — prova de pipeline (cena mínima)
 
+> **Pendência humana (F01-07):** nenhum Android físico estava conectado nesta execução
+> (`adb devices` vazio em 2026-08-25). O APK existe e foi verificado localmente
+> (`dist/android/volta-debug.apk`, 49.400.170 bytes, gerado 2026-08-24 22:10 por
+> `./tools/ci/build_android.sh debug`), mas instalação, cold start, FPS e safe area em
+> hardware real ainda não foram observados. Ver `.planning/STATE.md` → Blockers/Concerns
+> para o item de fechamento explícito.
+
 | Campo | Valor |
 |---|---|
-| Data | _pendente — preenchido no checkpoint do Plano 01-11_ |
+| Data | _pendente — nenhum dispositivo conectado na tentativa de 2026-08-25 (adb devices vazio)_ |
 | Aparelho | _pendente_ |
 | Tier | _pendente_ |
 | Android (versão) | _pendente_ |
