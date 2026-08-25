@@ -12,7 +12,7 @@ signal boot_failed(service_name: String, reason: String)
 
 ## Cena carregada ao fim do boot. Vazio nesta fase; o Plano 01-10 troca esta linha para
 ## "res://scenes/main.tscn" (edição de dado, sem lógica nova).
-var next_scene_path: String = ""
+var next_scene_path: String = "res://scenes/main.tscn"
 
 var registry: ServiceRegistry = ServiceRegistry.new()
 var boot_order: Array[String] = []
