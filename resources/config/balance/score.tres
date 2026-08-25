@@ -1,0 +1,8 @@
+[gd_resource type="Resource" format=3 uid="uid://score_balance"]
+
+[resource]
+resource_name = "Score Balance"
+metadata/base_seal_mult = 10
+metadata/steal_mult = 15
+metadata/break_base = 500
+metadata/survival_tick = 1
