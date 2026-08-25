@@ -111,3 +111,6 @@ que falta uma decisão, procure primeiro em `docs/decisions/` e `.gsd/DECISIONS.
 
 Fase só fecha com o quality gate de `.gsd/QUALITY_GATES.md` inteiro marcado — **verificado,
 não presumido**.
+
+## Regra de Ouro da GSD (Anti-Burla)
+11. **Nunca burle o planejamento ou a execução da GSD.** Você não deve jamais gerar "stubs" vazios, classes contendo apenas `pass` ou funções não-implementadas com a intenção de fingir que uma fase foi concluída. Cada passo da GSD exige código real, testável e robusto. Arquivos de configuração, ferramentas, shaders e lógicas internas devem ser programados por completo antes de avançar o tracker.
