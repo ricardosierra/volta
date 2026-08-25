@@ -1,7 +1,5 @@
 class_name BackwashAnimation
 extends Node
 
-static func play(parent: Node, center_pos: Vector2) -> void:
-	var vfx = VideoVFXPlayer.new()
-	parent.add_child(vfx)
-	vfx.play_vfx("res://assets/raw/vfx/backwash.mp4", center_pos, 0.8)
+static func play(service: VfxService, center_pos: Vector2) -> void:
+	service.play("backwash", center_pos, 0.8)
