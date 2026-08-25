@@ -28,3 +28,4 @@ common/max_physics_steps_per_frame=4
 [rendering]
 
 renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
