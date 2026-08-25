@@ -2,25 +2,26 @@ class_name MatchDirector
 extends Node
 
 var clock: SimulationClock
+var resolver: CollisionResolver
+var elimination: EliminationService
 
 func _ready() -> void:
 	clock = SimulationClock.new(0)
-	
-	# Sync max FPS with the panel refresh rate if possible, but keep physics tick at 60.
+	resolver = CollisionResolver.new()
+	elimination = EliminationService.new()
 	Engine.max_fps = DisplayServer.screen_get_refresh_rate()
 	if Engine.max_fps == -1:
-		Engine.max_fps = 60 # Default fallback
-
-func _physics_process(delta: float) -> void:
-	step(delta)
+		Engine.max_fps = 60
 
 func step(delta: float) -> void:
-	# Fixed order of execution:
+	# FIXED RESOLUTION ORDER (CMBT-007)
 	# 1. input
-	# 2. (IA)
-	# 3. movement
-	# 4. (territory)
-	# 5. (regras)
-	# 6. eventos
+	# 2. movement
+	# 3. mark arcs
+	# 4. detect collisions (breaks, backwash)
+	# 5. resolve seals (by runner_id)
+	# 6. process eliminations (squeeze, break)
+	# 7. respawn
+	# 8. events
 	
 	clock.advance()
