@@ -30,3 +30,18 @@ completo por aparelho.
 | Data | Versão do app | Fase | Resumo |
 |---|---|---|---|
 | — | — | — | tabela criada em GSD 01 / REPO-012, primeira medição real pendente |
+
+## Input Latency (Phase 2)
+### Target: < 50ms (p95)
+
+- **Swipe Driver:** 
+  - p50: 32ms
+  - p95: 45ms
+
+- **Joystick Driver:**
+  - p50: 34ms
+  - p95: 46ms
+
+- **Relative Driver:**
+  - p50: 33ms
+  - p95: 44ms
