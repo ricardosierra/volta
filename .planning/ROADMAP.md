@@ -62,7 +62,7 @@ Plans:
 - [x] 01-06-PLAN.md — EventBus (sinais tipados, limite de emissão em debug)
 - [x] 01-07-PLAN.md — validate-repo.sh (10 regras) + prova negativa em tests/tools/
 - [x] 01-08-PLAN.md — lint.sh (tipagem estática GDScript + título H1 de docs) + prova negativa
-- [ ] 01-09-PLAN.md — tools/ci/setup_godot.sh + validate.yml/client-ci.yml
+- [x] 01-09-PLAN.md — tools/ci/setup_godot.sh + validate.yml/client-ci.yml
 - [ ] 01-10-PLAN.md — Cena principal (main.tscn + DevOverlay) + build_android.sh debug + device-results.md
 - [ ] 01-11-PLAN.md — Checkpoint: confirmação em Android real (cold start, FPS, safe area)
 
