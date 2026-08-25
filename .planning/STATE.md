@@ -4,17 +4,17 @@ milestone: v0.1
 milestone_name: milestone
 current_phase: 01
 current_phase_name: Repository Foundation
-current_plan: 10
+current_plan: 11
 status: executing
-stopped_at: Completed 01-09-PLAN.md
-last_updated: "2026-08-24T21:27:28.692Z"
+stopped_at: Completed 01-10-PLAN.md
+last_updated: "2026-08-25T01:12:31.000Z"
 last_activity: 2026-08-24
 progress:
   total_phases: 25
   completed_phases: 0
   total_plans: 11
-  completed_plans: 9
-  percent: 82
+  completed_plans: 10
+  percent: 91
 ---
 
 # Project State
@@ -31,12 +31,12 @@ See: .planning/PROJECT.md (updated 2026-08-24)
 Current Phase: 01
 Current Phase Name: Repository Foundation
 Total Phases: 25
-Current Plan: 10
+Current Plan: 11
 Total Plans in Phase: 11
 Status: In progress
 Last Activity: 2026-08-24
 
-Progress: [███████░░░] 73%
+Progress: [█████████░] 91%
 
 ## Performance Metrics
 
@@ -59,6 +59,7 @@ Progress: [███████░░░] 73%
 | Phase 01 P6 | 6min | 1 tasks | 3 files |
 | Phase 01 P07 | 12min | 2 tasks | 3 files |
 | Phase 01 P09 | 6min | 2 tasks | 5 files |
+| Phase 01 P10 | 20min | 3 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -90,6 +91,8 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 - [Phase 01]: [Phase 01-07]: PLACEHOLDER-XXX-NNN / Replacement: GSD NN e' same-line (confirmado contra uso real em TASKS.md); big_func exclui addons/** (GUT tem 12 funcoes >50 linhas de terceiros)
 - [Phase 01]: [Phase 01-09]: setup_godot.sh separa TAG (hifen, ex. 4.3-stable) de VERSION (ponto, ex. 4.3.stable) via VERSION/.stable/-stable; nunca misturar os dois nomes de asset/diretorio
 - [Phase 01]: [Phase 01-09]: client-ci.yml ganhou passo check-project.sh (Rule 2 - nao estava no texto literal da tarefa, mas fecha a lacuna entre 'pipeline completo' e o que realmente rodava); branch protection documentada como pendencia humana, nao fabricada como feita (sem git remote configurado)
+- [Phase 01]: [Phase 01-10]: export_presets.template.cfg precisa de export_filter/include_filter/exclude_filter/script_export_mode (Godot 4.3 le sem default, nao estava no texto literal do plano); project.godot precisa de rendering/textures/vram_compression/import_etc2_astc=true ou o export Android falha com config_error vazio (bug de mensagem do Godot 4.3, rastreado no source upstream) — sem essa flag, build_android.sh debug nunca produz APK
+- [Phase 01]: [Phase 01-10]: PLACEHOLDER-ART-006 documentado em dev_overlay.gd, nao em main.tscn, porque .tscn nao aceita comentario de linha arbitrario — exatamente o fallback que o proprio plano ja previa
 
 ### Pending Todos
 
@@ -97,7 +100,7 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 
 ### Blockers/Concerns
 
-- [Phase 1] Export templates do Godot 4.3 precisam estar instalados para a tarefa REPO-012 (APK de debug). Se faltarem, as demais tarefas seguem e a pendência fica explícita aqui.
+- [Phase 1] ~~Export templates do Godot 4.3 precisam estar instalados para a tarefa REPO-012 (APK de debug).~~ Resolvido no Plano 01-10: templates 4.3.stable confirmados instalados, `tools/ci/build_android.sh debug` produz `dist/android/volta-debug.apk` (47 MB, assinado) nesta máquina. Falta apenas a confirmação em aparelho físico real, isolada e esperada no Plano 01-11 (checkpoint humano) — nenhum dispositivo Android conectado no momento deste plano.
 - [Phase 2] É necessário um aparelho Android intermediário real para medir latência de input (< 50 ms) — sem ele, a Phase 2 não fecha.
 - [Phase 15] Hospedagem da API e domínio dependem de decisão humana (H-03). Desenvolvimento roda em Docker local, então não bloqueia.
 - [Phase 21] Busca de anterioridade da marca "VOLTA" é decisão humana (H-01) com prazo **antes** desta fase.
@@ -105,6 +108,6 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 
 ## Session Continuity
 
-Last session: 2026-08-24T21:25:18.812Z
-Stopped at: Completed 01-09-PLAN.md
+Last session: 2026-08-25T01:12:31.000Z
+Stopped at: Completed 01-10-PLAN.md
 Resume file: None

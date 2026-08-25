@@ -84,3 +84,41 @@ confirm `./tools/ci/lint.sh` exits 0 again.
 linha 21 já estava corrigida (`var value: Variant = resource.get(prop["name"])`, exatamente a
 resolução sugerida acima) — mudança feita e ainda não commitada pelo próprio Plano 01-04 (fora
 do escopo de 01-08, não tocada por este executor). `./tools/ci/lint.sh` volta a exit 0.
+
+## Plan 01-10 — `apps/mobile/addons/gut/gut_loader_the_scene.tscn` (referência quebrada no vendor do GUT)
+
+**Found during:** Task 2, ao rodar `./tools/ci/build_android.sh debug` pela primeira vez com
+sucesso (export completo, APK gerado e assinado).
+
+**Issue:** durante o passo "Agregando archivos" do export Android, o Godot imprime dois erros
+não-fatais:
+
+```text
+ERROR: Attempt to open script 'res://addons/gut/gut_loader_the_scene.gd' resulted in error 'File not found'.
+ERROR: Failed loading resource: res://addons/gut/gut_loader_the_scene.gd. Make sure resources have been imported by opening the project in the editor at least once.
+ERROR: Cannot set object script. Parameter should be null or a reference to a valid script.
+```
+
+`apps/mobile/addons/gut/gut_loader_the_scene.tscn` referencia
+`res://addons/gut/gut_loader_the_scene.gd` (via `ext_resource`), mas esse `.gd` não existe no
+pacote vendorizado do GUT v9.4.0 instalado no Plano 01-03. O export prossegue e completa com
+sucesso mesmo assim (o `.tscn` quebrado não é incluído no pacote final relevante para
+runtime/gameplay) — não bloqueou a geração do APK.
+
+**Why deferred, not fixed:** `apps/mobile/addons/gut/**` é código de terceiros vendorizado,
+explicitamente fora do escopo de checagem de `validate-repo.sh` (decisão do Plano 01-01) e fora
+de `files_modified` deste plano (01-10). Não é um arquivo deste plano nem desta fase que devamos
+editar; é um problema no próprio addon.
+
+**Verified:** `./tools/ci/build_android.sh debug` sai com `exit=0` e produz
+`dist/android/volta-debug.apk` (47 MB, assinado, com `classes.dex` e
+`lib/{arm64-v8a,armeabi-v7a}/libgodot_android.so`) apesar destes erros — confirmando que são
+apenas ruído no log, não uma falha de export.
+
+**Suggested resolution:** se o `.tscn` quebrado incomodar em builds futuros (ex.: export de
+release mais rigoroso em GSD 21), remover ou corrigir `gut_loader_the_scene.tscn` no vendor do
+GUT, ou confirmar se é um artefato órfão que pode ser deletado sem afetar `test-client.sh`.
+
+**Replacement Phase:** GSD 21
+**Replacement Task:** ANDR-001..003 (build de release) — revisitar se o export de release for
+mais sensível a este ruído do que o de debug.
