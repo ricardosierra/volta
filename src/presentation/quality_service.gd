@@ -1,0 +1,16 @@
+class_name QualityService
+extends Node
+
+var current_preset: Resource
+
+func apply_preset(preset: Resource) -> void:
+	current_preset = preset
+	var scale = preset.get_meta("resolution_scale", 1.0)
+	get_viewport().scaling_3d_scale = scale # Assuming 3D or 2D viewport scaling
+	
+	# Pass shader complexity to global shader parameters
+	RenderingServer.global_shader_parameter_set("complexity", preset.get_meta("shader_complexity", 1))
+
+func can_play_vfx() -> bool:
+	if not current_preset: return true
+	return current_preset.get_meta("enable_vfx_videos", true)

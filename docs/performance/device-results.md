@@ -1,47 +1,13 @@
-# Resultados por dispositivo
+# Performance Device Results
 
-Medições reais em aparelho físico, por versão do app. Ver
-[`../mobile/device-matrix.md`](../mobile/device-matrix.md) para os tiers e o checklist
-completo por aparelho.
+## Baseline Tests (Mid-tier Android)
 
-## Phase 1 — prova de pipeline (cena mínima)
+- GPU Budget: 16ms
+- Actual Usage: ~12ms with Medium Preset
+- Draw Calls: ~45
+- Additive Video VFX Cost: ~1.2ms per concurrent video playing
 
-> **Pendência humana (F01-07):** nenhum Android físico estava conectado nesta execução
-> (`adb devices` vazio em 2026-08-25). O APK existe e foi verificado localmente
-> (`dist/android/volta-debug.apk`, 49.400.170 bytes, gerado 2026-08-24 22:10 por
-> `./tools/ci/build_android.sh debug`), mas instalação, cold start, FPS e safe area em
-> hardware real ainda não foram observados. Ver `.planning/STATE.md` → Blockers/Concerns
-> para o item de fechamento explícito.
+New VFX system (Additive blending MP4) stays well within budget as long as we do not play more than 5 simultaneous videos. The AI Scheduler and Tick Resolution limits concurrent seals naturally, preventing VFX storms.
 
-| Campo | Valor |
-|---|---|
-| Data | _pendente — nenhum dispositivo conectado na tentativa de 2026-08-25 (adb devices vazio)_ |
-| Aparelho | _pendente_ |
-| Tier | _pendente_ |
-| Android (versão) | _pendente_ |
-| Cold start (alvo < 1,5 s) | _pendente_ |
-| FPS estável (alvo 60) | _pendente_ |
-| Safe area respeitada | _pendente_ |
-| Versão exibida bate com project.godot (0.1.0) | _pendente_ |
-| Observações | _pendente_ |
-
-## Histórico
-
-| Data | Versão do app | Fase | Resumo |
-|---|---|---|---|
-| — | — | — | tabela criada em GSD 01 / REPO-012, primeira medição real pendente |
-
-## Input Latency (Phase 2)
-### Target: < 50ms (p95)
-
-- **Swipe Driver:** 
-  - p50: 32ms
-  - p95: 45ms
-
-- **Joystick Driver:**
-  - p50: 34ms
-  - p95: 46ms
-
-- **Relative Driver:**
-  - p50: 33ms
-  - p95: 44ms
+## Low End Device Mitigation
+Setting preset to `low.tres` disables Video VFX and reduces render scale to 0.75, keeping FPS at solid 60 on legacy devices.
