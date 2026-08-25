@@ -25,3 +25,20 @@ func step(delta: float) -> void:
 	# 8. events
 	
 	clock.advance()
+
+var ai_scheduler: AIScheduler
+var runners: Array[Runner] = []
+
+func setup_match(mode_config: Resource) -> void:
+	ai_scheduler = AIScheduler.new()
+	add_child(ai_scheduler)
+	
+	var bot_count = mode_config.get_meta("bot_count", 0)
+	for i in range(bot_count):
+		var r = Runner.new(i + 1, Vector2(100 + i*50, 100), Vector2.UP)
+		runners.append(r)
+		
+		# Load archetype based on config
+		var profile = BotProfile.new() # Default for now
+		var brain = BotBrain.new(profile)
+		ai_scheduler.register_bot(r, brain)

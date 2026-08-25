@@ -1,0 +1,7 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://mode_classic"]
+
+[resource]
+resource_name = "Classic Mode"
+metadata/bot_count = 5
+metadata/bot_archetypes = ["grazer", "raider", "hunter", "warden", "rookie"]
+metadata/match_duration_sec = 180
