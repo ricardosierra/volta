@@ -1,22 +1,20 @@
 class_name TerritoryRenderer
-extends Sprite2D
+extends Node2D
 
-var grid: TerritoryGrid
-var image: Image
-var tex: ImageTexture
+var arena: ArenaDefinition
 
-func setup(g: TerritoryGrid) -> void:
-	grid = g
-	image = Image.create(grid.width, grid.height, false, Image.FORMAT_L8)
-	image.fill(Color(254.0/255.0, 0, 0)) # Neutral
-	tex = ImageTexture.create_from_image(image)
-	texture = tex
+func set_arena(a: ArenaDefinition) -> void:
+	arena = a
+	queue_redraw()
 
-func update_dirty_rect(rect: Rect2i) -> void:
-	# Convert owner bytes to image grayscale
-	for y in range(rect.position.y, rect.end.y):
-		for x in range(rect.position.x, rect.end.x):
-			var owner_id = grid.owner_of(x, y)
-			image.set_pixel(x, y, Color(owner_id/255.0, 0, 0, 1.0))
-			
-	tex.update(image)
+func _draw() -> void:
+	if not arena:
+		return
+		
+	# Draw blocks
+	for r in arena.blocked_rects:
+		draw_rect(r, Color(0.2, 0.2, 0.2, 0.8))
+		
+	# Draw hazards
+	for r in arena.hazard_rects:
+		draw_rect(r, Color(1.0, 0.0, 0.0, 0.5))
