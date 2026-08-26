@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ArenaDefinition" load_steps=2 format=3]
+[ext_resource type="Script" path="res://src/arena/arena_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "archipelago"
+name = "Archipelago"
+spawn_points = [Vector2(200, 200), Vector2(800, 200), Vector2(200, 1600), Vector2(800, 1600)]
+blocked_rects = [Rect2(400, 0, 200, 1920)] # A massive vertical blocker
+hazard_rects = []
