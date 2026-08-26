@@ -1,0 +1,15 @@
+name: Godot CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Godot
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.2.1
+      - name: Run Tests & Benchmarks
+        run: godot --headless --script apps/mobile/tools/dev/simulate.gd
