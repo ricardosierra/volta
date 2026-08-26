@@ -33,7 +33,7 @@ de descoberta.
 - [x] **Phase 20: Accessibility & Device Compatibility** — matriz de aparelhos, a11y (fecha Beta) (completed 2026-08-26)
 - [x] **Phase 21: Android Release** — AAB assinado, ícones, permissões, Data Safety, loja (completed 2026-08-26)
 - [x] **Phase 22: iOS Release** — Xcode, assinatura, Privacy Label, TestFlight, loja (completed 2026-08-26)
-- [ ] **Phase 23: Production Readiness** — QA, regressão, migração de save, rollback
+- [x] **Phase 23: Production Readiness** — QA, regressão, migração de save, rollback (completed 2026-08-26)
 - [ ] **Phase 24: Launch** — versão, changelog, tag, rollout gradual, monitoramento
 - [ ] **Phase 25: Post Launch** — balanceamento por dados, monetização, temporadas, conteúdo
 
