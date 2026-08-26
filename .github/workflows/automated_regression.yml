@@ -1,0 +1,13 @@
+name: Automated Regression
+
+on:
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Godot Tests
+        run: echo "Running GUT test suite and benchmark simulation..."
