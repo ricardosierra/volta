@@ -26,3 +26,4 @@ Route::middleware('throttle:60,1')->group(function () {
     Route::get('/challenges/daily', [ChallengeController::class, 'daily']);
     Route::post('/challenges/{id}/claim', [ChallengeController::class, 'claim']);
 });
+Route::post('/telemetry', [App\Http\Controllers\TelemetryController::class, 'store'])->middleware('throttle:30,1');
