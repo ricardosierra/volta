@@ -34,7 +34,7 @@ de descoberta.
 - [x] **Phase 21: Android Release** — AAB assinado, ícones, permissões, Data Safety, loja (completed 2026-08-26)
 - [x] **Phase 22: iOS Release** — Xcode, assinatura, Privacy Label, TestFlight, loja (completed 2026-08-26)
 - [x] **Phase 23: Production Readiness** — QA, regressão, migração de save, rollback (completed 2026-08-26)
-- [ ] **Phase 24: Launch** — versão, changelog, tag, rollout gradual, monitoramento
+- [x] **Phase 24: Launch** — versão, changelog, tag, rollout gradual, monitoramento (completed 2026-08-26)
 - [ ] **Phase 25: Post Launch** — balanceamento por dados, monetização, temporadas, conteúdo
 
 ## Phase Details
