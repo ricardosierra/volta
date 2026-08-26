@@ -30,7 +30,7 @@ de descoberta.
 - [x] **Phase 17: Multiplayer Architecture** — servidor autoritativo headless (protótipo medido) (completed 2026-08-26)
 - [x] **Phase 18: Analytics & Telemetry** — eventos, crash reporting, métricas de performance (completed 2026-08-26)
 - [x] **Phase 19: Optimization** — profiling, orçamentos, memória, carregamento, bateria (completed 2026-08-26)
-- [ ] **Phase 20: Accessibility & Device Compatibility** — matriz de aparelhos, a11y (fecha Beta)
+- [x] **Phase 20: Accessibility & Device Compatibility** — matriz de aparelhos, a11y (fecha Beta) (completed 2026-08-26)
 - [ ] **Phase 21: Android Release** — AAB assinado, ícones, permissões, Data Safety, loja
 - [ ] **Phase 22: iOS Release** — Xcode, assinatura, Privacy Label, TestFlight, loja
 - [ ] **Phase 23: Production Readiness** — QA, regressão, migração de save, rollback
