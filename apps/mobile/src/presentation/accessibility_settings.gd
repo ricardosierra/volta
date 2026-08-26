@@ -5,3 +5,6 @@ extends Resource
 @export var reduce_flashes: bool = false
 @export var reduce_loud_sounds: bool = false
 @export var high_contrast_mode: bool = false
+	
+var minimal_hud: bool = false
+var hold_to_move: bool = false
