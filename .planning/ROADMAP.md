@@ -23,7 +23,7 @@ de descoberta.
 - [x] **Phase 10: Progression** — perfil, XP, ranks, estatísticas, conquistas, desafios (completed 2026-08-25)
 - [x] **Phase 11: Cosmetics** — skins, Arc styles, temas, efeitos de Seal, desbloqueio (completed 2026-08-26)
 - [x] **Phase 12: Additional Game Modes** — Time Attack, Survival, Domination, Endless (completed 2026-08-26)
-- [ ] **Phase 13: Maps & Arena Variations** — Archipelago, Rift, Crossroads, Halo
+- [x] **Phase 13: Maps & Arena Variations** — Archipelago, Rift, Crossroads, Halo (completed 2026-08-26)
 - [ ] **Phase 14: Power-ups** — os 6 power-ups com contra-jogo (fecha Alpha)
 - [ ] **Phase 15: Backend Foundation** — Laravel, auth, score validado, leaderboard, cloud save
 - [ ] **Phase 16: Online Services** — repositórios remotos, fila offline, leaderboard, cloud save
