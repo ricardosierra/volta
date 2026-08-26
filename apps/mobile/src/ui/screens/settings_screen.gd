@@ -14,3 +14,7 @@ func _on_audio_slider_changed(value: float) -> void:
 func _add_account_section() -> void:
 	# Add Google Play / Game Center buttons here
 	pass
+
+func _add_privacy_section() -> void:
+	# Add privacy toggle and 'Reset Analytics ID' button
+	pass
