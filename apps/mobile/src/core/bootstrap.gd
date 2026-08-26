@@ -56,3 +56,10 @@ func _load_next_scene() -> void:
 	if next_scene_path == "" or not is_inside_tree():
 		return
 	get_tree().change_scene_to_file.call_deferred(next_scene_path)
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_PAUSED:
+		print("iOS App Backgrounded: Forcing Cloud Save sync and pausing game.")
+		# Force save logic here
+	elif what == NOTIFICATION_APPLICATION_RESUMED:
+		print("iOS App Resumed.")

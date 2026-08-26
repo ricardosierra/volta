@@ -13,3 +13,9 @@ func play_break() -> void:
 
 func play_backwash() -> void:
 	pass
+
+func _ready() -> void:
+	# Configure AudioServer for iOS interruptions
+	# In Godot 4, iOS audio routing handles this largely automatically
+	# but we can subscribe to changes if needed.
+	pass
