@@ -68,3 +68,14 @@ cenas de debug, presença de todos os ícones, tamanho do bundle abaixo do teto.
 Ícone 512×512, feature graphic 1024×500, ≥ 4 screenshots por tamanho de tela, vídeo opcional,
 descrição curta e longa (en + pt-BR), política de privacidade publicada, formulário de Data
 Safety, classificação etária e declaração de anúncios (a partir de GSD 25).
+
+## Adaptive Icons
+- Foreground: Transparent PNG (432x432)
+- Background: Solid Color `#0D0D14`
+- Rendered safely inside the 72dp mask.
+
+## Explicit Permissions
+- `INTERNET`: Required for backend API and Multiplayer telemetry.
+- `VIBRATE`: Required for haptic feedback.
+- **NO** external storage.
+- **NO** precise location.

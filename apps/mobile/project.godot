@@ -31,3 +31,10 @@ common/max_physics_steps_per_frame=4
 
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
+
+[application]
+config/icon="res://assets/raw/sprites/icon_play.jpg"
+config/macos_native_icon="res://assets/raw/sprites/icon_play.jpg"
+config/windows_native_icon="res://assets/raw/sprites/icon_play.jpg"
+config/android_adaptive_icon="res://assets/raw/sprites/icon_play.jpg"
+config/android_adaptive_icon_background="res://assets/raw/sprites/icon_play.jpg"
