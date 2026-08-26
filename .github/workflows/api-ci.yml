@@ -1,0 +1,39 @@
+name: API CI
+
+on:
+  push:
+    paths:
+      - 'services/api/**'
+  pull_request:
+    paths:
+      - 'services/api/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: volta
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: Install Dependencies
+        run: cd services/api && composer install --prefer-dist --no-progress
+      - name: Run Tests
+        run: cd services/api && ./vendor/bin/pest
+      - name: Static Analysis
+        run: cd services/api && ./vendor/bin/phpstan analyse --level 6 app
