@@ -9,7 +9,7 @@
 - [ ] Season pass cosmético (GSD 25)
 - [ ] Arenas com modificadores dinâmicos: Moving Walls, Portal Arena (GSD 13)
 
-## [Unreleased](https://github.com/ricardosierra/volta/compare/main...develop)
+## [v0.1.0] - 2026-08-26(https://github.com/ricardosierra/volta/compare/main...develop)
 
 ### ✨ Novidades
 

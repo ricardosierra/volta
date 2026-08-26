@@ -41,3 +41,6 @@ config/android_adaptive_icon_background="res://assets/raw/sprites/icon_play.jpg"
 
 [application]
 config/ios_icon="res://assets/raw/sprites/icon_play.jpg"
+
+[application]
+config/version="v0.1.0"
