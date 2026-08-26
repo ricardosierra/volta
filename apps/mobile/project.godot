@@ -38,3 +38,6 @@ config/macos_native_icon="res://assets/raw/sprites/icon_play.jpg"
 config/windows_native_icon="res://assets/raw/sprites/icon_play.jpg"
 config/android_adaptive_icon="res://assets/raw/sprites/icon_play.jpg"
 config/android_adaptive_icon_background="res://assets/raw/sprites/icon_play.jpg"
+
+[application]
+config/ios_icon="res://assets/raw/sprites/icon_play.jpg"
