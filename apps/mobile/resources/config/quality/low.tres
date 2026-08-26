@@ -1,0 +1,8 @@
+[gd_resource type="Resource" format=3 uid="uid://quality_low"]
+
+[resource]
+resource_name = "Quality Low"
+metadata/enable_particles = false
+metadata/enable_vfx_videos = false
+metadata/shader_complexity = 0
+metadata/resolution_scale = 0.75

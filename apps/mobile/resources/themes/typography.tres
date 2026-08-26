@@ -1,0 +1,10 @@
+[gd_resource type="SystemFont" format=3 uid="uid://typo"]
+
+[resource]
+font_names = PackedStringArray("Helvetica Neue", "Arial")
+subpixel_positioning = 0
+multichannel_signed_distance_field = true
+msdf_pixel_range = 16
+msdf_size = 48
+allow_system_fallback = false
+force_autohinter = true

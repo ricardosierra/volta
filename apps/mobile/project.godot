@@ -8,6 +8,8 @@ config/features=PackedStringArray("4.3", "Mobile")
 run/main_scene="res://scenes/boot.tscn"
 
 [autoload]
+Bootstrap="*res://src/core/bootstrap.gd"
+
 
 Log="*res://src/core/log/log.gd"
 Bootstrap="*res://src/core/bootstrap.gd"

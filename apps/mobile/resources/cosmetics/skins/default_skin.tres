@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CosmeticItem" load_steps=2 format=3 uid="uid://skin_default"]
+
+[ext_resource type="Script" path="res://src/progression/cosmetics/cosmetic_item.gd" id="1_cosmetic"]
+
+[resource]
+script = ExtResource("1_cosmetic")
+id = "skin_default"
+type = 0
+rarity = 0
+name = "Default Runner"
+description = "The classic neon runner."
+price_sparks = 0
+price_prisms = 0
+texture_path = "res://assets/raw/sprites/runner.jpg"
+shader_path = "res://assets/shaders/runner.gdshader"
+vfx_path = ""

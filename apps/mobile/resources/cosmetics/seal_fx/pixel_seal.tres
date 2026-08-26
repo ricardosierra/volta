@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CosmeticItem" load_steps=2 format=3]
+[ext_resource type="Script" path="res://src/progression/cosmetics/cosmetic_item.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "seal_pixel"
+type = 2
+rarity = 2
+name = "Pixelated Capture"
+price_sparks = 4000
+vfx_path = "res://assets/raw/vfx/seal.mp4"

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="BotProfile" load_steps=2 format=3 uid="uid://bot_grazer"]
+
+[ext_resource type="Script" path="res://src/ai/bot_profile.gd" id="1_profile"]
+
+[resource]
+script = ExtResource("1_profile")
+difficulty_level = "skilled"
+reaction_delay_ms = 250.0
+error_rate = 0.15
+weight_expand_frontier = 2.0
+weight_expand_deep = 0.5
+weight_steal_from = 0.1
+weight_intercept = 0.1
+weight_flee_home = 2.0
+weight_seal_now = 1.0
+weight_patrol_border = 0.5

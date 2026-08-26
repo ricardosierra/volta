@@ -1,0 +1,8 @@
+[gd_resource type="Resource" format=3 uid="uid://quality_high"]
+
+[resource]
+resource_name = "Quality High"
+metadata/enable_particles = true
+metadata/enable_vfx_videos = true
+metadata/shader_complexity = 2
+metadata/resolution_scale = 1.0

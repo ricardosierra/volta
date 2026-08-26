@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="BotProfile" load_steps=2 format=3 uid="uid://bot_rookie"]
+
+[ext_resource type="Script" path="res://src/ai/bot_profile.gd" id="1_profile"]
+
+[resource]
+script = ExtResource("1_profile")
+difficulty_level = "rookie"
+reaction_delay_ms = 450.0
+error_rate = 0.35
+weight_expand_frontier = 1.0
+weight_expand_deep = 0.2
+weight_steal_from = 0.1
+weight_intercept = 0.0
+weight_flee_home = 1.0
+weight_seal_now = 0.8
+weight_patrol_border = 0.5
