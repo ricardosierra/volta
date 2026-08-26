@@ -46,3 +46,14 @@ func decide(ctx: Dictionary, delta: float) -> Vector2:
 		return current_action.direction(ctx)
 		
 	return Vector2.ZERO
+
+var cached_decision: String = ""
+var decision_timer: float = 0.0
+
+func _process_optimized(delta: float) -> void:
+	decision_timer -= delta
+	if decision_timer <= 0:
+		cached_decision = "new_action"
+		decision_timer = 0.25 # Only think 4 times a second
+	
+	# Execute cached decision
