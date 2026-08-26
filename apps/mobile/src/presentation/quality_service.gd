@@ -14,3 +14,8 @@ func apply_preset(preset: Resource) -> void:
 func can_play_vfx() -> bool:
 	if not current_preset: return true
 	return current_preset.get_meta("enable_vfx_videos", true)
+
+func set_refresh_rate(limit: int) -> void:
+	# 0 = unlocked (V-Sync), 60, 90, 120
+	Engine.max_fps = limit
+	# The physics simulation stays at 60Hz via MatchDirector / PhysicsTicks
