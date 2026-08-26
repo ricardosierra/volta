@@ -43,3 +43,8 @@ func reclaim(instance: Node) -> void:
 	_inactive.append(instance)
 	if instance.has_method("hide"):
 		instance.hide()
+
+func _apply_quality_limits(preset: int) -> void:
+	if preset == 0: # Low
+		# Restrict max active particles
+		pass
