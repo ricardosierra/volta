@@ -53,3 +53,11 @@ Plataforma secundária no cronograma, **não** na qualidade.
 Ícone 1024×1024 sem canal alfa, screenshots 6,7" e 5,5" (obrigatórios) + iPad se suportado,
 texto promocional, descrição, palavras-chave, política de privacidade, faixa etária,
 build no TestFlight validado antes de submeter.
+
+## Provisioning
+- Requires an Apple Developer Account.
+- Certificates and Provisioning Profiles should be loaded onto the CI runner (macOS).
+
+## Scripts
+- `build_ios.sh`: Exports the Xcode project from Godot.
+- `archive_ios.sh`: Runs `xcodebuild` to archive and export the IPA.
