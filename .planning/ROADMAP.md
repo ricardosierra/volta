@@ -24,7 +24,7 @@ de descoberta.
 - [x] **Phase 11: Cosmetics** — skins, Arc styles, temas, efeitos de Seal, desbloqueio (completed 2026-08-26)
 - [x] **Phase 12: Additional Game Modes** — Time Attack, Survival, Domination, Endless (completed 2026-08-26)
 - [x] **Phase 13: Maps & Arena Variations** — Archipelago, Rift, Crossroads, Halo (completed 2026-08-26)
-- [ ] **Phase 14: Power-ups** — os 6 power-ups com contra-jogo (fecha Alpha)
+- [x] **Phase 14: Power-ups** — os 6 power-ups com contra-jogo (fecha Alpha) (completed 2026-08-26)
 - [ ] **Phase 15: Backend Foundation** — Laravel, auth, score validado, leaderboard, cloud save
 - [ ] **Phase 16: Online Services** — repositórios remotos, fila offline, leaderboard, cloud save
 - [ ] **Phase 17: Multiplayer Architecture** — servidor autoritativo headless (protótipo medido)
