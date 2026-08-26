@@ -55,3 +55,16 @@
 5. Post-mortem sem culpados, registrado em `docs/backend/incidents/`.
 
 Contato de segurança e política de divulgação em [`../../SECURITY.md`](../../SECURITY.md).
+
+## API Security Audit
+
+## Rate Limits
+- `/telemetry`: 30 req/min.
+- `/matches`: 10 req/min.
+- Enforced via Laravel middleware.
+
+## Payload
+- Match payload includes an HMAC signature utilizing a shared app secret.
+- No direct SQL queries; all data passes through Eloquent ORM.
+
+**Status**: Secure for V1.

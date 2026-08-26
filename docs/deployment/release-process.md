@@ -84,3 +84,14 @@ antes do primeiro lançamento — descobrir como parar durante o incêndio é ta
 - Monitorar 72 h: crash-free, ANR, retenção D1, avaliações, funil de onboarding.
 - Responder avaliações da loja na primeira semana.
 - Registrar aprendizados em `.gsd/phases/25-post-launch/`.
+
+## Deployment Playbook
+
+## Phased Rollout
+- Android: 10% -> 50% -> 100% over 7 days.
+- iOS: 7-day phased release.
+
+## Emergency Halts
+1. Pause rollout in Google Play / App Store Connect immediately.
+2. Toggle the `kill_switch_enabled` flag via Firebase Remote Config (if implemented later) or hardcode API rejection.
+3. Push hotfix branch, cut new version.
