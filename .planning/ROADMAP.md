@@ -27,7 +27,7 @@ de descoberta.
 - [x] **Phase 14: Power-ups** — os 6 power-ups com contra-jogo (fecha Alpha) (completed 2026-08-26)
 - [x] **Phase 15: Backend Foundation** — Laravel, auth, score validado, leaderboard, cloud save (completed 2026-08-26)
 - [x] **Phase 16: Online Services** — repositórios remotos, fila offline, leaderboard, cloud save (completed 2026-08-26)
-- [ ] **Phase 17: Multiplayer Architecture** — servidor autoritativo headless (protótipo medido)
+- [x] **Phase 17: Multiplayer Architecture** — servidor autoritativo headless (protótipo medido) (completed 2026-08-26)
 - [ ] **Phase 18: Analytics & Telemetry** — eventos, crash reporting, métricas de performance
 - [ ] **Phase 19: Optimization** — profiling, orçamentos, memória, carregamento, bateria
 - [ ] **Phase 20: Accessibility & Device Compatibility** — matriz de aparelhos, a11y (fecha Beta)
