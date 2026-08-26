@@ -1,7 +1,13 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://mode_classic"]
-
+[gd_resource type="Resource" script_class="MatchRules" load_steps=2 format=3]
+[ext_resource type="Script" path="res://src/gameplay/modes/match_rules.gd" id="1"]
 [resource]
-resource_name = "Classic Mode"
-metadata/bot_count = 5
-metadata/bot_archetypes = ["grazer", "raider", "hunter", "warden", "rookie"]
-metadata/match_duration_sec = 180
+script = ExtResource("1")
+id = "classic"
+name = "Classic"
+time_limit_sec = 180.0
+bot_count = 3
+player_respawn = true
+respawn_delay_sec = 2.0
+win_condition = 0
+domination_target = 0.5
+rules = []
