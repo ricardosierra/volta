@@ -10,3 +10,7 @@ func on_pushed(args: Dictionary = {}) -> void:
 func _on_audio_slider_changed(value: float) -> void:
 	# Update AudioServer and save
 	pass
+
+func _add_account_section() -> void:
+	# Add Google Play / Game Center buttons here
+	pass
