@@ -1,20 +1,17 @@
 class_name BotSteering
 extends RefCounted
 
-static func steer(runner: Runner, desired_dir: Vector2, grid: TerritoryGrid) -> Vector2:
-	# Local avoidance logic
-	var cx = int(floor(runner.state.position.x / grid.cell_size))
-	var cy = int(floor(runner.state.position.y / grid.cell_size))
+func get_desired_velocity(current_pos: Vector2, target_pos: Vector2, speed: float, arena: ArenaDefinition) -> Vector2:
+	var desired = (target_pos - current_pos).normalized() * speed
 	
-	# Very basic avoidance
-	var safe_dir = desired_dir
-	var lookahead_dist = 2
-	
-	var tx = cx + int(round(desired_dir.x * lookahead_dist))
-	var ty = cy + int(round(desired_dir.y * lookahead_dist))
-	
-	if not grid.is_valid(tx, ty) or grid.is_blocked(tx, ty):
-		# Steer away from wall
-		safe_dir = desired_dir.rotated(PI/4) # Attempt 45 deg deflection
+	if not arena:
+		return desired
 		
-	return safe_dir.normalized()
+	# Raycast logically to detect if blocked
+	var test_pos = current_pos + desired.normalized() * 50.0
+	if arena.is_blocked(test_pos) or arena.is_hazard(test_pos):
+		# Steer away (simple slide)
+		var avoid = test_pos.direction_to(current_pos)
+		desired = (desired + avoid * speed).normalized() * speed
+		
+	return desired
