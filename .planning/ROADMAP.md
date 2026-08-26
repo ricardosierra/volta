@@ -35,7 +35,7 @@ de descoberta.
 - [x] **Phase 22: iOS Release** — Xcode, assinatura, Privacy Label, TestFlight, loja (completed 2026-08-26)
 - [x] **Phase 23: Production Readiness** — QA, regressão, migração de save, rollback (completed 2026-08-26)
 - [x] **Phase 24: Launch** — versão, changelog, tag, rollout gradual, monitoramento (completed 2026-08-26)
-- [ ] **Phase 25: Post Launch** — balanceamento por dados, monetização, temporadas, conteúdo
+- [x] **Phase 25: Post Launch** — balanceamento por dados, monetização, temporadas, conteúdo (completed 2026-08-26)
 
 ## Phase Details
 
