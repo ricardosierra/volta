@@ -21,7 +21,7 @@ de descoberta.
 - [ ] **Phase 8: Art Direction** — paletas, shaders, zero placeholder, presets de qualidade
 - [ ] **Phase 9: Game Feel & Polish** — VFX, câmera, háptico, SFX, música adaptativa
 - [x] **Phase 10: Progression** — perfil, XP, ranks, estatísticas, conquistas, desafios (completed 2026-08-25)
-- [ ] **Phase 11: Cosmetics** — skins, Arc styles, temas, efeitos de Seal, desbloqueio
+- [x] **Phase 11: Cosmetics** — skins, Arc styles, temas, efeitos de Seal, desbloqueio (completed 2026-08-26)
 - [ ] **Phase 12: Additional Game Modes** — Time Attack, Survival, Domination, Endless
 - [ ] **Phase 13: Maps & Arena Variations** — Archipelago, Rift, Crossroads, Halo
 - [ ] **Phase 14: Power-ups** — os 6 power-ups com contra-jogo (fecha Alpha)
