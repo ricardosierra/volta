@@ -22,7 +22,7 @@ de descoberta.
 - [ ] **Phase 9: Game Feel & Polish** — VFX, câmera, háptico, SFX, música adaptativa
 - [x] **Phase 10: Progression** — perfil, XP, ranks, estatísticas, conquistas, desafios (completed 2026-08-25)
 - [x] **Phase 11: Cosmetics** — skins, Arc styles, temas, efeitos de Seal, desbloqueio (completed 2026-08-26)
-- [ ] **Phase 12: Additional Game Modes** — Time Attack, Survival, Domination, Endless
+- [x] **Phase 12: Additional Game Modes** — Time Attack, Survival, Domination, Endless (completed 2026-08-26)
 - [ ] **Phase 13: Maps & Arena Variations** — Archipelago, Rift, Crossroads, Halo
 - [ ] **Phase 14: Power-ups** — os 6 power-ups com contra-jogo (fecha Alpha)
 - [ ] **Phase 15: Backend Foundation** — Laravel, auth, score validado, leaderboard, cloud save
