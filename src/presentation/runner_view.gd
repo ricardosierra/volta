@@ -1,22 +1,22 @@
 class_name RunnerView
 extends Node2D
 
-@export var radius: float = 16.0
-var interp_visual: InterpolatedVisual
+var loadout: Loadout
+var sprite: Sprite2D
 
 func _ready() -> void:
-	interp_visual = InterpolatedVisual.new()
-	add_child(interp_visual)
+	sprite = Sprite2D.new()
+	add_child(sprite)
 
-func update_from_sim(pos: Vector2, rot: float) -> void:
-	if interp_visual:
-		interp_visual.update_simulation_state(pos, rot)
-		queue_redraw()
-
-func _draw() -> void:
-	# PLACEHOLDER-ART-001 / Replacement: GSD 08
-	# Draw relative to the interpolated visual's position
-	if interp_visual:
-		draw_set_transform(interp_visual.position, interp_visual.rotation, Vector2.ONE)
-		draw_circle(Vector2.ZERO, radius, Color.WHITE)
-		draw_line(Vector2.ZERO, Vector2.RIGHT * radius, Color.RED, 2.0)
+func apply_cosmetics(l: Loadout, catalog: Catalog) -> void:
+	loadout = l
+	var skin_id = loadout.get_equipped(CosmeticItem.Type.SKIN)
+	var item = catalog.get_item(skin_id)
+	
+	if item and item.texture_path:
+		sprite.texture = load(item.texture_path)
+		
+	# Apply additive material logic based on item shader_path
+	var mat = ShaderMaterial.new()
+	mat.shader = load(item.shader_path if item.shader_path else "res://assets/shaders/runner.gdshader")
+	sprite.material = mat

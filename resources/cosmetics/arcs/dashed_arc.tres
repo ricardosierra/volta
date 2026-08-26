@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="CosmeticItem" load_steps=2 format=3]
+[ext_resource type="Script" path="res://src/progression/cosmetics/cosmetic_item.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "arc_dashed"
+type = 1
+rarity = 1
+name = "Dashed Arc"
+price_sparks = 1000
