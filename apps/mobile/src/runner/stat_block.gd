@@ -1,6 +1,8 @@
 class_name StatBlock
 extends RefCounted
 
+var speed_multiplier: float = 1.0
+
 var base_speed: float = 300.0
 var base_turn_rate: float = 180.0 # Degrees per second
 
