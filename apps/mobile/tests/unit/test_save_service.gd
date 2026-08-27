@@ -137,6 +137,9 @@ func test_corrupted_json_falls_back_to_backup() -> void:
 
 	assert_eq(result, SaveService.SaveResult.RESTORED_FROM_BACKUP)
 	assert_eq(reloaded.data.player.get("nickname"), "Backup", "deveria restaurar do profile.json.bak válido")
+	# O arquivo foi corrompido de proposito: o parser reclamar e o comportamento
+	# esperado, e declarar isso impede o GUT de reprovar o teste pelo proprio cenario.
+	assert_engine_error_count(2, "ler o profile.json corrompido reclama no console")
 
 
 func test_corrupted_backup_recreates_without_deleting() -> void:
@@ -151,6 +154,7 @@ func test_corrupted_backup_recreates_without_deleting() -> void:
 	var reloaded := FileSaveService.new(_test_dir)
 	var result := reloaded.load_profile()
 
+	assert_engine_error_count(2, "ler perfil e backup corrompidos reclama no console")
 	assert_eq(result, SaveService.SaveResult.RECREATED)
 	# load_profile() em RECREATED grava um profile.json novo (perfil vazio) na mesma posição —
 	# profile.json volta a existir por design, mas com conteúdo fresco, não o corrompido. O que
@@ -217,6 +221,7 @@ func test_settings_survive_profile_corruption() -> void:
 	var profile_result := service.load_profile()
 	var settings_result := service.load_settings()
 
+	assert_engine_error_count(2, "ler perfil e backup corrompidos reclama no console")
 	assert_eq(profile_result, SaveService.SaveResult.RECREATED, "profile.json e o backup corrompidos deveriam recriar o perfil")
 	assert_eq(settings_result, SaveService.SaveResult.OK, "settings.json não deveria ter sido tocado pela corrupção do perfil")
 	assert_eq(service.data.settings.get("locale"), "pt-BR", "settings deveriam sobreviver intactas à corrupção total do perfil")

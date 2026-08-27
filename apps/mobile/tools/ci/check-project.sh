@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
 # Verifica que apps/mobile abre headless sem erro nem warning de script.
-# Godot 4.3: `--check-only` sem `--script` NÃO termina e `--quit` retorna 0 mesmo com erro,
+# `--check-only` sem `--script` NAO termina e `--quit` retorna 0 mesmo com erro,
 # por isso rodamos --import + --quit e inspecionamos a saída.
 set -uo pipefail
 cd "$(dirname "$0")/../.." || exit 1
 GODOT_BIN="${GODOT_BIN:-}"
 if [ -z "$GODOT_BIN" ]; then
-  if command -v godot >/dev/null 2>&1; then GODOT_BIN=godot
-  elif [ -x "/Applications/Godot_CLI.app/Contents/MacOS/Godot" ]; then GODOT_BIN="/Applications/Godot_CLI.app/Contents/MacOS/Godot"
+  # Local canonico da engine nesta maquina e na CI (o mesmo caminho que o
+  # workflow monta). O fallback antigo apontava para /Applications/Godot_CLI.app,
+  # que era um Godot 4.3: o projeto declara 4.7 e rodar na 4.3 nao e "quase
+  # certo", e outra engine.
+  if [ -x "$HOME/.local/share/godot-bin/godot" ]; then GODOT_BIN="$HOME/.local/share/godot-bin/godot"
+  elif command -v godot >/dev/null 2>&1; then GODOT_BIN=godot
   else echo "ERRO: binário do Godot não encontrado. Defina GODOT_BIN." >&2; exit 1
   fi
 fi

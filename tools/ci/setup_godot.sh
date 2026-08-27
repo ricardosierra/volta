@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Instala o editor Godot (headless) + export templates da versão dada, com cache local.
-# Uso: ./tools/ci/setup_godot.sh 4.3.stable
+# Uso: ./tools/ci/setup_godot.sh 4.7.2.stable   (normalmente: $(cat .godot-version))
 set -uo pipefail
 
-VERSION="${1:?uso: setup_godot.sh <versao, ex. 4.3.stable>}"
-# Tag e nomes de asset no GitHub usam hífen (4.3-stable); a pasta de export templates que
-# o Godot procura usa ponto (4.3.stable). Nunca misture os dois.
+VERSION="${1:?uso: setup_godot.sh <versao, ex. 4.7.2.stable>}"
+# Tag e nomes de asset no GitHub usam hifen (4.7.2-stable); a pasta de export templates
+# que o Godot procura usa ponto (4.7.2.stable). Nunca misture os dois.
 TAG="${VERSION/.stable/-stable}"
 CACHE_DIR="${GODOT_CACHE_DIR:-$HOME/.cache/godot-ci/$VERSION}"
 BIN_PATH="$CACHE_DIR/Godot_v${TAG}_linux.x86_64"

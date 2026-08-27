@@ -20,6 +20,10 @@ func test_resolve_missing_returns_null_with_readable_error() -> void:
 
 	assert_null(result)
 	assert_eq(registry.get_last_error(), "service_not_found:missing")
+	# O push_error faz parte do contrato: quem chama resolve() errado tem de ver
+	# o motivo no console, nao so um null. Declarar aqui tambem impede que o GUT
+	# 9.7+ reprove o teste pelo erro que ele mesmo provoca de proposito.
+	assert_push_error("não encontrado", "resolve() de serviço ausente avisa no console")
 
 
 func test_register_duplicate_keeps_original() -> void:
@@ -33,3 +37,4 @@ func test_register_duplicate_keeps_original() -> void:
 	assert_false(second_registered, "segundo register() do mesmo nome deveria falhar")
 	assert_eq(registry.resolve("x"), first, "resolve() deveria continuar retornando a instância original")
 	assert_eq(registry.get_last_error(), "service_already_registered:x")
+	assert_push_error("já registrado", "registro duplicado avisa no console")
