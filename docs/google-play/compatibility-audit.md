@@ -15,7 +15,7 @@
 
 ### 1.1 Engine e Build
 
-- **Engine real: Godot 4.7.2** (`apps/mobile/.godot-version` → `4.7.2.stable`;
+- **Engine real: Godot 4.7.2** (`.godot-version` na raiz do repositório → `4.7.2.stable`;
   `apps/mobile/project.godot` → `config/features=PackedStringArray("4.7", "Mobile")`). Isto é
   uma mudança **recente** — commit `477fd96` ("fix(engine): volta passa a rodar na 4.7.2, a
   mesma dos outros projetos", 2026-08-27) migrou de 4.3 para 4.7.2 porque os scripts de
