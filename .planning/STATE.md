@@ -4,16 +4,16 @@ milestone: v0.1
 milestone_name: milestone
 current_phase: 26
 current_phase_name: Google Play Discovery - Auditoria de Gamificacao e Sidekick
-current_plan: 1
+current_plan: 2
 status: in_progress
-stopped_at: "Completed 26-01-inventario-existente-PLAN.md (compatibility-audit.md secoes 1-6)"
-last_updated: "2026-08-31T20:40:00.000Z"
+stopped_at: "Completed 26-02-requisitos-google-PLAN.md (current-requirements.md 14 secoes)"
+last_updated: "2026-08-31T20:47:00.000Z"
 last_activity: 2026-08-31
 progress:
   total_phases: 38
   completed_phases: 25
   total_plans: 107
-  completed_plans: 105
+  completed_plans: 106
   percent: 66
 ---
 
@@ -31,7 +31,7 @@ See: .planning/PROJECT.md (updated 2026-08-24)
 Current Phase: 26
 Current Phase Name: Google Play Discovery - Auditoria de Gamificação e Sidekick
 Total Phases: 38
-Current Plan: 1
+Current Plan: 2
 Total Plans in Phase: 3
 Status: In progress
 Last Activity: 2026-08-31
@@ -42,9 +42,9 @@ Progress: [██████░░░░] 66%
 
 **Velocity:**
 
-- Total plans completed: 1
-- Average duration: 15min
-- Total execution time: 15min
+- Total plans completed: 2
+- Average duration: 35min
+- Total execution time: 70min
 
 **By Phase:**
 
@@ -62,6 +62,7 @@ Progress: [██████░░░░] 66%
 | Phase 01 P10 | 20min | 3 tasks | 8 files |
 | Phase 01 P11 | 15min | 2 tasks | 2 files |
 | Phase 26 P01 | 55min | 3 tasks | 1 files |
+| Phase 26 P02 | 50min | 3 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -101,6 +102,11 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 - [Phase 26-01]: regra de camadas e aplicada por grep textual na secao 7 de tools/ci/validate-repo.sh, nao por um tools/ci/check_layering.gd (nao existe, apesar de docs/architecture/overview.md cita-lo); nao existe nenhuma checagem de CI para "sem await no caminho de simulacao" — risco para I/O assincrono de SDK do Play Games
 - [Phase 26-01]: bug real pre-existente encontrado (nao corrigido, fora de escopo de auditoria): RemoteProfileRepository.load_profile() chama local_cache.load_profile(), metodo que nao existe em LocalProfileRepository (so tem get_profile())
 - [Phase 26-01]: QLT-06 (requisito do plano) NAO foi marcado completo em REQUIREMENTS.md — a fase 26 tem 3 planos e so o 01 terminou; QLT-06 cobre a fase inteira (26-38), sera fechado quando o ultimo plano relevante fechar, nao antes
+- [Phase 26-02]: WebSearch/WebFetch nao estavam disponiveis neste executor; pesquisa ao vivo feita via curl+pandoc contra developer.android.com/developers.google.com/play.google.com, mesma garantia de "nada de memoria" exigida pelo plano (cada linha com URL + "Consultado em: 2026-08-31")
+- [Phase 26-02]: achado critico — NAO existe "Quests API" nem "LiveOps API" do Google (4 URLs candidatas retornaram 404); Quests/Leagues/Social Challenges sao mecanicas server-side do Google construidas sobre Achievements API + Game Stats API + Play Games Rewards que o jogo ja envia — a Fase 33 precisa continuar usando o backend proprio de seasons/quests do VOLTA (season service da Fase 25), nao um SDK de quests que nao existe
+- [Phase 26-02]: achados de data: Game Stats UI publica ("You tab") so vira GA em setembro/2026 (hoje still beta/teste); Play Games Rewards so entra em vigor em 01/09/2026 (1 dia apos a pesquisa); Level Up tem rate card com rollout regional faseado a partir de 30/set/2026
+- [Phase 26-02]: Play Points e Play Pass confirmados invite-only/curated (allowlist e "express interest", respectivamente) — Fase 31/33 nao podem presumir acesso automatico; FAQ oficial de Play Pass tem informacao de disponibilidade regional aparentemente desatualizada, registrada como Nao confirmado
+- [Phase 26-02]: export Android do VOLTA usa gradle_build/use_gradle_build=false — nao ha build.gradle customizado hoje para adicionar dependencies Java de PGS v2/Recall/Play Integrity; pre-requisito tecnico transversal para o Plano 03 decidir
 
 ### Roadmap Evolution
 - Phase 26 added: Google Play Discovery - Auditoria de Gamificação e Sidekick
@@ -132,5 +138,5 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 ## Session Continuity
 
 Last session: 2026-08-31
-Stopped at: Completed 26-01-inventario-existente-PLAN.md; docs/google-play/compatibility-audit.md secoes 1-6 escritas; plano 02 (requisitos-google) e 03 (arquitetura-integracao) da Fase 26 seguem pendentes
-Resume file: .planning/phases/26-google-play-discovery-auditoria-de-gamifica-o-e-sidekick/26-01-SUMMARY.md
+Stopped at: Completed 26-02-requisitos-google-PLAN.md; docs/google-play/current-requirements.md com 14 secoes (13 superficies + resumo de disponibilidade) escrito; plano 03 (arquitetura-integracao) da Fase 26 segue pendente (depende de 01 e 02, ambos ja concluidos)
+Resume file: .planning/phases/26-google-play-discovery-auditoria-de-gamifica-o-e-sidekick/26-02-SUMMARY.md
