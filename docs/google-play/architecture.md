@@ -260,13 +260,9 @@ Tabela derivada dos goals de cada fase em `.planning/ROADMAP.md` ("### Phase 27"
 
 ---
 
-## Referências
-
-- [`docs/google-play/compatibility-audit.md`](./compatibility-audit.md) — estado real do
-  repositório (Plano 01), citado nas Seções 1, 2, 4 e 5 deste documento.
-- [`docs/google-play/current-requirements.md`](./current-requirements.md) — requisitos oficiais
-  vigentes (Plano 02), citado nas Seções 3, 4 e 5 deste documento.
-- `docs/architecture/overview.md` — regra de camadas e mecanismos de comunicação, validados na
-  Seção 2.
-- `apps/mobile/src/core/event_bus.gd` — implementação real do EventBus estendido por este
-  desenho.
+**Referências:** [`docs/google-play/compatibility-audit.md`](./compatibility-audit.md) (estado
+real do repositório, Plano 01, citado nas Seções 1, 2, 4 e 5 deste documento);
+[`docs/google-play/current-requirements.md`](./current-requirements.md) (requisitos oficiais
+vigentes, Plano 02, citado nas Seções 3, 4 e 5); `docs/architecture/overview.md` (regra de
+camadas e mecanismos de comunicação, validados na Seção 2); `apps/mobile/src/core/event_bus.gd`
+(implementação real do EventBus estendido por este desenho).
