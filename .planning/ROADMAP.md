@@ -445,7 +445,12 @@ Plans:
   2. O arquivo `docs/google-play/current-requirements.md` mapeia todos os requisitos oficiais vigentes para Sidekick e Level Up.
   3. A arquitetura de integração (Gameplay -> Domain Events -> Gamification Engine -> Integração Google) foi validada para o projeto.
   4. Nenhuma linha de código final foi alterada antes da auditoria completa.
-**Plans**: TBD
+**Plans:** 3 plans
+
+Plans:
+- [ ] 01-inventario-existente-PLAN.md — Auditoria do estado atual: arquitetura, Event Bus, loop de partida, gamificação já existente (Fases 10/11/14/18), backend/rede, Android/Play, débito técnico e riscos preliminares
+- [ ] 02-requisitos-google-PLAN.md — Pesquisa ao vivo dos requisitos oficiais vigentes do Google Play Games (PGS v2, Recall, Saved Games, Play Integrity, Achievements, Leaderboards, Game Stats, Play Points, Play Pass, Sidekick, Level Up, LiveOps/Quests, Rewards)
+- [ ] 03-arquitetura-integracao-PLAN.md — Arquitetura de integração Gameplay → Domain Events → Gamification Engine → Google validada, mapeamento fase-a-fase (27–38), registro de riscos consolidado e parecer go/no-go
 
 ### Phase 27: Gamification Foundation - Eventos de Domínio e Integração
 **Goal**: Criar o Event Bus de gameplay e a infraestrutura básica para receber a gamificação sem acoplamento forte.
