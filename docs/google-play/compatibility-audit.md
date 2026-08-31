@@ -331,3 +331,66 @@ não tem nenhum ponto de saída assíncrono; `step(delta)` e `_physics_process` 
 | `AnalyticsService` / `RemoteAnalytics` / `AnalyticsBridge` | `apps/mobile/src/platform/analytics/analytics_service.gd`, `apps/mobile/src/platform/analytics/remote_analytics.gd`, `apps/mobile/src/gameplay/analytics_bridge.gd` | Pipeline de telemetria reaproveitável para reportar Game Stats (Fase 30) | Nomes de evento reais (`match_started`/`match_ended`/`runner_eliminated`) divergem do catálogo v1 de `docs/product/analytics-plan.md` (`game_started`/`game_finished`/`player_eliminated`) — precisa reconciliar antes de usar como fonte única para Game Stats |
 | `ProfileRepository` / `LocalProfileRepository` / `RemoteProfileRepository` | `apps/mobile/src/progression/profile_repository.gd`, `apps/mobile/src/progression/local_profile_repository.gd`, `apps/mobile/src/progression/remote_profile_repository.gd` | Vínculo de `player_id` local com `play_games_player_id` (Fase 28) | Mesmo padrão Local/Remote; `Profile` não tem campo de conta Google hoje (ver Seção 2.1) |
 | `Wallet` / `UnlockService` / `Catalog` | `apps/mobile/src/progression/wallet.gd`, `apps/mobile/src/progression/cosmetics/unlock_service.gd`, `apps/mobile/src/progression/cosmetics/catalog.gd` | Rewards do Play Games (moeda/cosmético como recompensa de quest, Fase 31) | `Catalog.load_all()` é hoje um `pass` vazio (mock não rastreado em `.gsd/BACKLOG.md`) — carregamento real de catálogo é pré-requisito antes de conceder rewards por item |
+
+---
+
+## 4. Setup Android e Google Play Atual
+
+- **Package id real**: `com.sierratecnologia.volta` — confirmado em dois lugares que **batem
+  entre si**: `tools/ci/make_export_presets.sh` (`PACKAGE_NAME="${ANDROID_PACKAGE_NAME:-com.sierratecnologia.volta}"`)
+  e no `apps/mobile/export_presets.cfg` gerado (`package/unique_name="com.sierratecnologia.volta"`).
+  `export_presets.cfg` não é versionado (`.gitignore`), é sempre regenerado a partir de
+  `tools/ci/export_presets.template.cfg` por este script.
+- **`minSdk` 24 / `targetSdk` 34** — declarado em `docs/mobile/android.md` §Alvo (Android 7.0
+  mínimo; 34 é "exigência atual do Play; revisar antes de cada release"). Não há um arquivo de
+  build Gradle customizado versionado neste repositório para confirmar isso no nível de manifest
+  (o export do Godot para Android usa `gradle_build/use_gradle_build=false` no preset atual —
+  ver `apps/mobile/export_presets.cfg` — ou seja, hoje é o export "simples" do Godot, sem projeto
+  Gradle customizado exportado para o repo).
+- **`permissions/internet=false`** no preset de export atual (`apps/mobile/export_presets.cfg`),
+  o que bate com `docs/mobile/android.md` §Permissões ("Nenhuma no v0.1.0. Sem `INTERNET` até
+  GSD 16 — e quando entrar, entra sozinha"). **Porém o mesmo arquivo `docs/mobile/android.md`
+  tem uma segunda seção, "Explicit Permissions", que diz "`INTERNET`: Required for backend API
+  and Multiplayer telemetry" — as duas seções do mesmo documento se contradizem** sobre se
+  `INTERNET` já está habilitada. O preset real hoje diz `false`; documentado aqui como
+  inconsistência de doc, não corrigido (fora do escopo desta auditoria, que só pode tocar
+  `docs/google-play/`).
+- **Estado do formulário/ficha de loja**: `docs/store/google-play.md` hoje só tem "Short
+  Description", "Long Description" (ambas em inglês, não em pt-BR, apesar de o padrão do
+  repositório ser pt-BR/en) e um "Assets Checklist" com Icon e Feature Graphic marcados `[x]`,
+  e "4+ Phone Screenshots" / "4+ Tablet Screenshots" ainda `[ ]`. **Nenhuma menção a Play Games
+  Services, Sidekick, Achievements, Leaderboards, Play Points ou Play Pass** em todo o arquivo.
+- **`BL-010`** ("Vincular conta a Google Play Games / Game Center", origem "00", destino "16"
+  na numeração antiga de fases) em `.gsd/BACKLOG.md` §Itens adiados confirma que esta
+  integração **já era conhecida e estava propositalmente adiada** desde o planejamento
+  original do projeto — a Fase 26+ não está descobrindo uma necessidade nova, está resgatando
+  um item de backlog já registrado.
+- **Engine do build Android**: como registrado na Seção 1.1, o Godot real é 4.7.2, migrado do
+  4.3 no commit `477fd96`; `docs/mobile/android.md` §"Preparação (GSD 21)" ainda cita "Export
+  template 4.3 stable instalado" — desatualizado.
+
+## 5. Débito Técnico e Conflitos
+
+| Débito/Conflito | Onde | Impacto na integração Google | Fase que deve resolver |
+|---|---|---|---|
+| EventBus sem eventos de domínio de gameplay (só 4 sinais primitivos de infraestrutura; `match_started`/`achievement_unlocked`/etc. não existem, só signals locais dispersos) | `apps/mobile/src/core/event_bus.gd`, `apps/mobile/src/core/events/README.md` | Sem um barramento de domínio central, cada integração Google (Achievements, Game Stats, Sidekick) teria que se acoplar individualmente a `MatchDirector`, `EliminationService`, `AchievementService` etc. | Fase 27 |
+| Nenhum SDK/plugin de Play Games Services no projeto hoje (nenhum addon, nenhuma referência a `play_games`/`google_play`/`gpgs` em `apps/mobile/src`) | `apps/mobile/addons/` (só contém `gut`), busca por `play_games`/`gpgs` em `apps/mobile/src` sem resultado | Toda a Fase 28 (autenticação Play Games v2) parte de zero — não há wrapper, plugin Android nem stub de SDK para estender | Fase 28 |
+| `progression/` não conhece contas Google (`Profile` não tem campo de `play_games_player_id`; nenhum vínculo via Recall) | `apps/mobile/src/progression/profile.gd` | `ProfileRepository`/`LocalProfileRepository`/`RemoteProfileRepository` precisarão de um novo campo e uma nova estratégia de merge de identidade (dispositivo local vs. conta Google) sem quebrar o `player_id` já em uso | Fase 28 |
+| Ausência de infraestrutura de feature flags no projeto (nenhum `FeatureFlag`/`feature_flag` encontrado em `apps/mobile/src`; `RemoteConfigService` de `docs/architecture/networking.md` tem só `BakedRemoteConfig` e `HttpRemoteConfig` como planejados, sem achado de código real destes dois nesta auditoria além de `apps/mobile/src/core/config/http_remote_config.gd`) | `apps/mobile/src/core/config/` | Rollout gradual de features de gamificação (achievements, quests dinâmicas, LiveOps da Fase 33) precisa de um jeito de ligar/desligar por build/segmento sem depender só de nova versão na loja | Fase 27 |
+| Nenhuma checagem automatizada da regra "sem `await` no caminho de simulação" (regra 10 de `CLAUDE.md` §3); `tools/ci/validate-repo.sh` não tem seção sobre isso | `tools/ci/validate-repo.sh` | I/O assíncrono de SDK do Play Games introduzido por engano em `gameplay/`/`territory/`/`runner/`/`ai/` quebraria o determinismo sem que o CI acuse | Fase 27 (junto da infraestrutura de eventos, é o momento natural de fechar esta lacuna de CI) |
+| Bug pré-existente: `RemoteProfileRepository.load_profile()` chama `local_cache.load_profile()`, método que não existe em `LocalProfileRepository` (que só define `get_profile()`) | `apps/mobile/src/progression/remote_profile_repository.gd`, `apps/mobile/src/progression/local_profile_repository.gd` | Qualquer fluxo de perfil "otimista local + fetch remoto em background" quebraria em runtime hoje; relevante porque o vínculo de conta Google (Fase 28) mexe exatamente neste par de arquivos | Fase 28 |
+| Nomes de evento de analytics divergem entre a spec e a implementação real (`AnalyticsBridge` emite `match_started`/`match_ended`/`runner_eliminated`; `docs/product/analytics-plan.md` define `game_started`/`game_finished`/`player_eliminated`) | `apps/mobile/src/gameplay/analytics_bridge.gd` vs. `docs/product/analytics-plan.md` | Game Stats (Fase 30), se implementado direto sobre o pipeline de analytics existente, herdaria nomes que não batem com a spec publicada — precisa de decisão explícita (renomear o código ou aceitar o nome real como novo padrão) antes de reaproveitar | Fase 30 |
+
+## 6. Riscos Preliminares
+
+> Riscos preliminares — o Plano 03 consolida o registro final na seção 7 depois de cruzar com
+> `docs/google-play/current-requirements.md`.
+
+| Risco | Impacto | Probabilidade | Mitigação Sugerida |
+|---|---|---|---|
+| Integração de um SDK/plugin Android de Play Games Services v2 sem projeto Gradle customizado versionado (`gradle_build/use_gradle_build=false` hoje) pode exigir migrar todo o export Android para "Gradle build" custom, um passo maior do que "adicionar um addon" | Alto — pode atrasar toda a Fase 28 | Média | Validar cedo, na própria Fase 28, se o plugin oficial do Play Games para Godot exige Gradle custom antes de comprometer o cronograma das Fases 29-38 |
+| `EventBus` atual tem um limite de 5 emissões/seg por sinal em debug (`MAX_EMISSIONS_PER_SECOND`); eventos de domínio de gameplay frequentes (ex.: `territory_captured` a cada Seal) podem estourar esse limite se roteados pelo mesmo mecanismo | Médio — ruído de `push_warning` em debug, possível necessidade de ajustar o limite ou criar uma via separada | Média | Fase 27 decidir explicitamente se eventos de domínio de gameplay reaproveitam `EventBus` (com limite revisto) ou ganham um mecanismo próprio |
+| Nenhuma checagem de CI hoje impede `await` em `gameplay/`/`territory/`/`runner/`/`ai/` (Seção 5); a pressão de "integrar rápido com Google" aumenta a chance de alguém colar uma chamada assíncrona de SDK direto num destes diretórios | Alto — quebraria o determinismo da simulação, pilar central do projeto | Média | Fechar a lacuna de CI (Seção 5) antes ou junto da Fase 27, não depois |
+| A engine real (Godot 4.7.2) diverge da documentada em `CLAUDE.md` e `docs/mobile/android.md` (4.3); um plugin de terceiros para Play Games pode ter sido testado só contra uma faixa de versão do Godot e não contra 4.7.x | Médio — incompatibilidade de plugin só descoberta tarde | Baixa a Média (4.7.x é recente; o próprio projeto migrou por necessidade de compatibilidade com CI) | Confirmar compatibilidade do plugin escolhido na Fase 28 com Godot 4.7.2 antes de comprometer a arquitetura da integração |
+| Ficha de loja (`docs/store/google-play.md`) está em inglês e incompleta (sem screenshots, sem qualquer menção a Play Games Services); publicar features de gamificação sem atualizar a ficha pode gerar rejeição de review por descrição inconsistente com o app | Médio — atraso de release na Fase 38 | Média | Atualizar `docs/store/google-play.md` como parte do checklist de release de `docs/deployment/release-process.md`, antes do rollout da Fase 38 |
+| `StatsService` real cobre só 6 dos ~14 campos de estatística descritos em `docs/design/progression.md` §2; Game Stats do Play pode esperar um conjunto de "Repetitive/Cumulative Stats" mais rico do que o hoje disponível | Médio — retrabalho em `StatsService` na Fase 30 | Alta (a lacuna já está confirmada nesta auditoria) | Priorizar o fechamento dos campos de estatística faltantes como pré-requisito da Fase 30, não em paralelo |
