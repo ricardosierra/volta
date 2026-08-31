@@ -1,4 +1,40 @@
-[gd_resource type="Resource" load_steps=1 format=3]
+[gd_resource type="Resource" script_class="ThemePalette" load_steps=2 format=3 uid="uid://theme_colorblind"]
+
+[ext_resource type="Script" path="res://src/ui/design_system/tokens/theme_palette.gd" id="1_theme"]
+
+; Paleta azul/laranja segura para protanopia e deuteranopia (docs/ui/accessibility.md).
+; Verde e vermelho nunca disputam papel: danger e success se separam por luminância, e
+; cada Runner leva também uma marca geométrica (RunnerMark).
+
 [resource]
-resource_name = "Colorblind Palette"
-# Emphasizes high contrast shapes and protanopia/deuteranopia safe colors (Blue/Orange)
+script = ExtResource("1_theme")
+background = Color(0.0392157, 0.0431373, 0.0588235, 1)
+surface = Color(0.0862745, 0.0941176, 0.117647, 1)
+raised = Color(0.129412, 0.141176, 0.176471, 1)
+primary = Color(0.34902, 0.678431, 1, 1)
+secondary = Color(1, 0.564706, 0.14902, 1)
+text_main = Color(1, 1, 1, 1)
+text_muted = Color(0.564706, 0.588235, 0.639216, 1)
+text_inverse = Color(0.0392157, 0.0431373, 0.0588235, 1)
+danger = Color(1, 0.470588, 0.298039, 1)
+warning = Color(1, 0.788235, 0.309804, 1)
+success = Color(0.478431, 0.827451, 1, 1)
+player_colors = Array[Color]([Color(0.34902, 0.678431, 1, 1), Color(1, 0.564706, 0.14902, 1), Color(0.980392, 0.921569, 0.843137, 1), Color(0.541176, 0.478431, 0.780392, 1), Color(0.14902, 0.898039, 0.898039, 1), Color(0.898039, 0.415686, 0.588235, 1), Color(0.72549, 0.72549, 0.729412, 1), Color(1, 1, 1, 1)])
+space_xs = 4
+space_sm = 8
+space_md = 16
+space_lg = 24
+space_xl = 32
+space_2xl = 48
+space_3xl = 64
+radius_sm = 4
+radius_md = 8
+radius_lg = 16
+radius_pill = 999
+motion_fast = 0.12
+motion_base = 0.2
+motion_slow = 0.28
+motion_screen = 0.25
+raised_border_dp = 1.0
+raised_glow_dp = 2.0
+overlay_dim = 0.65
