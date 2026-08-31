@@ -4,16 +4,16 @@ milestone: v0.1
 milestone_name: milestone
 current_phase: 26
 current_phase_name: Google Play Discovery - Auditoria de Gamificacao e Sidekick
-current_plan: 0
-status: planning
-stopped_at: Phases 1-25 complete; starting phase 26
-last_updated: "2026-08-31T00:00:00.000Z"
+current_plan: 1
+status: in_progress
+stopped_at: "Completed 26-01-inventario-existente-PLAN.md (compatibility-audit.md secoes 1-6)"
+last_updated: "2026-08-31T20:40:00.000Z"
 last_activity: 2026-08-31
 progress:
   total_phases: 38
   completed_phases: 25
-  total_plans: 104
-  completed_plans: 104
+  total_plans: 107
+  completed_plans: 105
   percent: 66
 ---
 
@@ -31,8 +31,8 @@ See: .planning/PROJECT.md (updated 2026-08-24)
 Current Phase: 26
 Current Phase Name: Google Play Discovery - Auditoria de Gamificação e Sidekick
 Total Phases: 38
-Current Plan: 0
-Total Plans in Phase: TBD
+Current Plan: 1
+Total Plans in Phase: 3
 Status: In progress
 Last Activity: 2026-08-31
 
@@ -61,6 +61,7 @@ Progress: [██████░░░░] 66%
 | Phase 01 P09 | 6min | 2 tasks | 5 files |
 | Phase 01 P10 | 20min | 3 tasks | 8 files |
 | Phase 01 P11 | 15min | 2 tasks | 2 files |
+| Phase 26 P01 | 55min | 3 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -95,6 +96,11 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 - [Phase 01]: [Phase 01-10]: export_presets.template.cfg precisa de export_filter/include_filter/exclude_filter/script_export_mode (Godot 4.3 le sem default, nao estava no texto literal do plano); project.godot precisa de rendering/textures/vram_compression/import_etc2_astc=true ou o export Android falha com config_error vazio (bug de mensagem do Godot 4.3, rastreado no source upstream) — sem essa flag, build_android.sh debug nunca produz APK
 - [Phase 01]: [Phase 01-10]: PLACEHOLDER-ART-006 documentado em dev_overlay.gd, nao em main.tscn, porque .tscn nao aceita comentario de linha arbitrario — exatamente o fallback que o proprio plano ja previa
 - [Phase 01]: [Phase 01-11]: nenhum Android real conectado (adb devices vazio em 2026-08-25); checkpoint humano DEFERIDO conforme fallback do risco F01-07 — device-results.md linha Phase 1 permanece _pendente_, gate registrado explicitamente em Blockers/Concerns, A01-12/A01-13/A01-14 e Success Criterion 6 do ROADMAP continuam abertos ate um humano rodar o APK num aparelho fisico
+- [Phase 26-01]: engine real do projeto e Godot 4.7.2 (migrada do 4.3 no commit 477fd96), mas CLAUDE.md e docs/mobile/android.md ainda citam 4.3 — debito de documentacao registrado em docs/google-play/compatibility-audit.md, nao corrigido por estar fora do escopo (fase de auditoria, sem tocar codigo/doc fora de docs/google-play/)
+- [Phase 26-01]: nenhum evento de dominio de gameplay existe hoje no EventBus (apps/mobile/src/core/events/README.md confirma) — gap central que a Fase 27 precisa fechar; eventos hoje sao so signals locais dispersos (MatchDirector.match_ended, EliminationService.runner_eliminated, AchievementService.achievement_unlocked etc.)
+- [Phase 26-01]: regra de camadas e aplicada por grep textual na secao 7 de tools/ci/validate-repo.sh, nao por um tools/ci/check_layering.gd (nao existe, apesar de docs/architecture/overview.md cita-lo); nao existe nenhuma checagem de CI para "sem await no caminho de simulacao" — risco para I/O assincrono de SDK do Play Games
+- [Phase 26-01]: bug real pre-existente encontrado (nao corrigido, fora de escopo de auditoria): RemoteProfileRepository.load_profile() chama local_cache.load_profile(), metodo que nao existe em LocalProfileRepository (so tem get_profile())
+- [Phase 26-01]: QLT-06 (requisito do plano) NAO foi marcado completo em REQUIREMENTS.md — a fase 26 tem 3 planos e so o 01 terminou; QLT-06 cobre a fase inteira (26-38), sera fechado quando o ultimo plano relevante fechar, nao antes
 
 ### Roadmap Evolution
 - Phase 26 added: Google Play Discovery - Auditoria de Gamificação e Sidekick
@@ -126,5 +132,5 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 ## Session Continuity
 
 Last session: 2026-08-31
-Stopped at: Phases 1-25 complete; starting phase 26
-Resume file: None
+Stopped at: Completed 26-01-inventario-existente-PLAN.md; docs/google-play/compatibility-audit.md secoes 1-6 escritas; plano 02 (requisitos-google) e 03 (arquitetura-integracao) da Fase 26 seguem pendentes
+Resume file: .planning/phases/26-google-play-discovery-auditoria-de-gamifica-o-e-sidekick/26-01-SUMMARY.md
