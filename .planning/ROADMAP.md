@@ -38,6 +38,7 @@ de descoberta.
 - [x] **Phase 24: Launch** — versão, changelog, tag, rollout gradual, monitoramento (completed 2026-08-26)
 - [x] **Phase 25: Post Launch** — balanceamento por dados, monetização, temporadas, conteúdo (completed 2026-08-26)
 - [x] **Phase 26: Google Play Discovery - Auditoria de Gamificação e Sidekick** — auditoria de compatibilidade, requisitos oficiais e arquitetura de integração (completed 2026-08-31)
+- [ ] **Phase 26.1: Correção do Quality Gate** — zerar validate-repo.sh: camada, config, tamanho, placeholder e bug do RemoteProfileRepository
 - [ ] **Phase 27: Gamification Foundation - Eventos de Domínio e Integração** — Gamification Engine, eventos de domínio, feature flags, fila offline
 - [ ] **Phase 28: Play Games Services v2 e Autenticação** — PGS v2, sign-in automático, idempotência, fallback offline
 - [ ] **Phase 29: Sistema de Conquistas e Progression Loop** — conquistas ricas, XP, níveis e loop de progressão
@@ -451,6 +452,20 @@ Plans:
 - [x] 01-inventario-existente-PLAN.md — Auditoria do estado atual: arquitetura, Event Bus, loop de partida, gamificação já existente (Fases 10/11/14/18), backend/rede, Android/Play, débito técnico e riscos preliminares
 - [x] 02-requisitos-google-PLAN.md — Pesquisa ao vivo dos requisitos oficiais vigentes do Google Play Games (PGS v2, Recall, Saved Games, Play Integrity, Achievements, Leaderboards, Game Stats, Play Points, Play Pass, Sidekick, Level Up, LiveOps/Quests, Rewards)
 - [x] 03-arquitetura-integracao-PLAN.md — Arquitetura de integração Gameplay → Domain Events → Gamification Engine → Google validada, mapeamento fase-a-fase (27–38), registro de riscos consolidado e parecer go/no-go (Go para a Fase 27)
+
+### Phase 26.1: Correção do Quality Gate
+**Goal**: Zerar `./tools/ci/validate-repo.sh`, corrigindo a dívida herdada das fases 2–25 antes que as fases 27–38 sejam construídas sobre um gate vermelho.
+**Depends on**: Phase 26
+**Requirements**: QLT-06
+**Canonical refs**: `.planning/phases/26.1-correcao-quality-gate/26.1-CONTEXT.md`, `docs/google-play/compatibility-audit.md` (§5 débito técnico, §7 riscos), `CLAUDE.md` §3 (as 10 regras)
+**Success Criteria** (what must be TRUE):
+  1. `./tools/ci/validate-repo.sh` sai com código 0 e imprime `OK` nas 10 regras.
+  2. `apps/mobile/src/gameplay/` não referencia `presentation/` nem `ui/` — nem por `load()` de string (Regra 7 / CLAUDE.md Regra 5).
+  3. `packages/shared/config/` e `apps/mobile/resources/config/` são idênticos após `apps/mobile/tools/dev/sync_config.sh`, com a fonte única contendo `bonuses.tres`, `bots/`, `modes/` e `quality/`.
+  4. Nenhum arquivo acima de 600 linhas e nenhuma função acima de 50 linhas fora de `addons/`.
+  5. `RemoteProfileRepository.load_profile()` chama um método que existe em `LocalProfileRepository`, com teste que cobre a chamada.
+  6. `./tools/ci/test-client.sh` continua passando — a refatoração não mudou comportamento.
+**Plans**: TBD
 
 ### Phase 27: Gamification Foundation - Eventos de Domínio e Integração
 **Goal**: Criar o Event Bus de gameplay e a infraestrutura básica para receber a gamificação sem acoplamento forte.
