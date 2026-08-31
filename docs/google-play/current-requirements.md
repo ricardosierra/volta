@@ -96,3 +96,107 @@ GA para os veredictos principais (`accountDetails`, `appIntegrity`, `deviceInteg
 - `minSdk` 24 (Android 7.0) do VOLTA já é maior que o mínimo exigido pela Play Integrity API (API 23/Android 6.0) — **compatibilidade confirmada**, nenhum bloqueio de versão.
 - Mesmo pré-requisito de Gradle build customizado citado na seção 1 se aplica (biblioteca distribuída via Google Play services, Java/Kotlin).
 - Fase 35 (Segurança, Anti-cheat e Play Integrity) do ROADMAP é a consumidora natural deste requisito — este plano não implementa nada, só registra o requisito vigente e a compatibilidade de minSdk.
+
+## 5. Achievements
+
+### Fontes Oficiais Consultadas
+- https://developer.android.com/games/pgs/achievements — Consultado em: 2026-08-31 (carimbo "Last updated 2026-06-16 UTC")
+- https://developer.android.com/games/guidelines — Consultado em: 2026-08-31 (carimbo "Last updated 2026-08-26 UTC"; seção Achievements / códigos `LU-AC-*`)
+
+### Requisitos Vigentes
+- Três tipos de conquista: **Standard** (desbloqueia em um único passo), **Incremental** (progresso gradual e visível, recomendado usar tiers — ex.: "Tier 1: Defeat 1.000 enemies" → "Tier 2: 5.000" → "Tier 3: 10.000") e **Hidden** (nome/ícone/descrição ficam ocultos até o desbloqueio, útil contra spoiler).
+- Elementos básicos: `ID` (gerado pelo Play Console), `Name` (até 100 caracteres), `Description` (até 500 caracteres), `Icon` (quadrado 512×512 PNG/JPEG/JPG, fundo transparente), `List order`.
+- Estados possíveis: hidden, revealed (padrão inicial de uma conquista não-hidden) e unlocked (pode ser desbloqueada offline; sincroniza ao reconectar).
+- Sistema de pontos/XP: `XP da conquista = 100 × valor em pontos`. Regras de pontuação: **máximo de 2.000 pontos no total** por jogo, **máximo de 200 pontos por conquista**, valores devem ser **múltiplos de 5**, e a doc recomenda reservar parte do orçamento de 2.000 pontos para conquistas futuras.
+- Limite de quantidade: **máximo de 400 conquistas** na vida do jogo (mencionado na doc de achievements, associado à elegibilidade de Quests).
+- Baseline obrigatório para ser "PGS-compatible" / Level Up (`LU-AC-GAA`/`GAB`): mínimo de **10 conquistas** visíveis (reveladas) espalhadas ao longo da vida do jogo, com nomes/descrições únicas e ícones únicos, todas efetivamente alcançáveis. Recomendação (best practice, não obrigatória) de **40+ conquistas**.
+- Requisito específico de elegibilidade de **Quests** (`LU-AC-GAC`): pelo menos **4 conquistas** devem ser alcançáveis de forma confiável dentro da **primeira hora de jogo** por qualquer jogador — sem isso, o jogo não é elegível para a mecânica de Quests do Google Play (ver seção 12).
+- Fluxo de publicação: configurar no Play Console (individualmente ou via bulk upload) → integrar as chamadas client-side ao avançar/completar a conquista → testar → publicar junto com o jogo (conquistas ficam em "Draft" até então).
+
+### Disponibilidade / Elegibilidade
+GA. Não há gate de convite para criar achievements — qualquer app com PGS v2 configurado pode cadastrar no Play Console. Porém a **visibilidade** de conquistas bloqueadas no Sidekick para todos os jogadores depende de o jogo ter conquistado o "achievements badge" (mínimo de 100 jogadores únicos chamando a Achievements API nos últimos 30 dias) — ver seção 10.
+
+### Impacto para VOLTA
+- VOLTA já tem sistema de conquistas próprio (Fase 10 — Progression: "perfil, XP, ranks, estatísticas, conquistas, desafios", conforme `ROADMAP.md`). A Fase 29 (Sistema de Conquistas e Progression Loop) precisa mapear essas conquistas existentes para IDs de achievements da PGS respeitando: mínimo de 10 (idealmente 40+), teto de 2.000 pontos totais / 200 por conquista / múltiplos de 5, e teto de 400 conquistas na vida do jogo.
+- Pelo menos 4 dessas conquistas precisam ser alcançáveis em até 1h de jogo para manter elegibilidade de Quests (`LU-AC-GAC`) — informação direta para o desenho das Fases 29 e 31.
+
+## 6. Leaderboards
+
+### Fontes Oficiais Consultadas
+- https://developer.android.com/games/pgs/leaderboards — Consultado em: 2026-08-31 (carimbo "Last updated 2026-06-16 UTC")
+
+### Requisitos Vigentes
+- Até **70 leaderboards** por jogo. Cada leaderboard já vem, automaticamente, em **3 janelas de tempo nativas**: diária, semanal e "all-time" — não é preciso criar leaderboard separado por janela.
+- Reset diário à meia-noite Pacific Daylight Time (**UTC-7, o ano todo**); reset semanal entre sábado e domingo, no mesmo fuso.
+- Ordenação: "Larger is better" (padrão) ou "Smaller is better" (ex.: tempo de corrida) — **fixa depois de publicado**, não pode ser trocada (a ordem de listagem/`List order`, por outro lado, pode mudar a qualquer momento).
+- Formatos de exibição suportados nativamente: **Numeric** (inteiro ou decimal fixo, com unidades customizadas e regras de plural i18n), **Time** (submetido em milissegundos, exibido em h/m/s/centésimos), **Currency** (submetido em milionésimos da unidade principal, ex.: 19.950.000 = $19,95).
+- **Social leaderboard** (círculo de amigos que compartilharam atividade com o app) e **Public leaderboard** (jogadores que compartilharam atividade publicamente) são exibidos separadamente pelo SDK; o social leaderboard fica vazio até o leaderboard ser publicado via Play Console.
+- `Limits` opcionais (mínimo/máximo de score aceito, para descartar submissões fraudulentas) e `Players.hide` para ocultar jogadores suspeitos de fraude de todos os leaderboards do app.
+- A API **não documenta** nenhuma janela de tempo nativa além de diário/semanal/all-time (não há "mensal" nem "por temporada custom" nativo) — isso confirma que qualquer leaderboard de temporada precisa ser implementado no backend próprio do jogo, não pela PGS.
+
+### Disponibilidade / Elegibilidade
+GA. Sem gate de convite para o recurso básico de leaderboards.
+
+### Impacto para VOLTA
+- VOLTA já tem leaderboard próprio via `packages/backend` (Fases 15/16) com múltiplas janelas de tempo, incluindo temporadas via season service (Fase 25, recém-concluída — commit "feat(phase-25): implement season service for live ops"). A PGS Leaderboards API cobre só diário/semanal/all-time nativamente — **qualquer leaderboard de temporada custom do VOLTA continua exigindo o backend próprio**; a PGS funcionaria como leaderboard adicional/espelhado para a superfície social do Google (Sidekick, You tab, Leagues), não como substituto.
+- Como os dois sistemas de leaderboard (backend próprio + PGS) vão conviver é decisão de arquitetura explícita para o Plano 03, não implementada aqui — mas o requisito oficial confirma que não é possível descartar o backend próprio de leaderboard do VOLTA.
+
+## 7. Game Stats
+
+### Fontes Oficiais Consultadas
+- https://developer.android.com/games/pgs/gamestats — Consultado em: 2026-08-31 (carimbo "Last updated 2026-08-28 UTC" — 3 dias antes desta consulta)
+- https://developer.android.com/games/pgs/integrate-gamestats — Consultado em: 2026-08-31
+
+### Requisitos Vigentes
+- Game Stats são estatísticas cumulativas exibidas no Gamer Profile (aba "You") do jogador; alimentam Quests, Social Challenges e Leagues (mecânicas orquestradas pelo Google — ver seção 12).
+- **Máximo de 50 stats** configuráveis por jogo.
+- Dois tipos de dado enviados via Game Stats API: (1) **Player Events** — eventos arbitrários com propriedades de contexto, usados para "repetitive stats" calculadas por agregação `SUM`/`MAX`/`MIN`/`COUNT` sobre uma propriedade do evento, com filtro opcional; e (2) o evento predefinido **`progressUpdate`** (propriedade `currentProgress`, tipo `INT` ou `STRING`), usado para a "player progression stat" — a stat de progressão principal do jogo, que deve ser enviada no início de cada sessão e a cada atualização.
+- Regras do que **pode** ser um Game Stat: não pode exigir compra (IAP) nem propaganda assistida para ser atualizado; não pode ser uso genérico do jogo (abrir o app, mudar configuração); não pode conter dado pessoal/sensível (ID de usuário, localização precisa, dado de saúde, conteúdo ofensivo); deve estar disponível para **todos** os jogadores (não pode ser stat exclusiva de um time, de um nível específico ou de liveops limitada no tempo).
+- Integração: CSV de eventos (`PlayerGameEvent.csv`) + arquivo ZIP com CSVs de repetitive stats, de progression stat e de localizações + ícones, tudo enviado via Play Console (`Grow users > Play Games Services > Setup and management > Game Stats`).
+- Requisito Level Up (`LU-GS-GAA`/`GAB`): mínimo de **5 repetitive stats** (com pelo menos 1 usável para "competitive player engagement features" como Leagues) **+ 1 progression stat**, se o jogo tiver mecânica de progressão principal.
+- **Achado crítico de data**: a UI de Game Stats na aba "You" do Gamer Profile está disponível hoje (2026-08-31) **apenas para fins de teste**; a doc afirma textualmente: *"The Game Stats UI will be available in September 2026"* — ou seja, a superfície pública de Game Stats para jogadores comuns ainda **não está lançada** na data desta consulta, entra em produção no mês seguinte.
+
+### Disponibilidade / Elegibilidade
+**Beta/pré-lançamento da UI pública**: a API e a configuração via Play Console já existem e podem ser integradas e testadas hoje, mas a superfície visível ao jogador final (Gamer Profile "You tab") só se torna GA em setembro de 2026, segundo a própria doc consultada em 2026-08-31.
+
+### Impacto para VOLTA
+- Fase 30 (Game Stats e Integração Analytics) pode iniciar integração/testes imediatamente, mas deve considerar que a UI pública só aparece para jogadores a partir de setembro/2026 — não é bloqueador técnico, mas afeta a expectativa de "quando o jogador vai ver isso na prática".
+- VOLTA precisa desenhar pelo menos 5 eventos repetíveis + 1 evento de progresso a partir de dados de partida que já existem (ex.: capturas de território, tempo de sobrevivência, causa de morte, power-ups usados) — nenhum desses pode depender de IAP nem ser genérico, restrição direta para o desenho da Fase 30.
+- Teto de 50 stats a respeitar no desenho de eventos.
+
+## 8. Play Points
+
+### Fontes Oficiais Consultadas
+- https://play.google.com/console/about/programs/googleplaypoints/ — Consultado em: 2026-08-31
+- https://developer.android.com/games/pgs/play-games-sidekick — Consultado em: 2026-08-31 (menciona "Play Points boosters and coupons: Available to enrolled Play Points developers")
+
+### Requisitos Vigentes
+- Play Points é um programa de fidelidade do Google Play (220M+ membros) com níveis Bronze→Platinum; jogadores ganham pontos comprando no Play (incluindo IAP) e resgatam por itens in-app oferecidos por desenvolvedores ou por Google Play Credit.
+- Participação do desenvolvedor é **por convite**: *"Selected developers are invited to provide app specific Play Points promotions"*. Depois de **"allowlisted"** (colocado em lista de permissão) para o programa, o Google fornece um guia completo de integração.
+- Duas formas de oferta: **coupons** (desconto em produto gerenciado, tipicamente 40%–99% off; **sem** necessidade de trabalho de desenvolvimento — entra em vigor em até 24h após cadastro no Play Console) e **in-app items** (exigem "some technical development" após o cadastro da promoção — a fonte não detalha o SDK cliente específico de Points além disso; registro isso como **não plenamente detalhado tecnicamente** na fonte consultada).
+- Mercados ativos hoje (lista literal da FAQ, 36 países): Japão, Coreia, EUA, Hong Kong, Taiwan, França, Alemanha, Reino Unido, Austrália, Noruega, Finlândia, Dinamarca, Suécia, Espanha, Itália, Grécia, Arábia Saudita, EAU, Irlanda, África do Sul, Holanda, Suíça, Nova Zelândia, Áustria, Bélgica, Portugal, Israel, Indonésia, Índia, México, Polônia, Tchéquia, Chile, Tailândia, Turquia e **Brasil**.
+
+### Disponibilidade / Elegibilidade
+**Invite-only / allowlist** — *"Selected developers are invited"* e *"After becoming allowlisted for the program, you will receive a full integration guide"*. Não é um programa de auto-inscrição aberta como o Level Up (seção 11). Geograficamente disponível no Brasil (mercado de referência do VOLTA), o que remove a barreira regional, mas a barreira de convite permanece.
+
+### Impacto para VOLTA
+- VOLTA (jogo em português do Brasil) atende o requisito geográfico (Brasil está na lista de mercados ativos), mas depende de ser convidado/allowlisted pelo Google — isso é um **risco de disponibilidade explícito** para a Fase 31 (Gamificação Avançada — XP, Quests e Rewards), que não pode assumir acesso automático a Play Points.
+- O Sidekick só expõe "Play Points credit exchange" e "boosters/coupons" para devs "enrolled" (ver seção 10) — reforça que o acesso é condicional a convite, não apenas técnico.
+
+## 9. Play Pass
+
+### Fontes Oficiais Consultadas
+- https://play.google.com/console/about/googleplaypass — Consultado em: 2026-08-31
+
+### Requisitos Vigentes
+- Play Pass é uma assinatura de catálogo curado: apps pagos ficam grátis para assinantes, anúncios in-app são removidos automaticamente para assinantes, e IAP/assinaturas ficam desbloqueadas para membros Play Pass.
+- Integração técnica: usar o serviço de **licenciamento do Google Play** para restringir acesso a usuários pagantes (caso de apps pagos); definir um produto in-app que remove anúncios (caso haja ads); detectar compras novas/removidas ao voltar ao foreground via **Google Play Billing API** (caso de IAP/assinaturas) — não exige um SDK dedicado "Play Pass", reaproveita Play Billing Library e o serviço de licenciamento já usados para monetização normal.
+- Monetização: royalty calculado por modelo algorítmico que combina sinais de valor entregue ao usuário (não é só tempo de uso).
+
+### Disponibilidade / Elegibilidade
+**Curated/invite**: *"All developers are welcome to **express interest** in the program and new titles are added regularly"* — ou seja, não é integração livre, é submissão de interesse seguida de curadoria do Google.
+**Inconsistência encontrada na própria fonte, registrada explicitamente**: a FAQ consultada em 2026-08-31 ainda afirma *"Play Pass is initially only available in the US. We plan to add more markets over time"* — texto que soa desatualizado frente à expansão histórica conhecida do Play Pass para dezenas de países. Registrado aqui literalmente como publicado na página oficial nesta data e marcado como **Não confirmado / possível cópia de marketing desatualizada** — não deve ser tratado como fato definitivo de disponibilidade regional sem uma re-checagem direta com o Play Console Help antes da Fase 31/33.
+
+### Impacto para VOLTA
+- Play Pass depende de curadoria do Google (não é auto-serviço); a Fase 31 não deve planejar integração de Play Pass como certa — na melhor das hipóteses, submeter "expressão de interesse" e tratar como oportunidade oportunista, não como requisito de escopo.
+- Tecnicamente, se aceito, a integração é de baixo esforço (reaproveita Play Billing Library, já necessário para o IAP do VOLTA) — o bloqueador não é técnico, é de elegibilidade/curadoria.
