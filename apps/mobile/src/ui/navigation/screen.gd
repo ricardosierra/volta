@@ -2,6 +2,7 @@ class_name Screen
 extends Control
 
 signal back_requested
+signal exit_requested
 
 func on_pushed(args: Dictionary = {}) -> void:
 	pass
