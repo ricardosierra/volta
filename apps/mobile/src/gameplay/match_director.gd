@@ -58,6 +58,16 @@ func setup_match(mode_config: Resource) -> void:
 			
 			# If catalog/loadout are available via Autoload, we would apply cosmetics here
 
+	# A match is created from the menu, so advance the gameplay FSM through its
+	# loading/countdown states before the fixed-step simulation starts.
+	if game_state and game_state.fsm:
+		if game_state.current_state() == GameState.Id.BOOT:
+			game_state.request_transition(GameState.Id.MENU)
+		if game_state.current_state() == GameState.Id.MENU:
+			game_state.request_transition(GameState.Id.LOADING)
+		if game_state.current_state() == GameState.Id.LOADING:
+			game_state.request_transition(GameState.Id.COUNTDOWN)
+
 
 var time_limit_sec: float = 180.0
 var time_elapsed: float = 0.0
@@ -116,5 +126,10 @@ func _end_match(winner: int, placements: Array, cause: String) -> void:
 	match_ended.emit(res)
 
 func _physics_process(delta: float) -> void:
-	if game_state and game_state.current_state() == GameState.Id.PLAYING:
+	if not game_state or not game_state.fsm:
+		return
+
+	game_state.fsm.tick(delta)
+	if game_state.current_state() == GameState.Id.PLAYING:
 		step(delta)
+		update_time(delta)
