@@ -156,3 +156,178 @@ assíncrona, e **nunca pode entrar** em `territory/`, `runner/`, `ai/` ou `gamep
 ser disparada a partir de uma camada acima (ex.: `presentation/` ou um serviço em `platform/`)
 reagindo a um evento de domínio que ainda não existe (Seção 1.2). O loop de partida real hoje
 não tem nenhum ponto de saída assíncrono; `step(delta)` e `_physics_process` são 100% síncronos.
+
+---
+
+## 2. Gamificação Já Existente (Fases 10, 11, 14, 18)
+
+### 2.1 Progressão (Perfil, XP, Stats, Season)
+
+- **`apps/mobile/src/progression/profile.gd`** (`class_name Profile`, `extends RefCounted`) é
+  um bag de dados puro: `player_id`, `nickname`, `avatar_id`, `frame_id`, `title_id`, `xp`.
+  **Não há campo de conta Google** (`google_id`, `play_games_player_id` ou equivalente) — ver
+  Seção 5.
+- **`apps/mobile/src/progression/xp_service.gd`** (`class_name XpService`) implementa a curva
+  de nível declarada em `docs/design/progression.md` §1
+  (`xp_for_level(n) = round(100 × n^1,35)`) como `XP_MULT = 100.0` / `XP_EXPONENT = 1.35`, com
+  `calculate_level(xp)` (inverso da fórmula) e `add_xp(profile, amount)`. `_on_level_up(new_lvl)`
+  hoje é um método vazio com o comentário `# Emit particles, unlock frames` — **o level-up não
+  dispara nenhum evento nem efeito ainda**, nem local nem de EventBus.
+- **`apps/mobile/src/progression/stats_service.gd`** (`class_name StatsService`) rastreia
+  `total_kills`, `total_deaths`, `total_matches`, `total_wins`, `total_captures`,
+  `playtime_seconds`, com `get_kd_ratio()` e `get_winrate()`. É um subconjunto pequeno da lista
+  completa de estatísticas descrita em `docs/design/progression.md` §2 (que também cita "maior
+  Seal único", "maior Surge atingido", "sequência atual/melhor de vitórias", "Squeezes",
+  "Cuts", "distância percorrida" — **nenhum desses campos existe hoje em `StatsService`**, é
+  débito frente à própria spec de design, relevante porque Game Stats (Fase 30) provavelmente
+  vai querer relatar exatamente esse conjunto mais rico).
+- **`apps/mobile/src/progression/season_service.gd`** (`class_name SeasonService`) hoje é um
+  **stub com dado embutido no código**: `fetch_season_config()` não faz nenhuma chamada de
+  rede, só atribui um `Dictionary` literal (`"season_1"`, `"Neon Genesis"`, `free_track` /
+  `premium_track` fixos) a `current_season`. Não há season pass real, nem persistência, nem
+  cálculo de progresso dentro da season.
+
+### 2.2 Conquistas e Desafios
+
+- **`apps/mobile/src/progression/achievements/achievement_service.gd`** (`class_name
+  AchievementService`) mantém `unlocked_ids: Array[String]` e `check_stats(stats,
+  all_achievements)`, que percorre uma lista de `Achievement` e resolve o critério de
+  desbloqueio por um `match ach.id` **hardcoded** com só 3 casos reais: `"first_blood"`
+  (`stats.total_kills > 0`), `"centurion"` (`stats.total_matches >= 100`), `"dominator"`
+  (`stats.total_wins >= 10`) — qualquer outro `id` de `Achievement` passado nunca desbloqueia
+  (cai no `match` sem default, `unlocked` continua `false`). Emite
+  `achievement_unlocked(ach: Achievement)` como signal local.
+- **`apps/mobile/src/progression/challenges/challenge_service.gd`** (`class_name
+  ChallengeService`) gera 3 desafios diários por `Time.get_datetime_dict_from_system()["day"]`,
+  com o próprio código marcado `# MOCK-004: Will be remote in GSD 16` (confirmado como mock
+  rastreado em `.gsd/BACKLOG.md`, ver Seção 4). A geração hoje é literalmente `"Mock Daily " +
+  str(i+1)` com `target` aleatório — não usa o pool de desafios com peso descrito em
+  `docs/design/progression.md` §4 (que lista 9 tipos de desafio concretos, ex. "Capture 25% do
+  mapa em uma partida"). Existe também `apps/mobile/src/progression/challenges/
+  remote_challenge_repository.gd` (não lido em profundidade neste plano, listado aqui porque
+  seu nome confirma que o padrão Local/Remote de `docs/architecture/networking.md` §1 já foi
+  iniciado para `ChallengeRepository`, mesmo com `ChallengeService` ainda mockado).
+
+### 2.3 Cosméticos e Carteira (Wallet)
+
+- **`apps/mobile/src/progression/cosmetics/catalog.gd`** (`class_name Catalog`) tem
+  `load_all(directory)` com o comentário `# Mock loading since actual scanning in GDScript
+  needs EditorFileSystem or fixed arrays` e corpo vazio (`pass`) — **o catálogo de cosméticos
+  não carrega nada em runtime hoje**; `get_item(id)` só consulta o `Dictionary items` interno,
+  que nunca é populado por `load_all`.
+- **`apps/mobile/src/progression/cosmetics/unlock_service.gd`** (`class_name UnlockService`)
+  implementa `attempt_purchase(item_id)` contra `Inventory` + `Wallet` + `Catalog`: bloqueia
+  item já possuído (`unlock_failed("ALREADY_OWNED")`), gasta `Sparks` via `wallet.spend_sparks`
+  se `item.price_sparks > 0`, mas o ramo de `item.price_prisms > 0` está com o comentário
+  `# Prisms logic similar` seguido de `pass` — **compra com moeda premium (Prisms) não está
+  implementada**, só a de moeda soft (Sparks).
+- **`apps/mobile/src/progression/wallet.gd`** (`class_name Wallet`) mantém dois saldos inteiros
+  simples, `sparks` e `prisms`, com `add_sparks`/`spend_sparks`/`add_prisms` e um único signal
+  `balance_changed(type: String, amount: int)`. Confere as duas moedas de
+  `docs/design/economy.md` (Sparks = soft, Prisms = hard), mas os preços de
+  `docs/design/economy.md` ("Common Avatar: 1.500 Sparks" etc.) não estão referenciados em
+  nenhum `.tres` de config lido neste plano — não foi possível confirmar onde esses números
+  moram hoje no código.
+- **`apps/mobile/src/progression/cosmetics/inventory.gd`** (`class_name Inventory`, `extends
+  RefCounted`) é uma lista simples `owned_ids: Array[String]` com `has_item`/`add_item`.
+
+### 2.4 Leaderboards e Cloud Save
+
+- **Já existe o padrão Local/Remote** descrito em `docs/architecture/networking.md` §1 para
+  leaderboard: `apps/mobile/src/progression/leaderboard/leaderboard_repository.gd` (`class_name
+  LeaderboardRepository`, `extends RefCounted`) é a interface-base, e traz literalmente o
+  comentário `## MOCK / Replacement Phase: GSD 16 / Replacement Task: ONLN-003` — este é o
+  **MOCK-001** de `.gsd/BACKLOG.md`. `save_score`/`get_top_scores` da interface-base são no-ops
+  (`pass` / `return []`).
+  - `apps/mobile/src/progression/leaderboard/local_leaderboard_repository.gd` (`class_name
+    LocalLeaderboardRepository`, `extends LeaderboardRepository`) implementa um cache em
+    memória (`_cache: Dictionary`) por `mode`, ordenado por score decrescente, truncado em 20
+    entradas — com o comentário `# In a full implementation, persist to disk here via
+    SaveService`, ou seja, **hoje não persiste em disco**, perde o placar ao fechar o app.
+  - `apps/mobile/src/progression/leaderboard/remote_leaderboard_repository.gd` (`class_name
+    RemoteLeaderboardRepository`, `extends LeaderboardRepository`) já fala com `ApiClient`
+    (`get_leaderboard`/`submit_score` batendo em `/leaderboards/{id}` e `/matches`, alinhado com
+    as rotas de `docs/backend/api-design.md`), mas `get_leaderboard` retorna `[]` de imediato e
+    só popula um `cache` depois via callback assíncrono não mostrado neste arquivo — condizente
+    com o padrão "nunca bloqueia o gameplay" de `docs/architecture/networking.md` §1.
+  - **Isto é relevante porque Play Games Leaderboards (Fase 32) seguirá exatamente este mesmo
+    padrão de repositório**: uma nova implementação (`PlayGamesLeaderboardRepository` ou
+    equivalente) ao lado de `Local*`/`Remote*`, registrada no `ServiceRegistry` do `Bootstrap`
+    (`apps/mobile/src/core/bootstrap.gd`), sem tocar no gameplay que a consome.
+- **`apps/mobile/src/progression/cloud_save_service.gd`** (`class_name CloudSaveService`) é
+  fino: `sync_up(state)` faz `POST /save`, `sync_down()` faz `GET /save`, ambos via `ApiClient`
+  — bate com as rotas `GET/PUT /save` de `docs/backend/api-design.md`. Não há hoje resolução de
+  conflito nem versionamento (`schema_version`/`updated_at`) implementados neste arquivo, apesar
+  de a rota de backend já prever isso. Confirmar contra
+  `docs/google-play/current-requirements.md` (quando existir) qual fase consome isso via Saved
+  Games API — no momento desta tarefa esse documento ainda não existe (produzido em paralelo
+  pelo Plano 02).
+- **`apps/mobile/src/progression/profile_repository.gd`** (`class_name ProfileRepository`,
+  `extends RefCounted`) é a interface-base (`get_profile()`/`save_profile()`, ambos no-op).
+  - `apps/mobile/src/progression/local_profile_repository.gd` (`class_name
+    LocalProfileRepository`) gera um perfil "convidado" em memória (`player_id =
+    "local_user_1"`, `nickname = "Guest_" + str(randi() % 9999)`) na primeira chamada de
+    `get_profile()`; é o serviço realmente registrado hoje em
+    `apps/mobile/src/core/bootstrap.gd` (`"profile_repo": LocalProfileRepository.new()`).
+  - `apps/mobile/src/progression/remote_profile_repository.gd` (`class_name
+    RemoteProfileRepository`) chama `local_cache.load_profile()` dentro de `load_profile()` —
+    **`LocalProfileRepository` não define nenhum método `load_profile()`, só `get_profile()`**;
+    isto é um bug real de nomenclatura já existente no código hoje (não corrigido por este
+    plano de auditoria, per regra de escopo — registrado como débito na Seção 5).
+
+### 2.5 Analytics, API e Fila Offline
+
+- **`apps/mobile/src/platform/analytics/analytics_service.gd`** (`class_name AnalyticsService`)
+  é a interface (`log_event`, `set_user_property`, ambos vazios), conforme
+  `docs/product/analytics-plan.md` ("o gameplay nunca chama um SDK... emite eventos numa
+  interface própria").
+  - `apps/mobile/src/platform/analytics/noop_analytics.gd` (`class_name NoopAnalytics`,
+    `extends AnalyticsService`) é o **MOCK-002** de `.gsd/BACKLOG.md` (comentário
+    `# MOCK-002: Replaced in GSD 18` no próprio arquivo); em debug builds (`OS.is_debug_build()`)
+    só imprime no console.
+  - `apps/mobile/src/platform/analytics/remote_analytics.gd` (`class_name RemoteAnalytics`)
+    faz batch em memória (`batch: Array[Dictionary]`), envia a cada 10 eventos via `POST
+    /telemetry` (bate com a rota de `docs/backend/api-design.md`), e respeita um flag
+    `consent_given` (mas **não persiste a escolha de opt-out** — é uma var em memória, sem
+    ligação visível com `Settings > Privacy` descrito em `docs/product/analytics-plan.md`
+    §Privacidade).
+  - **Nenhum dos eventos do catálogo v1** de `docs/product/analytics-plan.md` (`app_started`,
+    `game_started`, `game_finished`, `territory_captured`, `player_eliminated`, etc.) é emitido
+    pelos arquivos lidos nesta auditoria — só `apps/mobile/src/gameplay/analytics_bridge.gd`
+    (`class_name AnalyticsBridge`) emite 3 eventos reais: `match_started` (com `mode`),
+    `match_ended` (com `cause`, `winner_id`, `duration`) e `runner_eliminated` (com `victim`,
+    `killer`, `cause`) — nomes e propriedades **diferentes** dos nomes do plano de analytics
+    (`game_started`/`game_finished`/`player_eliminated`), o que é uma divergência real entre
+    design e implementação (registrada como débito na Seção 5, relevante para Game Stats na
+    Fase 30, que provavelmente vai querer reaproveitar/mapear esse pipeline).
+- **`apps/mobile/src/platform/api/api_client.gd`** (`class_name ApiClient`) usa `HTTPRequest`
+  puro do Godot (não uma lib HTTP terceira), monta headers com `Authorization: Bearer` e
+  `Idempotency-Key` quando fornecidos (alinhado com `docs/backend/api-design.md` §Princípios
+  "Escritas são idempotentes"), mas **não implementa timeout nem retry com backoff** descritos
+  em `docs/architecture/networking.md` §2 ("Timeout curto (padrão 8 s), 2 retries com backoff
+  exponencial e jitter") — nada disso aparece em `post()`/`get_data()`/`_on_request_completed()`.
+- **`apps/mobile/src/platform/api/offline_queue.gd`** (`class_name OfflineQueue`) persiste uma
+  fila de escritas pendentes (`endpoint`, `method`, `payload`, `idempotency_key`) em
+  `user://offline_queue.json`, carregada em `_ready()` e salva a cada `enqueue()`. **Não tem
+  nenhum mecanismo de drenagem/retry visível neste arquivo** (nenhum método `flush`/`drain`/
+  `process_queue`) — os itens só entram, nunca são explicitamente removidos ou reenviados por
+  este arquivo.
+- **`apps/mobile/src/network/network_transport.gd`** (`class_name NetworkTransport`) é sobre
+  multiplayer ENet (`start_server`/`start_client` com `ENetMultiplayerPeer`), **não** sobre a
+  API HTTP — não tem relação direta com Google Play Games, citado aqui só porque estava na
+  lista de leitura da tarefa e para deixar claro que não é o mesmo sistema que `ApiClient`.
+
+---
+
+## 3. Ativos Reaproveitáveis para a Integração Google
+
+| Sistema existente | Arquivo | Reaproveitável para | Observação |
+|---|---|---|---|
+| `AchievementService` | `apps/mobile/src/progression/achievements/achievement_service.gd` | Sincronização de Play Games Achievements (Fase 29) | Hoje só resolve 3 IDs hardcoded via `match`; precisa de fonte de dados extensível antes de mapear N conquistas para IDs de Achievement do Play Console |
+| `XpService` / `StatsService` | `apps/mobile/src/progression/xp_service.gd`, `apps/mobile/src/progression/stats_service.gd` | Progression Stat / Repetitive Stats de Game Stats (Fase 30) | `StatsService` cobre só 6 dos ~14 campos listados em `docs/design/progression.md` §2; Game Stats provavelmente exige o conjunto completo |
+| `leaderboard/*` (`LeaderboardRepository`, `LocalLeaderboardRepository`, `RemoteLeaderboardRepository`) | `apps/mobile/src/progression/leaderboard/` | Play Games Leaderboards (Fase 32) | Padrão Local/Remote já pronto (per `docs/architecture/networking.md` §1); é o MOCK-001 de `.gsd/BACKLOG.md`, com destino de substituição já apontado para a fase de rede (GSD 16 na numeração antiga) |
+| `CloudSaveService` | `apps/mobile/src/progression/cloud_save_service.gd` | Saved Games API — confirmar contra `docs/google-play/current-requirements.md` no Plano 03 (documento ainda não existe no momento desta tarefa) | Hoje só `POST /save` / `GET /save` sem resolução de conflito nem `schema_version` local |
+| `OfflineQueue` | `apps/mobile/src/platform/api/offline_queue.gd` | Padrão de fila para `pending_game_events` (Fase 27) | Persiste em `user://offline_queue.json`, mas não tem drenagem/retry implementados hoje — reaproveitar a estrutura de persistência, não o fluxo completo |
+| `AnalyticsService` / `RemoteAnalytics` / `AnalyticsBridge` | `apps/mobile/src/platform/analytics/analytics_service.gd`, `apps/mobile/src/platform/analytics/remote_analytics.gd`, `apps/mobile/src/gameplay/analytics_bridge.gd` | Pipeline de telemetria reaproveitável para reportar Game Stats (Fase 30) | Nomes de evento reais (`match_started`/`match_ended`/`runner_eliminated`) divergem do catálogo v1 de `docs/product/analytics-plan.md` (`game_started`/`game_finished`/`player_eliminated`) — precisa reconciliar antes de usar como fonte única para Game Stats |
+| `ProfileRepository` / `LocalProfileRepository` / `RemoteProfileRepository` | `apps/mobile/src/progression/profile_repository.gd`, `apps/mobile/src/progression/local_profile_repository.gd`, `apps/mobile/src/progression/remote_profile_repository.gd` | Vínculo de `player_id` local com `play_games_player_id` (Fase 28) | Mesmo padrão Local/Remote; `Profile` não tem campo de conta Google hoje (ver Seção 2.1) |
+| `Wallet` / `UnlockService` / `Catalog` | `apps/mobile/src/progression/wallet.gd`, `apps/mobile/src/progression/cosmetics/unlock_service.gd`, `apps/mobile/src/progression/cosmetics/catalog.gd` | Rewards do Play Games (moeda/cosmético como recompensa de quest, Fase 31) | `Catalog.load_all()` é hoje um `pass` vazio (mock não rastreado em `.gsd/BACKLOG.md`) — carregamento real de catálogo é pré-requisito antes de conceder rewards por item |
