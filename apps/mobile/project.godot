@@ -14,12 +14,12 @@ config/name="VOLTA"
 config/version="0.1.0"
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.7", "Mobile")
-config/icon="res://assets/raw/sprites/icon_play.jpg"
-config/macos_native_icon="res://assets/raw/sprites/icon_play.jpg"
-config/windows_native_icon="res://assets/raw/sprites/icon_play.jpg"
-config/android_adaptive_icon="res://assets/raw/sprites/icon_play.jpg"
-config/android_adaptive_icon_background="res://assets/raw/sprites/icon_play.jpg"
-config/ios_icon="res://assets/raw/sprites/icon_play.jpg"
+config/icon="res://assets/brand/volta_app_icon.png"
+config/macos_native_icon="res://assets/brand/volta_app_icon.png"
+config/windows_native_icon="res://assets/brand/volta_app_icon.png"
+config/android_adaptive_icon="res://assets/brand/volta_app_icon.png"
+config/android_adaptive_icon_background="res://assets/brand/volta_app_icon.png"
+config/ios_icon="res://assets/brand/volta_app_icon.png"
 
 [autoload]
 

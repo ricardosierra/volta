@@ -19,7 +19,8 @@ Asset sem entrada **reprova o CI**.
 
 | Asset | Autor | Licença | Uso | Fase |
 |---|---|---|---|---|
-| _(nenhum)_ | | | | |
+| `brand/volta_app_icon.png` | Gerado com Google Flow, conta do projeto | Uso próprio; saída gerada por IA | ícone da aplicação | Store kit |
+| `store/volta_feature_graphic.png` | Gerado com Google Flow, conta do projeto | Uso próprio; saída gerada por IA | feature graphic da loja | Store kit |
 
 ## Bibliotecas
 

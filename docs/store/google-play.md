@@ -14,5 +14,5 @@ Features:
 ## Assets Checklist
 - [x] Icon (512x512 PNG)
 - [x] Feature Graphic (1024x500 PNG)
-- [x] 4+ Phone Screenshots
-- [x] 4+ Tablet Screenshots
+- [ ] 4+ Phone Screenshots
+- [ ] 4+ Tablet Screenshots
