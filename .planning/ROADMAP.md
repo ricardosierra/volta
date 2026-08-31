@@ -37,7 +37,7 @@ de descoberta.
 - [x] **Phase 23: Production Readiness** — QA, regressão, migração de save, rollback (completed 2026-08-26)
 - [x] **Phase 24: Launch** — versão, changelog, tag, rollout gradual, monitoramento (completed 2026-08-26)
 - [x] **Phase 25: Post Launch** — balanceamento por dados, monetização, temporadas, conteúdo (completed 2026-08-26)
-- [ ] **Phase 26: Google Play Discovery - Auditoria de Gamificação e Sidekick** — auditoria de compatibilidade, requisitos oficiais e arquitetura de integração
+- [x] **Phase 26: Google Play Discovery - Auditoria de Gamificação e Sidekick** — auditoria de compatibilidade, requisitos oficiais e arquitetura de integração (completed 2026-08-31)
 - [ ] **Phase 27: Gamification Foundation - Eventos de Domínio e Integração** — Gamification Engine, eventos de domínio, feature flags, fila offline
 - [ ] **Phase 28: Play Games Services v2 e Autenticação** — PGS v2, sign-in automático, idempotência, fallback offline
 - [ ] **Phase 29: Sistema de Conquistas e Progression Loop** — conquistas ricas, XP, níveis e loop de progressão
@@ -445,12 +445,12 @@ Plans:
   2. O arquivo `docs/google-play/current-requirements.md` mapeia todos os requisitos oficiais vigentes para Sidekick e Level Up.
   3. A arquitetura de integração (Gameplay -> Domain Events -> Gamification Engine -> Integração Google) foi validada para o projeto.
   4. Nenhuma linha de código final foi alterada antes da auditoria completa.
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans executed (completed 2026-08-31)
 
 Plans:
 - [x] 01-inventario-existente-PLAN.md — Auditoria do estado atual: arquitetura, Event Bus, loop de partida, gamificação já existente (Fases 10/11/14/18), backend/rede, Android/Play, débito técnico e riscos preliminares
 - [x] 02-requisitos-google-PLAN.md — Pesquisa ao vivo dos requisitos oficiais vigentes do Google Play Games (PGS v2, Recall, Saved Games, Play Integrity, Achievements, Leaderboards, Game Stats, Play Points, Play Pass, Sidekick, Level Up, LiveOps/Quests, Rewards)
-- [ ] 03-arquitetura-integracao-PLAN.md — Arquitetura de integração Gameplay → Domain Events → Gamification Engine → Google validada, mapeamento fase-a-fase (27–38), registro de riscos consolidado e parecer go/no-go
+- [x] 03-arquitetura-integracao-PLAN.md — Arquitetura de integração Gameplay → Domain Events → Gamification Engine → Google validada, mapeamento fase-a-fase (27–38), registro de riscos consolidado e parecer go/no-go (Go para a Fase 27)
 
 ### Phase 27: Gamification Foundation - Eventos de Domínio e Integração
 **Goal**: Criar o Event Bus de gameplay e a infraestrutura básica para receber a gamificação sem acoplamento forte.

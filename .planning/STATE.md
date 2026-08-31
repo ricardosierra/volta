@@ -4,17 +4,17 @@ milestone: v0.1
 milestone_name: milestone
 current_phase: 26
 current_phase_name: Google Play Discovery - Auditoria de Gamificacao e Sidekick
-current_plan: 2
-status: in_progress
-stopped_at: "Completed 26-02-requisitos-google-PLAN.md (current-requirements.md 14 secoes)"
-last_updated: "2026-08-31T20:47:00.000Z"
+current_plan: 3
+status: complete
+stopped_at: "Completed 26-03-arquitetura-integracao-PLAN.md (architecture.md + compatibility-audit.md secoes 7-8, parecer Go); Fase 26 encerrada, Fase 27 aguarda planejamento (Plans: TBD)"
+last_updated: "2026-08-31T21:03:13Z"
 last_activity: 2026-08-31
 progress:
   total_phases: 38
-  completed_phases: 25
+  completed_phases: 26
   total_plans: 107
-  completed_plans: 106
-  percent: 66
+  completed_plans: 107
+  percent: 68
 ---
 
 # Project State
@@ -24,27 +24,27 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-24)
 
 **Core value:** Arcade mobile de conquista territorial em partidas de 90–180 s — sair da zona segura, desenhar o arco, fechar a volta e capturar — com controle que responde, bots com intenção legível e monetização que nunca vende vantagem.
-**Current focus:** Phase 26 — Google Play Discovery (auditoria de gamificação e Sidekick)
+**Current focus:** Phase 26 concluída (Google Play Discovery). Phase 27 (Gamification Foundation) aguarda planejamento antes de ser executada.
 
 ## Current Position
 
-Current Phase: 26
+Current Phase: 26 (completa — 3/3 planos)
 Current Phase Name: Google Play Discovery - Auditoria de Gamificação e Sidekick
 Total Phases: 38
-Current Plan: 2
+Current Plan: 3
 Total Plans in Phase: 3
-Status: In progress
+Status: Complete
 Last Activity: 2026-08-31
 
-Progress: [██████░░░░] 66%
+Progress: [███████░░░] 68%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 2
-- Average duration: 35min
-- Total execution time: 70min
+- Total plans completed: 3
+- Average duration: 38min
+- Total execution time: 115min
 
 **By Phase:**
 
@@ -63,6 +63,7 @@ Progress: [██████░░░░] 66%
 | Phase 01 P11 | 15min | 2 tasks | 2 files |
 | Phase 26 P01 | 55min | 3 tasks | 1 files |
 | Phase 26 P02 | 50min | 3 tasks | 1 files |
+| Phase 26 P03 | 45min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -107,6 +108,10 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 - [Phase 26-02]: achados de data: Game Stats UI publica ("You tab") so vira GA em setembro/2026 (hoje still beta/teste); Play Games Rewards so entra em vigor em 01/09/2026 (1 dia apos a pesquisa); Level Up tem rate card com rollout regional faseado a partir de 30/set/2026
 - [Phase 26-02]: Play Points e Play Pass confirmados invite-only/curated (allowlist e "express interest", respectivamente) — Fase 31/33 nao podem presumir acesso automatico; FAQ oficial de Play Pass tem informacao de disponibilidade regional aparentemente desatualizada, registrada como Nao confirmado
 - [Phase 26-02]: export Android do VOLTA usa gradle_build/use_gradle_build=false — nao ha build.gradle customizado hoje para adicionar dependencies Java de PGS v2/Recall/Play Integrity; pre-requisito tecnico transversal para o Plano 03 decidir
+- [Phase 26-03]: arquitetura validada — Gamification Engine mora em progression/gamification/ (novo), nunca abaixo de core/; gameplay/territory/runner/ai nunca chamam SDK Google direto, so emitem via EventBus (apps/mobile/src/core/event_bus.gd), mesmo a regra de camadas permitindo gameplay->platform diretamente (decisao de arquitetura, nao lacuna da regra)
+- [Phase 26-03]: OfflineQueue (apps/mobile/src/platform/api/offline_queue.gd) confirmado sem flush/drain hoje; fila nova pending_game_events da Fase 27 precisa suprir isso, nao so copiar o padrao existente
+- [Phase 26-03]: parecer final Go para a Fase 27, com 4 bloqueadores nomeados (Gradle build customizado -> Fase 28; Play Points/Play Pass invite-only -> Fase 31; ausencia de Quests API -> Fase 33; achievements badge de tracao -> Fase 34) e H-02 mapeada para bloquear Fases 34/38, nao a 27 — Fase 26 encerrada (3/3 planos), docs/google-play/compatibility-audit.md completo (secoes 1-8) e docs/google-play/architecture.md criado
+- [Phase 26-03]: gsd-tools `state advance-plan` tambem corrompe STATE.md neste repo (zerou completed_phases para 2 e completed_plans para 14 ao rodar) — adicionado a lista de comandos a evitar; STATE.md/ROADMAP.md seguem editados a mao
 
 ### Roadmap Evolution
 - Phase 26 added: Google Play Discovery - Auditoria de Gamificação e Sidekick
@@ -138,5 +143,5 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 ## Session Continuity
 
 Last session: 2026-08-31
-Stopped at: Completed 26-02-requisitos-google-PLAN.md; docs/google-play/current-requirements.md com 14 secoes (13 superficies + resumo de disponibilidade) escrito; plano 03 (arquitetura-integracao) da Fase 26 segue pendente (depende de 01 e 02, ambos ja concluidos)
-Resume file: .planning/phases/26-google-play-discovery-auditoria-de-gamifica-o-e-sidekick/26-02-SUMMARY.md
+Stopped at: Completed 26-03-arquitetura-integracao-PLAN.md; docs/google-play/architecture.md criado (5 secoes) e docs/google-play/compatibility-audit.md completo (secoes 1-8, parecer Go). Fase 26 encerrada (3/3 planos). Fase 27 (Gamification Foundation) ainda nao tem PLAN.md — precisa passar por /gsd:plan-phase antes de ser executada.
+Resume file: .planning/phases/26-google-play-discovery-auditoria-de-gamifica-o-e-sidekick/26-03-SUMMARY.md
