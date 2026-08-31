@@ -1,10 +1,11 @@
-[gd_resource type="Resource" format=3 uid="uid://surge_balance"]
+[gd_resource type="Resource" script_class="SurgeBalance" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/core/config/surge_balance.gd" id="1"]
 
 [resource]
-resource_name = "Surge Balance"
-metadata/max_level = 5
-metadata/base_mult = 1.0
-metadata/level_mult_step = 0.5
-metadata/decay_rate_per_sec = 0.5
-metadata/seal_boost = 1.0
-metadata/break_boost = 2.0
+script = ExtResource("1")
+surge_step = 0.15
+surge_max_level = 6
+seal_chain_window = 8.0
+break_chain_window = 10.0
+surge_decay_interval = 8.0

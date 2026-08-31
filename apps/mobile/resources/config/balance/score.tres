@@ -1,8 +1,22 @@
-[gd_resource type="Resource" format=3 uid="uid://score_balance"]
+[gd_resource type="Resource" script_class="ScoreBalance" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/core/config/score_balance.gd" id="1"]
 
 [resource]
-resource_name = "Score Balance"
-metadata/base_seal_mult = 10
-metadata/steal_mult = 15
-metadata/break_base = 500
-metadata/survival_tick = 1
+script = ExtResource("1")
+cell_value = 4
+stolen_cell_mult = 1.6
+risk_divisor = 150.0
+risk_cap = 1.5
+break_base = 600
+break_streak_step = 300
+break_streak_cap = 5
+survival_per_second = 5
+territory_weight = 8000
+largest_seal_weight = 4000
+placement_bonus_1st = 2500
+placement_bonus_2nd = 1200
+placement_bonus_3rd = 600
+placement_bonus_other = 0
+victory_mult = 1.25
+push_mult = 1.25
