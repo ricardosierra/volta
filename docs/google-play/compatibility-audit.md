@@ -394,3 +394,76 @@ não tem nenhum ponto de saída assíncrono; `step(delta)` e `_physics_process` 
 | A engine real (Godot 4.7.2) diverge da documentada em `CLAUDE.md` e `docs/mobile/android.md` (4.3); um plugin de terceiros para Play Games pode ter sido testado só contra uma faixa de versão do Godot e não contra 4.7.x | Médio — incompatibilidade de plugin só descoberta tarde | Baixa a Média (4.7.x é recente; o próprio projeto migrou por necessidade de compatibilidade com CI) | Confirmar compatibilidade do plugin escolhido na Fase 28 com Godot 4.7.2 antes de comprometer a arquitetura da integração |
 | Ficha de loja (`docs/store/google-play.md`) está em inglês e incompleta (sem screenshots, sem qualquer menção a Play Games Services); publicar features de gamificação sem atualizar a ficha pode gerar rejeição de review por descrição inconsistente com o app | Médio — atraso de release na Fase 38 | Média | Atualizar `docs/store/google-play.md` como parte do checklist de release de `docs/deployment/release-process.md`, antes do rollout da Fase 38 |
 | `StatsService` real cobre só 6 dos ~14 campos de estatística descritos em `docs/design/progression.md` §2; Game Stats do Play pode esperar um conjunto de "Repetitive/Cumulative Stats" mais rico do que o hoje disponível | Médio — retrabalho em `StatsService` na Fase 30 | Alta (a lacuna já está confirmada nesta auditoria) | Priorizar o fechamento dos campos de estatística faltantes como pré-requisito da Fase 30, não em paralelo |
+
+---
+
+## 7. Registro de Riscos Consolidado
+
+> Consolida os riscos preliminares da Seção 6 deste documento (Plano 01), os riscos de
+> disponibilidade extraídos da Seção 14 ("Resumo de Disponibilidade") de
+> [`current-requirements.md`](./current-requirements.md) (Plano 02), e os riscos arquiteturais
+> identificados na Seção 2 de [`architecture.md`](./architecture.md) (Plano 03). Nenhum risco
+> aqui é novo em relação aos três documentos-fonte — esta tabela apenas os reúne num único
+> lugar, com fase responsável explícita, para servir de insumo ao parecer da Seção 8.
+
+| Risco | Origem | Impacto | Probabilidade | Mitigação | Fase Responsável |
+|---|---|---|---|---|---|
+| Integração de um SDK/plugin Android de Play Games Services v2 sem projeto Gradle customizado versionado (`gradle_build/use_gradle_build=false` hoje em `apps/mobile/export_presets.cfg` e `tools/ci/export_presets.template.cfg`) pode exigir migrar todo o export Android para "Gradle build" custom | compatibility-audit.md §6 | Alto — pode atrasar toda a Fase 28 e, por extensão, tudo que depende dela (29, 31, 35) | Média | Validar cedo, na própria Fase 28, se o plugin oficial do Play Games para Godot exige Gradle custom antes de comprometer o cronograma das Fases 29-38 | Fase 28 |
+| `EventBus` atual tem limite de 5 emissões/seg por sinal em debug (`MAX_EMISSIONS_PER_SECOND`); eventos de domínio de gameplay frequentes (ex.: `SealCompleted`) poderiam, em tese, estourar esse limite se um jogador fechar Seals muito rápido em sequência | compatibility-audit.md §6 (risco original) / architecture.md §2 (análise de que o risco real é baixo, dado o custo físico de um Seal medido em `docs/performance/territory-benchmarks.md`) | Baixo a Médio — na pior hipótese, ruído de `push_warning` em debug, nunca falha de teste | Baixa (arquitetura já valida que o teto por sinal, não global, absorve o caso normal de jogo) | Tratar qualquer `push_warning` de limite excedido como sinal de telemetria a observar na Fase 27, não silenciar subindo o teto sem medir | Fase 27 |
+| Nenhuma checagem de CI hoje impede `await` em `gameplay/`/`territory/`/`runner/`/`ai/` (regra 10 de `CLAUDE.md` §3); a pressão de "integrar rápido com Google" aumenta a chance de alguém colar uma chamada assíncrona de SDK direto num destes diretórios | compatibility-audit.md §6 | Alto — quebraria o determinismo da simulação, pilar central do projeto | Média | Fechar a lacuna de CI antes ou junto da Fase 27; a arquitetura da Seção 1-2 de `architecture.md` já torna a violação fisicamente difícil (só há `Signal.emit()` disponível), mas a checagem automatizada continua pendente | Fase 27 |
+| A engine real (Godot 4.7.2, migrada do 4.3 no commit `477fd96`) diverge da documentada em `CLAUDE.md` e `docs/mobile/android.md` (ainda citam 4.3); um plugin de terceiros para Play Games pode ter sido testado só contra uma faixa de versão do Godot e não contra 4.7.x | compatibility-audit.md §6 | Médio — incompatibilidade de plugin só descoberta tarde | Baixa a Média | Confirmar compatibilidade do plugin escolhido na Fase 28 com Godot 4.7.2 antes de comprometer a arquitetura da integração | Fase 28 |
+| Ficha de loja (`docs/store/google-play.md`) está em inglês e incompleta (sem screenshots, sem qualquer menção a Play Games Services, Sidekick, Achievements ou Leaderboards) | compatibility-audit.md §6 | Médio — atraso de release na Fase 38 | Média | Atualizar `docs/store/google-play.md` como parte do checklist de release de `docs/deployment/release-process.md`, antes do rollout da Fase 38 | Fase 38 |
+| `StatsService` real cobre só 6 dos ~14 campos de estatística descritos em `docs/design/progression.md` §2; Game Stats do Play pode esperar um conjunto mais rico de "Repetitive/Cumulative Stats" do que o hoje disponível | compatibility-audit.md §6 | Médio — retrabalho em `StatsService` na Fase 30 | Alta (a lacuna já está confirmada nesta auditoria) | Priorizar o fechamento dos campos de estatística faltantes como pré-requisito da Fase 30, não em paralelo | Fase 30 |
+| Play Points é invite-only/allowlist (*"Selected developers are invited"*); Brasil está entre os 36 mercados ativos, mas o acesso depende de convite fora do controle do VOLTA | current-requirements.md §14 | Alto — se o convite nunca chegar, todo o desenho de Play Points da Fase 31 vira código morto | Média (elegibilidade geográfica confirmada, elegibilidade de convite incerta) | Desenhar a Fase 31 para que Play Points seja um bônus oportunista, nunca uma dependência rígida do loop de recompensas | Fase 31 |
+| Play Pass depende de curadoria do Google (*"express interest"*, não auto-serviço); a própria FAQ oficial consultada tem um trecho aparentemente desatualizado sobre disponibilidade regional ("initially only available in the US"), marcado como Não confirmado | current-requirements.md §14 | Médio — expectativa de receita/alcance via Play Pass pode não se concretizar | Média | Tratar como oportunidade, não como escopo; re-checar diretamente com o Play Console Help antes de comprometer qualquer prazo da Fase 31/33 | Fase 31 |
+| Não existe "Quests API" nem "LiveOps API" do Google como tal (4 URLs candidatas retornaram 404); Quests/Leagues/Social Challenges são mecânicas server-side do Google orquestradas sobre Achievements API + Game Stats API + Play Games Rewards, com processo de "enrolled Quest developer" não documentado publicamente | current-requirements.md §14 | Alto — desenhar a Fase 33 como se existisse uma "Quests API" a integrar seria arquitetura sobre premissa falsa | Alta (já confirmado por tentativa direta de acesso às fontes) | Fase 33 continua usando o backend próprio de seasons/quests do VOLTA (`SeasonService`, Fase 25); a integração Google se limita a alimentar Achievements/Game Stats/Rewards corretamente | Fase 33 |
+| UI pública de Game Stats ("You tab" do Gamer Profile) só entra em produção em setembro/2026, segundo a própria doc oficial consultada em 2026-08-31 — hoje é "apenas para fins de teste" | current-requirements.md §14 | Baixo — não é bloqueador técnico, mas muda a expectativa de "quando o jogador vê isso na prática" | Alta (data já publicada pela própria fonte) | Fase 30 integra e testa a API imediatamente, mas comunica internamente que a visibilidade ao jogador final só chega em set/2026 | Fase 30 |
+| Play Games Rewards só entra em vigor (criação/remoção/teste completo) a partir de 01/09/2026, um dia após a pesquisa do Plano 02 | current-requirements.md §14 | Baixo — não é bloqueador técnico, apenas de calendário de teste | Alta (data já confirmada e iminente) | Fase 31 pode integrar o fluxo de granting antes dessa data, mas não deve prometer teste end-to-end completo antes dela | Fase 31 |
+| Visibilidade de conquistas bloqueadas no Sidekick para todos os jogadores exige o "achievements badge" (mínimo de 100 jogadores únicos chamando a Achievements API nos últimos 30 dias) — dependência de tração real de usuários, não de código | current-requirements.md §14 | Médio — sem tração, o Sidekick da Fase 34 mostra só as conquistas já desbloqueadas pelo próprio jogador, não o catálogo completo | Média a Alta (depende do sucesso de lançamento das Fases 29-30, fora do controle direto da engenharia) | Monitorar a métrica de jogadores únicos/30 dias chamando a Achievements API como parte do plano de rollout da Fase 38; não tratar o badge como certo no planejamento de UX da Fase 34 | Fase 34 |
+
+---
+
+## 8. Parecer Go/No-Go
+
+**Decisão: Go — prosseguir com a integração faseada (Fases 27-38), com três condições
+registradas explicitamente para não serem esquecidas ao longo do caminho.**
+
+**(a) Bloqueadores nomeados, com superfície e fase afetada:**
+
+1. **Gradle build customizado ausente** (`gradle_build/use_gradle_build=false` em
+   `apps/mobile/export_presets.cfg` e `tools/ci/export_presets.template.cfg`) bloqueia
+   tecnicamente PGS v2 Sign-In, Recall API e Play Integrity API — todas exigem uma dependency
+   Java/Kotlin que não tem onde entrar no export "simples" do Godot atual. Afeta diretamente a
+   **Fase 28** (sign-in) e, por consequência, tudo que depende dela (29, 31, 35). Este é o
+   único bloqueador desta lista que é puramente técnico e está inteiramente sob controle da
+   engenharia — deve ser resolvido no início da Fase 28, antes de qualquer código de
+   integração ser escrito.
+2. **Play Points e Play Pass são invite-only/curated** (superfícies Google, Fase 31/33) — a
+   Fase 31 não pode prometer essas superfícies como entregáveis certos; o desenho já as trata
+   como bônus oportunista em `architecture.md` §4 (flag `google_play_points` com default
+   `false`, "hard gate").
+3. **Não existe uma "Quests API" do Google** — a Fase 33 não pode ser desenhada contra uma API
+   que não existe; `architecture.md` §5 já registra que a Fase 33 continua sobre o
+   `SeasonService` próprio do VOLTA.
+4. **O "achievements badge" do Sidekick (100 jogadores únicos/30 dias) é uma dependência de
+   tração**, não de código — a Fase 34 pode entregar toda a integração correta e ainda assim o
+   Sidekick não mostrar o catálogo completo de conquistas até o jogo atingir esse volume real
+   de jogadores.
+
+**(b) Dependências humanas já conhecidas no projeto:** a decisão **H-02** registrada em
+`.planning/STATE.md` ("Contas Google Play e Apple Developer são decisão humana") não bloqueia
+o início da Fase 27 (que é puramente interna — EventBus, Gamification Engine, feature flags,
+fila offline, nenhuma chamada real ao Google) nem a maior parte do trabalho técnico das Fases
+28-33 (que podem ser desenvolvidas e testadas em modo debug/sandbox). H-02 **bloqueia**
+diretamente as fases de publicação e exposição pública: a **Fase 34** (Sidekick precisa do app
+publicado em AAB no Play Console real para o toggle de ativação funcionar) e a **Fase 38**
+(rollout de produção não acontece sem a conta de desenvolvedor Google Play já configurada,
+incluindo o Game Services Project ID citado em `current-requirements.md` §1). Nenhuma decisão
+humana nova foi descoberta por este plano além da já registrada.
+
+**(c) Fechamento:** o registro de riscos da Seção 7 não contém nenhum item que impeça o início
+da Fase 27 — o único bloqueador técnico puro (Gradle build) tem mitigação clara e prazo
+definido (início da Fase 28), as dependências de convite/curadoria (Play Points, Play Pass,
+Quests) já estão desenhadas como opcionais na arquitetura, e a dependência de tração
+(achievements badge) é um risco de produto a monitorar, não um bloqueador de engenharia.
+**Parecer: Go para a Fase 27.**
