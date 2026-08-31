@@ -43,6 +43,7 @@ services/api/.phpunit.result.cache
 
 # ── Ferramentas / relatórios ─────────────────────────────────────────────────
 tools/**/out/
+graphify-out/
 .reports/
 coverage/
 *.log
