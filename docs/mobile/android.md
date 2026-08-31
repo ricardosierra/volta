@@ -12,7 +12,7 @@ Plataforma **primária**. Se algo funciona no iOS mas não no Android, é bug de
 | Formato | **AAB** para o Play; APK só para teste interno |
 | Renderer | `Mobile` (Vulkan quando disponível) com fallback `Compatibility` (GLES3) |
 | Orientação | portrait travado |
-| Package | `com.ricardosierra.volta` |
+| Package | `com.sierratecnologia.volta` |
 
 ## Permissões
 

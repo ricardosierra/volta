@@ -83,7 +83,7 @@ não um slogan: um PR que melhora receita e piora clareza é rejeitado.
 > ferramentas de software homônimas fora do setor de jogos; a decisão de manter ou renomear
 > deve acontecer **antes de GSD 21**, não depois.
 
-Nome interno de pacote: `com.ricardosierra.volta` (trocável até GSD 21 sem custo técnico).
+Nome interno de pacote: `com.sierratecnologia.volta`.
 
 ## 9. Escopo do primeiro release (`v0.1.0`)
 

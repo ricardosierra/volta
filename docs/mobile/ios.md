@@ -11,7 +11,7 @@ Plataforma secundária no cronograma, **não** na qualidade.
 | Arquitetura | arm64 |
 | Renderer | `Mobile` (Metal) |
 | Orientação | portrait travado (iPhone); portrait no iPad também, com layout adaptado |
-| Bundle ID | `com.ricardosierra.volta` |
+| Bundle ID | `com.sierratecnologia.volta` |
 
 ## Preparação (GSD 22)
 

@@ -4,6 +4,6 @@
 set -uo pipefail
 cd "$(dirname "$0")/../.." || exit 1
 
-PACKAGE_NAME="${ANDROID_PACKAGE_NAME:-com.ricardosierra.volta}"
+PACKAGE_NAME="${ANDROID_PACKAGE_NAME:-com.sierratecnologia.volta}"
 sed "s|__ANDROID_PACKAGE_NAME__|$PACKAGE_NAME|g" tools/ci/export_presets.template.cfg > apps/mobile/export_presets.cfg
 echo "OK: apps/mobile/export_presets.cfg gerado (package: $PACKAGE_NAME)"
