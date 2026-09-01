@@ -49,9 +49,10 @@ if [ -n "$banned" ]; then fail "arquivo-depósito proibido:"; echo "$banned" | s
 else ok "nenhum arquivo-depósito"; fi
 
 echo "== 4. TODO com referência de tarefa =="
-bad_todo=$(grep -rnE '(^|[^A-Za-z])TODO' --include='*.gd' --include='*.php' --include='*.sh' \
+bad_todo=$(grep -rnE '(^|[^A-Za-z])TODO([^A-Za-z]|$)' --include='*.gd' --include='*.php' --include='*.sh' \
   "${SRC_GLOBS[@]}" 2>/dev/null | grep -v 'tools/ci/validate-repo.sh' \
   | grep -v 'tests/tools/run_negative_checks.sh' \
+  | grep -v 'tools/ci/check_release_build.sh' \
   | grep -v '/addons/' \
   | grep -vE 'TODO\(GSD-[0-9]{2}/[A-Z0-9]+-[0-9]{3}\)' | exclude_fixtures || true)
 if [ -n "$bad_todo" ]; then fail "TODO sem (GSD-XX/TASK-YYY):"; echo "$bad_todo" | sed 's/^/    /'

@@ -32,6 +32,11 @@ func step(delta: float) -> void:
 var ai_scheduler: AIScheduler
 var runners: Array[Runner] = []
 
+## Emitido quando um novo Runner passa a existir na partida. gameplay/ não conhece a
+## camada de apresentação (CLAUDE.md §5, docs/architecture/overview.md §1) — quem cria a
+## RunnerView é RunnerViewSpawner, ouvindo este sinal (ver runner_view_spawner.gd).
+signal runner_spawned(runner: Runner)
+
 func setup_match(mode_config: Resource) -> void:
 	ai_scheduler = AIScheduler.new()
 	add_child(ai_scheduler)
@@ -49,14 +54,8 @@ func setup_match(mode_config: Resource) -> void:
 		var profile = BotProfile.new() # Default for now
 		var brain = BotBrain.new(profile)
 		ai_scheduler.register_bot(r, brain)
-		
-		# Visualization
-		if ClassDB.class_exists("RunnerView"):
-			var view = load("res://src/presentation/runner_view.gd").new()
-			add_child(view)
-			view.position = r.state.position
-			
-			# If catalog/loadout are available via Autoload, we would apply cosmetics here
+
+		runner_spawned.emit(r)
 
 	# A match is created from the menu, so advance the gameplay FSM through its
 	# loading/countdown states before the fixed-step simulation starts.
