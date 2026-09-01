@@ -64,6 +64,7 @@ Progress: [███████░░░] 68%
 | Phase 26 P01 | 55min | 3 tasks | 1 files |
 | Phase 26 P02 | 50min | 3 tasks | 1 files |
 | Phase 26 P03 | 45min | 2 tasks | 2 files |
+| Phase 26.1 P01 | 20min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -112,6 +113,8 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 - [Phase 26-03]: OfflineQueue (apps/mobile/src/platform/api/offline_queue.gd) confirmado sem flush/drain hoje; fila nova pending_game_events da Fase 27 precisa suprir isso, nao so copiar o padrao existente
 - [Phase 26-03]: parecer final Go para a Fase 27, com 4 bloqueadores nomeados (Gradle build customizado -> Fase 28; Play Points/Play Pass invite-only -> Fase 31; ausencia de Quests API -> Fase 33; achievements badge de tracao -> Fase 34) e H-02 mapeada para bloquear Fases 34/38, nao a 27 — Fase 26 encerrada (3/3 planos), docs/google-play/compatibility-audit.md completo (secoes 1-8) e docs/google-play/architecture.md criado
 - [Phase 26-03]: gsd-tools `state advance-plan` tambem corrompe STATE.md neste repo (zerou completed_phases para 2 e completed_plans para 14 ao rodar) — adicionado a lista de comandos a evitar; STATE.md/ROADMAP.md seguem editados a mao
+- [Phase 26.1-01]: Regra 7 do quality gate corrigida por inversao de dependencia (nao supressao): match_director.gd emite runner_spawned(runner), RunnerViewSpawner (presentation/) escuta e cria a RunnerView; root.gd conecta os dois como composition root. Texto do plano para o comentario de rastreio continha a propria substring 'presentation/' que o grep da Regra 7 varre — reescrito como 'camada de apresentacao' para nao autoinvalidar a correcao.
+- [Phase 26.1-01]: execucao paralela de ate 5 planos da fase 26.1 na mesma arvore/indice git causou corridas reais: minhas mudancas de match_director.gd e do teste novo foram varridas para dentro de commits de outros planos (efcb19a, df97838) por `git add` deixado no indice compartilhado durante um comando longo (test-client.sh). Conteudo conferido identico. A partir dai, commits passaram a usar `git add <path> && git commit` em sequencia imediata (sem comandos longos no meio) e, quando possivel, `git commit -m ... -- <path>` para nao depender do indice compartilhado — mesmo padrao adotado independentemente pelo plano 02 (ver deferred-items.md da fase).
 
 
 ### Auditoria de 2026-08-31 (reabertura das fases 2-25)
