@@ -68,6 +68,7 @@ Progress: [███████░░░] 68%
 | Phase 26.1 P02 | 17min | 2 tasks | 2 files |
 | Phase 26.1 P04 | 8min | 2 tasks | 17 files |
 | Phase 26.1 P05 | 17min | 4 tasks | 3 files |
+| Phase 26.1 P03 | 25min | 3 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -124,6 +125,8 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 - [Phase 26.1-05]: regra 4 do validate-repo.sh ganhou limite de palavra a direita `TODO([^A-Za-z]|$)` — deixa de casar TODOS/TODOs em portugues e a string literal do proprio check_release_build.sh (agora excluido por caminho), continua pegando TODO real (provado por prova negativa: arquivo temporario com TODO sem referencia de tarefa foi reprovado, depois removido).
 - [Phase 26.1-05]: bug real adicional achado ao corrigir RemoteProfileRepository.load_profile() -> get_profile(): `UUID.v4()` (usado em save_profile() para idempotency_key) referenciava uma classe que nunca existiu no projeto, quebrando a compilacao do arquivo inteiro (confirmado com `godot --check-only`). Corrigido com um gerador de UUID v4 local ao proprio arquivo (sem criar classe/arquivo compartilhado, fora do escopo do plano). O mesmo bug existe em remote_leaderboard_repository.gd (fora do files_modified de qualquer plano desta fase) — registrado em deferred-items.md, nao corrigido.
 - [Phase 26.1-05]: confirmando o padrao de corrida de indice ja descrito pelos planos 01/02: `git add tools/ci/validate-repo.sh` + `git commit -m` sem pathspec (Task 1) varreu match_director.gd (plano 01) e test_seal_solver.gd (plano 02) para dentro de efcb19a. Conteudo conferido intacto para os tres; nao reescrevi historico (ja havia commit de outro plano em cima). A partir da Task 3 usei `git commit -m ... -- <caminho>` isolado em cada commit.
+- [Phase 26.1-03]: match_screen.gd (867 linhas, 3 funcoes >50) decomposto em MatchHudBuilder (fabrica de HUD/overlay) e MatchFieldRenderer (desenho de campo), ambos RefCounted so com static func, sem estado proprio — parent/canvas e Dictionary de estado recebidos por parametro para nao mudar nenhum valor/cor/offset/ordem de add_child ou draw_*; arquivo cai para 588 linhas. main_menu_screen.gd: on_pushed() (55 linhas) dividido em _build_title_block()/_build_play_controls(). _hud_header_top()/_safe_bottom_inset() preservados dentro de MatchScreen de proposito (bug pre-existente fora do escopo de QLT-06, ja registrado pela auditoria da Fase 26).
+- [Phase 26.1-03]: mesma corrida de indice git compartilhado ja descrita pelos planos 01/02/05: `git add` dos meus 3 arquivos da Task 2 tambem capturou uma exclusao (D) de test_match_director_runner_spawned.gd staged pelo plano 01 — corrigido com `git restore --staged <path>` nos dois caminhos (arquivo .gd e .uid) antes de commitar, sem tocar no worktree. Confirmado por `git diff --cached --name-status` antes de cada commit.
 
 
 ### Auditoria de 2026-08-31 (reabertura das fases 2-25)
