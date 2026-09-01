@@ -2,19 +2,19 @@
 gsd_state_version: 1.0
 milestone: v0.1
 milestone_name: milestone
-current_phase: 26.1
-current_phase_name: Correcao do Quality Gate
+current_phase: 27
+current_phase_name: BLOQUEADA - religacao da fundacao pendente
 current_plan: 0
 status: blocked
-stopped_at: "Auditoria 2026-08-31 reabriu as fases 2-25: codigo entregue nao esta ligado (bootstrap registra 6 de 32 servicos; SealSolver sem chamador). Fases 27-38 bloqueadas ate a fundacao existir."
+stopped_at: "Fase 26.1 concluida em 2026-09-01: validate-repo.sh verde nas 10 regras. Fases 27-38 seguem BLOQUEADAS: a fundacao das fases 2-25 continua desligada (bootstrap registra 6 de 32 servicos; SealSolver e match_ended sem ligacao). Proximo passo e uma fase de religacao, nao a 27."
 last_updated: "2026-08-31T21:03:13Z"
 last_activity: 2026-08-31
 progress:
   total_phases: 38
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 107
-  completed_plans: 14
-  percent: 5
+  completed_plans: 20
+  percent: 8
 ---
 
 # Project State

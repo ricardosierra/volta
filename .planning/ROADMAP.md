@@ -45,7 +45,7 @@ de descoberta.
 - [ ] **Phase 24: Launch** — versão, changelog, tag, rollout gradual, monitoramento (auditado 2026-08-31: não confiável — publicação afirmada sem lastro)
 - [ ] **Phase 25: Post Launch** — balanceamento por dados, monetização, temporadas, conteúdo (auditado 2026-08-31: não confiável — 'dados reais' inexistentes)
 - [x] **Phase 26: Google Play Discovery - Auditoria de Gamificação e Sidekick** — auditoria de compatibilidade, requisitos oficiais e arquitetura de integração (completed 2026-08-31)
-- [ ] **Phase 26.1: Correção do Quality Gate** — zerar validate-repo.sh: camada, config, tamanho, placeholder e bug do RemoteProfileRepository
+- [x] **Phase 26.1: Correção do Quality Gate** — zerar validate-repo.sh: camada, config, tamanho, placeholder e bug do RemoteProfileRepository (completed 2026-09-01)
 - [ ] **Phase 27: Gamification Foundation - Eventos de Domínio e Integração** — Gamification Engine, eventos de domínio, feature flags, fila offline
 - [ ] **Phase 28: Play Games Services v2 e Autenticação** — PGS v2, sign-in automático, idempotência, fallback offline
 - [ ] **Phase 29: Sistema de Conquistas e Progression Loop** — conquistas ricas, XP, níveis e loop de progressão
