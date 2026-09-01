@@ -11,6 +11,6 @@ name = "Default Runner"
 description = "The classic neon runner."
 price_sparks = 0
 price_prisms = 0
-texture_path = "res://assets/raw/sprites/runner.jpg"
+texture_path = "res://assets/sprites/runner_default.png"
 shader_path = "res://assets/shaders/runner.gdshader"
 vfx_path = ""
