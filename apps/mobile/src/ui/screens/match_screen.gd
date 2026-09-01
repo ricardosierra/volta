@@ -430,87 +430,18 @@ func _direction_for_key(keycode: int) -> Vector2:
 
 func _build_hud() -> void:
 	var header_top := _hud_header_top()
-	_top_bar = HBoxContainer.new()
-	_top_bar.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	_top_bar.offset_left = PANEL_MARGIN
-	_top_bar.offset_top = header_top + 14.0
-	_top_bar.offset_right = -PANEL_MARGIN
-	_top_bar.offset_bottom = header_top + 112.0
-	_top_bar.add_theme_constant_override("separation", 12)
-	_top_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(_top_bar)
-
-	_territory_label = _make_hud_label("ÁREA 00%", HORIZONTAL_ALIGNMENT_LEFT, 38)
-	_territory_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_top_bar.add_child(_territory_label)
-
-	_kills_label = _make_hud_label("KOs 0", HORIZONTAL_ALIGNMENT_CENTER, 38)
-	_kills_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_top_bar.add_child(_kills_label)
-
-	_opponents_label = _make_hud_label("RIVAIS 0", HORIZONTAL_ALIGNMENT_CENTER, 38)
-	_opponents_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_top_bar.add_child(_opponents_label)
-
-	_time_label = _make_hud_label("00:00", HORIZONTAL_ALIGNMENT_RIGHT, 38)
-	_time_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_top_bar.add_child(_time_label)
-
-	_status_label = _make_hud_label("PARTIDA  •  CORTE OS RASTROS", HORIZONTAL_ALIGNMENT_CENTER, 36)
-	_status_label.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	_status_label.offset_left = FIELD_MARGIN
-	_status_label.offset_top = header_top + 130.0
-	_status_label.offset_right = -FIELD_MARGIN
-	_status_label.offset_bottom = header_top + 176.0
-	add_child(_status_label)
-
-	_territory_bar = ProgressBar.new()
-	_territory_bar.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	_territory_bar.offset_left = FIELD_MARGIN
-	_territory_bar.offset_top = header_top + 186.0
-	_territory_bar.offset_right = -FIELD_MARGIN
-	_territory_bar.offset_bottom = header_top + 216.0
-	_territory_bar.max_value = 100.0
-	_territory_bar.show_percentage = false
-	_territory_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_territory_bar.add_theme_stylebox_override("background", _style_box(Color("102235"), Color("1d3d56"), 1, 12))
-	_territory_bar.add_theme_stylebox_override("fill", _style_box(Color("2dd4bf"), Color("6fffe9"), 1, 12))
-	add_child(_territory_bar)
-
-	_countdown_label = Label.new()
-	_countdown_label.set_anchors_preset(Control.PRESET_CENTER)
-	_countdown_label.offset_left = -180.0
-	_countdown_label.offset_top = -125.0
-	_countdown_label.offset_right = 180.0
-	_countdown_label.offset_bottom = 40.0
-	_countdown_label.add_theme_font_size_override("font_size", 108)
-	_countdown_label.add_theme_color_override("font_color", Color("f8fbff"))
-	_countdown_label.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.7))
-	_countdown_label.add_theme_constant_override("shadow_offset_x", 4)
-	_countdown_label.add_theme_constant_override("shadow_offset_y", 6)
-	_countdown_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_countdown_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_countdown_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(_countdown_label)
-
-	_hint_label = _make_hud_label("DESLIZE OU USE AS SETAS PARA VIRAR", HORIZONTAL_ALIGNMENT_CENTER, 34)
-	_hint_label.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	_hint_label.offset_left = FIELD_MARGIN
-	_hint_label.offset_top = FIELD_BOTTOM + 88.0
-	_hint_label.offset_right = -FIELD_MARGIN
-	_hint_label.offset_bottom = FIELD_BOTTOM + 148.0
-	add_child(_hint_label)
-
-	_actions = CenterContainer.new()
-	_actions.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
-	_actions.offset_top = -236.0
-	_actions.offset_bottom = -92.0
-	_actions.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(_actions)
-
-	var exit_button := _make_button("VOLTAR AO MENU", Vector2(440.0, MIN_TOUCH_TARGET_HEIGHT), 40)
-	exit_button.pressed.connect(_on_exit_pressed)
-	_actions.add_child(exit_button)
+	var elements := MatchHudBuilder.build_hud(self, header_top)
+	_top_bar = elements["top_bar"]
+	_territory_label = elements["territory_label"]
+	_kills_label = elements["kills_label"]
+	_opponents_label = elements["opponents_label"]
+	_time_label = elements["time_label"]
+	_status_label = elements["status_label"]
+	_territory_bar = elements["territory_bar"]
+	_countdown_label = elements["countdown_label"]
+	_hint_label = elements["hint_label"]
+	_actions = elements["actions"]
+	(elements["exit_button"] as Button).pressed.connect(_on_exit_pressed)
 
 	_build_result_overlay()
 
@@ -538,106 +469,13 @@ func _layout_hud() -> void:
 
 
 func _build_result_overlay() -> void:
-	_result_overlay = Control.new()
-	_result_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_result_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
-	add_child(_result_overlay)
-
-	var dimmer := ColorRect.new()
-	dimmer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	dimmer.color = Color(0.02, 0.04, 0.08, 0.88)
-	dimmer.mouse_filter = Control.MOUSE_FILTER_STOP
-	_result_overlay.add_child(dimmer)
-
-	var center := CenterContainer.new()
-	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_result_overlay.add_child(center)
-
-	var panel := PanelContainer.new()
-	panel.custom_minimum_size = Vector2(760.0, 800.0)
-	panel.add_theme_stylebox_override("panel", _style_box(Color("0c1a2a"), Color("2dd4bf"), 2, 24))
-	center.add_child(panel)
-
-	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 28)
-	box.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	box.add_theme_constant_override("margin_left", 48)
-	box.add_theme_constant_override("margin_right", 48)
-	box.add_theme_constant_override("margin_top", 48)
-	box.add_theme_constant_override("margin_bottom", 48)
-	panel.add_child(box)
-
-	var kicker := _make_result_label("RESULTADO DA RODADA", 30, Color("6fffe9"))
-	box.add_child(kicker)
-
-	_result_title = _make_result_label("VITÓRIA", 80, Color("f8fbff"))
-	box.add_child(_result_title)
-
-	_result_detail = _make_result_label("", 38, Color("b9cce0"))
-	_result_detail.custom_minimum_size = Vector2(0.0, 250.0)
-	box.add_child(_result_detail)
-
-	var restart_button := _make_button("JOGAR NOVAMENTE", Vector2(0.0, MIN_TOUCH_TARGET_HEIGHT), 40)
-	restart_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	restart_button.pressed.connect(_on_restart_pressed)
-	box.add_child(restart_button)
-
-	var menu_button := _make_button("VOLTAR AO MENU", Vector2(0.0, MIN_TOUCH_TARGET_HEIGHT), 38)
-	menu_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	menu_button.pressed.connect(_on_exit_pressed)
-	box.add_child(menu_button)
-
-	_result_overlay.hide()
-
-
-func _make_hud_label(text: String, alignment: HorizontalAlignment, font_size: int) -> Label:
-	var label := Label.new()
-	label.text = text
-	label.add_theme_font_size_override("font_size", font_size)
-	label.add_theme_color_override("font_color", Color("e5f1ff"))
-	label.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.55))
-	label.add_theme_constant_override("shadow_offset_x", 2)
-	label.add_theme_constant_override("shadow_offset_y", 2)
-	label.horizontal_alignment = alignment
-	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	return label
-
-
-func _make_result_label(text: String, font_size: int, color: Color) -> Label:
-	var label := _make_hud_label(text, HORIZONTAL_ALIGNMENT_CENTER, font_size)
-	label.add_theme_color_override("font_color", color)
-	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	return label
-
-
-func _make_button(text: String, minimum_size: Vector2, font_size: int) -> Button:
-	var button := Button.new()
-	button.text = text
-	var touch_size := minimum_size
-	touch_size.y = maxf(touch_size.y, MIN_TOUCH_TARGET_HEIGHT)
-	button.custom_minimum_size = touch_size
-	button.add_theme_font_size_override("font_size", font_size)
-	button.add_theme_color_override("font_color", Color("f7fbff"))
-	button.add_theme_color_override("font_hover_color", Color("ffffff"))
-	button.add_theme_stylebox_override("normal", _style_box(Color("13283a"), Color("28506a"), 1, 12))
-	button.add_theme_stylebox_override("hover", _style_box(Color("1a3d4f"), Color("6fffe9"), 2, 12))
-	button.add_theme_stylebox_override("pressed", _style_box(Color("0d1e2e"), Color("f9c74f"), 2, 12))
-	return button
-
-
-func _style_box(background: Color, border: Color, border_width: int, radius: int) -> StyleBoxFlat:
-	var box := StyleBoxFlat.new()
-	box.bg_color = background
-	box.border_color = border
-	box.set_border_width_all(border_width)
-	box.set_corner_radius_all(radius)
-	box.content_margin_left = 20.0
-	box.content_margin_right = 20.0
-	box.content_margin_top = 12.0
-	box.content_margin_bottom = 12.0
-	return box
+	var elements: Dictionary = {}
+	MatchHudBuilder.build_result_overlay(self, elements)
+	_result_overlay = elements["result_overlay"]
+	_result_title = elements["result_title"]
+	_result_detail = elements["result_detail"]
+	(elements["restart_button"] as Button).pressed.connect(_on_restart_pressed)
+	(elements["menu_button"] as Button).pressed.connect(_on_exit_pressed)
 
 
 func _draw() -> void:
