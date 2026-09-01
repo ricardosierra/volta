@@ -9,12 +9,12 @@ func _ready() -> void:
 	add_child(screen_stack)
 	screen_stack.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	
-	var splash = SplashScreen.new()
+	var splash := SplashScreen.new()
 	splash.finished.connect(_show_main_menu)
 	screen_stack.push(splash)
 
 func _show_main_menu() -> void:
-	var menu = MainMenuScreen.new()
+	var menu := MainMenuScreen.new()
 	menu.play_requested.connect(_start_match)
 	screen_stack.replace_root(menu)
 
@@ -33,7 +33,7 @@ func _start_match() -> void:
 	add_child(_runner_view_spawner)
 	_runner_view_spawner.watch(_match_director)
 
-	var config = Resource.new()
+	var config := Resource.new()
 	config.set_meta("bot_count", 3)
 	_match_director.setup_match(config)
 	match_screen.set_bot_count(3)

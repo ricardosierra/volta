@@ -41,18 +41,18 @@ func setup_match(mode_config: Resource) -> void:
 	ai_scheduler = AIScheduler.new()
 	add_child(ai_scheduler)
 	
-	var cam = Camera2D.new()
+	var cam := Camera2D.new()
 	cam.position = Vector2(540, 960) # Center of screen
 	add_child(cam)
 	
-	var bot_count = mode_config.get_meta("bot_count", 0)
+	var bot_count: int = mode_config.get_meta("bot_count", 0)
 	for i in range(bot_count):
-		var r = Runner.new(i + 1, Vector2(100 + i*50, 100), Vector2.UP)
+		var r := Runner.new(i + 1, Vector2(100 + i*50, 100), Vector2.UP)
 		runners.append(r)
 		
 		# Load archetype based on config
-		var profile = BotProfile.new() # Default for now
-		var brain = BotBrain.new(profile)
+		var profile := BotProfile.new() # Default for now
+		var brain := BotBrain.new(profile)
 		ai_scheduler.register_bot(r, brain)
 
 		runner_spawned.emit(r)
@@ -76,7 +76,7 @@ signal final_push_started
 func update_time(delta: float) -> void:
 	if game_state.current_state() == GameState.Id.PLAYING:
 		time_elapsed += delta
-		var remaining = time_limit_sec - time_elapsed
+		var remaining: float = time_limit_sec - time_elapsed
 		
 		if remaining <= 30.0 and not is_final_push:
 			is_final_push = true
@@ -88,14 +88,14 @@ func check_end_conditions(grid: TerritoryGrid, score_service: ScoreService) -> v
 	if game_state.current_state() != GameState.Id.PLAYING:
 		return
 		
-	var active_count = 0
-	var last_alive = -1
-	var placements = []
+	var active_count: int = 0
+	var last_alive: int = -1
+	var placements: Array = []
 	
 	for r in runners:
-		var claim = grid.claim_percent(r.state.id)
-		var s = score_service.runner_scores.get(r.state.id)
-		var total_score = s.total_score if s else 0
+		var claim: float = grid.claim_percent(r.state.id)
+		var s: Variant = score_service.runner_scores.get(r.state.id)
+		var total_score: int = s.total_score if s else 0
 		
 		placements.append({"id": r.state.id, "claim": claim, "score": total_score})
 		
@@ -121,7 +121,7 @@ func check_end_conditions(grid: TerritoryGrid, score_service: ScoreService) -> v
 
 func _end_match(winner: int, placements: Array, cause: String) -> void:
 	game_state.request_transition(GameState.Id.PAUSED) # Or RESULTS state
-	var res = MatchResult.new(winner, placements, time_elapsed, cause)
+	var res := MatchResult.new(winner, placements, time_elapsed, cause)
 	match_ended.emit(res)
 
 func _physics_process(delta: float) -> void:
