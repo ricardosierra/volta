@@ -84,8 +84,8 @@ func _load_type_scale() -> void:
 
 
 func _load_fonts() -> void:
-	# PLACEHOLDER-ART-004: família geométrica definitiva ainda não vendorizada; até lá a
-	# SystemFont do projeto, que já tem latim estendido. Replacement: GSD 08
+	# PLACEHOLDER-ART-004: família geométrica definitiva ainda não vendorizada. Replacement: GSD 08
+	# Até lá, a SystemFont do projeto, que já tem latim estendido.
 	var loaded: Resource = load(THEME_DIR + "typography.tres")
 	if loaded is Font:
 		_base_font = loaded
