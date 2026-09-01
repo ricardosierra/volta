@@ -1,0 +1,9 @@
+[gd_resource type="Resource" format=3 uid="uid://bonus_balance"]
+
+[resource]
+resource_name = "Bonus Balance"
+metadata/double_seal = 500
+metadata/triple_seal = 1500
+metadata/mega_seal_threshold = 200
+metadata/mega_seal = 2000
+metadata/squeeze = 1000

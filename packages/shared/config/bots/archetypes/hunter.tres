@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="BotProfile" load_steps=2 format=3 uid="uid://bot_hunter"]
+
+[ext_resource type="Script" path="res://src/ai/bot_profile.gd" id="1_profile"]
+
+[resource]
+script = ExtResource("1_profile")
+difficulty_level = "elite"
+reaction_delay_ms = 150.0
+error_rate = 0.05
+weight_expand_frontier = 0.5
+weight_expand_deep = 0.5
+weight_steal_from = 0.5
+weight_intercept = 3.0
+weight_flee_home = 0.8
+weight_seal_now = 0.5
+weight_patrol_border = 0.2

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MatchRules" load_steps=2 format=3]
+[ext_resource type="Script" path="res://src/gameplay/modes/match_rules.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "survival"
+name = "Survival"
+time_limit_sec = 0.0
+bot_count = 1
+player_respawn = false
+respawn_delay_sec = 2.0
+win_condition = 2
+domination_target = 0.0
+rules = []
