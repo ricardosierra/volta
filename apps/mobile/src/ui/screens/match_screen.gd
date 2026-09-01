@@ -479,140 +479,23 @@ func _build_result_overlay() -> void:
 
 
 func _draw() -> void:
-	if size.x <= 0.0 or size.y <= 0.0:
-		return
-
-	var viewport_rect := Rect2(Vector2.ZERO, size)
-	draw_rect(viewport_rect, Color("050b15"))
-
-	for diagonal in range(-8, 18):
-		var start := Vector2(float(diagonal) * 160.0, 0.0)
-		draw_line(start, start + Vector2(-size.y * 0.42, size.y), Color(0.08, 0.20, 0.30, 0.18), 2.0)
-
-	var header := Rect2(PANEL_MARGIN, 28.0, size.x - PANEL_MARGIN * 2.0, 190.0)
-	draw_rect(header, Color("0a1726"))
-	draw_rect(Rect2(header.position, Vector2(6.0, header.size.y)), Color("2dd4bf"))
-	draw_line(
-		Vector2(header.position.x + 28.0, header.end.y - 2.0),
-		Vector2(header.end.x - 28.0, header.end.y - 2.0),
-		Color("1d3d56"),
-		2.0
-	)
-
-	var field := _field_rect()
-	draw_rect(field.grow(24.0), Color(0.0, 0.0, 0.0, 0.26))
-	draw_rect(field.grow(12.0), Color("0a1a29"))
-	draw_rect(field, Color("091f2d"))
-	draw_rect(field, Color("2dd4bf"), false, 3.0)
-
-	for column in range(1, 12):
-		var x := field.position.x + field.size.x * float(column) / 12.0
-		draw_line(Vector2(x, field.position.y), Vector2(x, field.end.y), Color(0.15, 0.52, 0.58, 0.16), 1.0)
-	for row in range(1, 13):
-		var y := field.position.y + field.size.y * float(row) / 13.0
-		draw_line(Vector2(field.position.x, y), Vector2(field.end.x, y), Color(0.15, 0.52, 0.58, 0.16), 1.0)
-
-	_draw_field_brackets(field)
-
-	for index in range(_bot_positions.size()):
-		if not _bot_alive[index]:
-			continue
-		var home := _bot_home_rects[index]
-		var bot_color := _bot_colors[index % _bot_colors.size()]
-		draw_rect(home, Color(bot_color, 0.035))
-		draw_rect(home, Color(bot_color, 0.28), false, 2.0)
-		var bot_trail: Array = _bot_trails[index]
-		if bot_trail.size() > 1:
-			draw_polyline(PackedVector2Array(bot_trail), Color(0.0, 0.0, 0.0, 0.35), 18.0, true)
-			draw_polyline(PackedVector2Array(bot_trail), Color(bot_color, 0.82), 8.0, true)
-			draw_polyline(PackedVector2Array(bot_trail), Color(bot_color, 0.20), 22.0, true)
-
-	if _round_initialized:
-		draw_rect(_claim_rect.grow(8.0), Color("0b766f"), false, 8.0)
-		draw_rect(_claim_rect, Color(0.12, 0.68, 0.60, 0.20))
-		draw_rect(_claim_rect, Color("57e6d0"), false, 3.0)
-		for stripe in range(-2, 8):
-			var stripe_start := Vector2(_claim_rect.position.x + float(stripe) * 90.0, _claim_rect.end.y)
-			var stripe_end := stripe_start + Vector2(220.0, -220.0)
-			draw_line(stripe_start, stripe_end, Color(0.34, 0.95, 0.84, 0.12), 3.0)
-
-	if _trail.size() > 1:
-		draw_polyline(PackedVector2Array(_trail), Color(0.0, 0.0, 0.0, 0.42), 22.0, true)
-		draw_polyline(PackedVector2Array(_trail), Color("f9c74f"), 11.0, true)
-		draw_polyline(PackedVector2Array(_trail), Color("fff3b0"), 3.0, true)
-
-	for index in range(_bot_positions.size()):
-		var bot_color := _bot_colors[index % _bot_colors.size()]
-		if _bot_alive[index]:
-			_draw_bot(_bot_positions[index], bot_color, BOT_RADIUS, _bot_directions[index])
-		elif _bot_flash[index] > 0.0:
-			_draw_eliminated_bot(_bot_positions[index], bot_color, _bot_flash[index])
-
-	if _round_initialized:
-		var pulse := 4.0 + sin(_elapsed * 7.0) * 3.0
-		draw_circle(_player_position, PLAYER_RADIUS + 16.0 + pulse, Color(0.98, 0.78, 0.31, 0.10))
-		draw_circle(_player_position, PLAYER_RADIUS + 7.0, Color("f9c74f"), false, 3.0)
-		draw_circle(_player_position, PLAYER_RADIUS, Color("f9c74f"))
-		draw_line(
-			_player_position,
-			_player_position + _player_direction * 42.0,
-			Color("fff3b0"),
-			5.0,
-			true
-		)
-
-	var footer := Rect2(PANEL_MARGIN, FIELD_BOTTOM + 58.0, size.x - PANEL_MARGIN * 2.0, 160.0)
-	draw_rect(footer, Color("081521"))
-	draw_line(
-		Vector2(footer.position.x + 24.0, footer.position.y),
-		Vector2(footer.end.x - 24.0, footer.position.y),
-		Color("1d3d56"),
-		2.0
-	)
-
-
-func _draw_field_brackets(field: Rect2) -> void:
-	var length := 34.0
-	var color := Color("65f4df")
-	var left := field.position.x
-	var right := field.end.x
-	var top := field.position.y
-	var bottom := field.end.y
-
-	draw_line(Vector2(left, top + length), Vector2(left, top), color, 5.0)
-	draw_line(Vector2(left, top), Vector2(left + length, top), color, 5.0)
-	draw_line(Vector2(right - length, top), Vector2(right, top), color, 5.0)
-	draw_line(Vector2(right, top), Vector2(right, top + length), color, 5.0)
-	draw_line(Vector2(left, bottom - length), Vector2(left, bottom), color, 5.0)
-	draw_line(Vector2(left, bottom), Vector2(left + length, bottom), color, 5.0)
-	draw_line(Vector2(right - length, bottom), Vector2(right, bottom), color, 5.0)
-	draw_line(Vector2(right, bottom - length), Vector2(right, bottom), color, 5.0)
-
-
-func _draw_bot(position: Vector2, color: Color, radius: float, direction: Vector2) -> void:
-	draw_circle(position, radius + 16.0, Color(color, 0.10))
-	draw_circle(position, radius + 7.0, Color(color, 0.24), false, 3.0)
-	draw_circle(position, radius, color)
-	draw_line(position, position + direction * 32.0, Color("f4fbff"), 4.0, true)
-
-
-func _draw_eliminated_bot(position: Vector2, color: Color, strength: float) -> void:
-	var radius := BOT_RADIUS + (1.0 - strength) * 24.0
-	draw_circle(position, radius, Color(color, strength * 0.16), false, 4.0)
-	draw_line(
-		position - Vector2(radius, radius),
-		position + Vector2(radius, radius),
-		Color("ff6b6b", strength),
-		5.0,
-		true
-	)
-	draw_line(
-		position + Vector2(-radius, radius),
-		position + Vector2(radius, -radius),
-		Color("ff6b6b", strength),
-		5.0,
-		true
-	)
+	MatchFieldRenderer.draw(self, {
+		"size": size,
+		"field": _field_rect(),
+		"bot_positions": _bot_positions,
+		"bot_directions": _bot_directions,
+		"bot_trails": _bot_trails,
+		"bot_home_rects": _bot_home_rects,
+		"bot_alive": _bot_alive,
+		"bot_flash": _bot_flash,
+		"bot_colors": _bot_colors,
+		"round_initialized": _round_initialized,
+		"claim_rect": _claim_rect,
+		"trail": _trail,
+		"player_position": _player_position,
+		"player_direction": _player_direction,
+		"elapsed": _elapsed,
+	})
 
 
 func _polyline_hits_circle(points: Array, center: Vector2, radius: float) -> bool:
