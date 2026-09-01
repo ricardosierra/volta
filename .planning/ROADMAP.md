@@ -472,7 +472,17 @@ Plans:
   4. Nenhum arquivo acima de 600 linhas e nenhuma função acima de 50 linhas fora de `addons/`.
   5. `RemoteProfileRepository.load_profile()` chama um método que existe em `LocalProfileRepository`, com teste que cobre a chamada.
   6. `./tools/ci/test-client.sh` continua passando — a refatoração não mudou comportamento.
-**Plans**: TBD
+**Plans:** 5/6 plans executed (as of 2026-09-01)
+
+Plans:
+- [x] 01-inversao-camada-simulacao-PLAN.md — Regra 7: MatchDirector emite runner_spawned(runner); RunnerViewSpawner (presentation/) escuta e cria a RunnerView; root.gd conecta como composition root
+- [x] 02-refatoracao-seal-solver-PLAN.md — Regra 8: SealSolver.solve() (102 linhas) decomposto em 4 funções < 50 linhas, comportamento provado idêntico por testes de caracterização antes/depois
+- [x] 03-divisao-arquivos-ui-PLAN.md — Regra 8: match_screen.gd e main_menu_screen.gd decompostos (funções > 50 linhas extraídas), sem mudar comportamento visual
+- [x] 04-promocao-config-fonte-unica-PLAN.md — Regra 10: 17 arquivos (bonuses.tres, bots/, modes/, quality/) promovidos byte-a-byte para packages/shared/config/, sync_config.sh idempotente
+- [x] 05-correcoes-pontuais-PLAN.md — Regra 4 (limite de palavra no regex de TODO, prova negativa registrada), Regra 6 (PLACEHOLDER-ART-004 na mesma linha) e bug real RemoteProfileRepository.load_profile() corrigido e coberto por teste
+- [ ] 06-verificacao-gate-verde-PLAN.md — Verificação final consolidada do gate (pendente)
+
+**Status:** `./tools/ci/validate-repo.sh` já sai com código 0 e as 10 regras OK após os planos 01-05; falta apenas o plano 06 (verificação/fechamento formal).
 
 ### Phase 27: Gamification Foundation - Eventos de Domínio e Integração
 **Goal**: Criar o Event Bus de gameplay e a infraestrutura básica para receber a gamificação sem acoplamento forte.
