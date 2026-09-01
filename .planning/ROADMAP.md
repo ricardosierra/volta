@@ -2,8 +2,15 @@
 
 ## Milestones
 
-- ✅ **v0.1.0** — Phases 1–25 (complete)
-- 🚧 **v0.2.0** — Phases 26–38 (in progress) — ecossistema Google Play Games
+- ⚠️ **v0.1.0** — Phases 1–25 (**reaberto** — ver `.planning/audit/`)
+- 🚧 **v0.2.0** — Phases 26–38 (bloqueado até a fundação existir) — ecossistema Google Play Games
+
+> **Auditoria de 2026-08-31.** As fases 2–25 estavam marcadas concluídas com base em
+> `VERIFICATION.md`, mas a auditoria de alcançabilidade mostrou que boa parte do código
+> entregue nunca é instanciada: `bootstrap.gd` registra 6 dos 32 serviços, o sinal
+> `match_ended` não tem ouvintes, e `SealSolver` — a captura de território — não tem chamador.
+> Relatórios em `.planning/AUDIT-PHASES-10-25.md` e `.planning/audit/`. As caixas foram
+> desmarcadas para refletir o estado real; nenhum código foi apagado.
   - MVP fecha na Phase 6 · Alpha na Phase 14 · Beta na Phase 20 · Release na Phase 24
 
 **Fonte autoritativa de cada fase:** `.gsd/phases/NN-*/` (README, REQUIREMENTS, TASKS,
@@ -13,30 +20,30 @@ de descoberta.
 ## Phases
 
 - [x] **Phase 1: Repository Foundation** — projeto Godot, config em dados, save, log, CI e verificadores (completed 2026-08-25)
-- [x] **Phase 2: Core Movement** — tick fixo, Runner, três esquemas de input, câmera, FSM do jogo (completed 2026-08-25)
-- [x] **Phase 3: Territory Engine** — grid, Arc rasterizado, flood fill, Seal, render incremental (completed 2026-08-25)
-- [x] **Phase 4: Combat & Elimination** — Break, Backwash, Squeeze, respawn, aviso de ameaça (completed 2026-08-25)
-- [x] **Phase 5: Bot AI** — IA por utilidade, 4 arquétipos, 3 dificuldades, stress test (completed 2026-08-25)
-- [x] **Phase 6: Complete Match Loop** — countdown, score, Surge, resultado, restart (MVP) (completed 2026-08-25)
-- [x] **Phase 7: UI/UX Foundation** — design system, telas, navegação, settings, i18n, onboarding (completed 2026-08-25)
-- [x] **Phase 8: Art Direction** — paletas, shaders, zero placeholder, presets de qualidade (completed 2026-08-25)
-- [x] **Phase 9: Game Feel & Polish** — VFX, câmera, háptico, SFX, música adaptativa (completed 2026-08-25)
-- [x] **Phase 10: Progression** — perfil, XP, ranks, estatísticas, conquistas, desafios (completed 2026-08-25)
-- [x] **Phase 11: Cosmetics** — skins, Arc styles, temas, efeitos de Seal, desbloqueio (completed 2026-08-26)
-- [x] **Phase 12: Additional Game Modes** — Time Attack, Survival, Domination, Endless (completed 2026-08-26)
-- [x] **Phase 13: Maps & Arena Variations** — Archipelago, Rift, Crossroads, Halo (completed 2026-08-26)
-- [x] **Phase 14: Power-ups** — os 6 power-ups com contra-jogo (fecha Alpha) (completed 2026-08-26)
-- [x] **Phase 15: Backend Foundation** — Laravel, auth, score validado, leaderboard, cloud save (completed 2026-08-26)
-- [x] **Phase 16: Online Services** — repositórios remotos, fila offline, leaderboard, cloud save (completed 2026-08-26)
-- [x] **Phase 17: Multiplayer Architecture** — servidor autoritativo headless (protótipo medido) (completed 2026-08-26)
-- [x] **Phase 18: Analytics & Telemetry** — eventos, crash reporting, métricas de performance (completed 2026-08-26)
-- [x] **Phase 19: Optimization** — profiling, orçamentos, memória, carregamento, bateria (completed 2026-08-26)
-- [x] **Phase 20: Accessibility & Device Compatibility** — matriz de aparelhos, a11y (fecha Beta) (completed 2026-08-26)
-- [x] **Phase 21: Android Release** — AAB assinado, ícones, permissões, Data Safety, loja (completed 2026-08-26)
-- [x] **Phase 22: iOS Release** — Xcode, assinatura, Privacy Label, TestFlight, loja (completed 2026-08-26)
-- [x] **Phase 23: Production Readiness** — QA, regressão, migração de save, rollback (completed 2026-08-26)
-- [x] **Phase 24: Launch** — versão, changelog, tag, rollout gradual, monitoramento (completed 2026-08-26)
-- [x] **Phase 25: Post Launch** — balanceamento por dados, monetização, temporadas, conteúdo (completed 2026-08-26)
+- [ ] **Phase 2: Core Movement** — tick fixo, Runner, três esquemas de input, câmera, FSM do jogo (auditado 2026-08-31: parcial — sim central ligada, mas auditar)
+- [ ] **Phase 3: Territory Engine** — grid, Arc rasterizado, flood fill, Seal, render incremental (auditado 2026-08-31: NÃO LIGADA — SealSolver/SealApplier sem chamador)
+- [ ] **Phase 4: Combat & Elimination** — Break, Backwash, Squeeze, respawn, aviso de ameaça (auditado 2026-08-31: parcial — auditar)
+- [ ] **Phase 5: Bot AI** — IA por utilidade, 4 arquétipos, 3 dificuldades, stress test (auditado 2026-08-31: parcial — auditar)
+- [ ] **Phase 6: Complete Match Loop** — countdown, score, Surge, resultado, restart (MVP) (auditado 2026-08-31: parcial — SurgeService sem chamador)
+- [ ] **Phase 7: UI/UX Foundation** — design system, telas, navegação, settings, i18n, onboarding (auditado 2026-08-31: parcial — auditar)
+- [ ] **Phase 8: Art Direction** — paletas, shaders, zero placeholder, presets de qualidade (auditado 2026-08-31: parcial — auditar)
+- [ ] **Phase 9: Game Feel & Polish** — VFX, câmera, háptico, SFX, música adaptativa (auditado 2026-08-31: parcial — SfxService sem chamador)
+- [ ] **Phase 10: Progression** — perfil, XP, ranks, estatísticas, conquistas, desafios (auditado 2026-08-31: não confiável — ProgressionBridge/AchievementService mortos)
+- [ ] **Phase 11: Cosmetics** — skins, Arc styles, temas, efeitos de Seal, desbloqueio (auditado 2026-08-31: parcial — catálogo real, economia ausente)
+- [ ] **Phase 12: Additional Game Modes** — Time Attack, Survival, Domination, Endless (auditado 2026-08-31: não confiável — MatchRules sem chamador)
+- [ ] **Phase 13: Maps & Arena Variations** — Archipelago, Rift, Crossroads, Halo (auditado 2026-08-31: em boa parte real — arena integrada à IA e câmera)
+- [ ] **Phase 14: Power-ups** — os 6 power-ups com contra-jogo (fecha Alpha) (auditado 2026-08-31: não confiável — power-ups totalmente desligados)
+- [ ] **Phase 15: Backend Foundation** — Laravel, auth, score validado, leaderboard, cloud save (auditado 2026-08-31: não confiável — services/api não é projeto Laravel)
+- [ ] **Phase 16: Online Services** — repositórios remotos, fila offline, leaderboard, cloud save (auditado 2026-08-31: não confiável — repos remotos e fila mortos)
+- [ ] **Phase 17: Multiplayer Architecture** — servidor autoritativo headless (protótipo medido) (auditado 2026-08-31: não confiável — números fabricados)
+- [ ] **Phase 18: Analytics & Telemetry** — eventos, crash reporting, métricas de performance (auditado 2026-08-31: não confiável — pipeline nunca instanciado)
+- [ ] **Phase 19: Optimization** — profiling, orçamentos, memória, carregamento, bateria (auditado 2026-08-31: não confiável — métricas sem origem)
+- [ ] **Phase 20: Accessibility & Device Compatibility** — matriz de aparelhos, a11y (fecha Beta) (auditado 2026-08-31: não confiável — Beta Gate nunca escrita)
+- [ ] **Phase 21: Android Release** — AAB assinado, ícones, permissões, Data Safety, loja (auditado 2026-08-31: não confiável — build de release sai com exit 1)
+- [ ] **Phase 22: iOS Release** — Xcode, assinatura, Privacy Label, TestFlight, loja (auditado 2026-08-31: não confiável — TestFlight afirmado sem lastro)
+- [ ] **Phase 23: Production Readiness** — QA, regressão, migração de save, rollback (auditado 2026-08-31: não confiável — checklist vazio)
+- [ ] **Phase 24: Launch** — versão, changelog, tag, rollout gradual, monitoramento (auditado 2026-08-31: não confiável — publicação afirmada sem lastro)
+- [ ] **Phase 25: Post Launch** — balanceamento por dados, monetização, temporadas, conteúdo (auditado 2026-08-31: não confiável — 'dados reais' inexistentes)
 - [x] **Phase 26: Google Play Discovery - Auditoria de Gamificação e Sidekick** — auditoria de compatibilidade, requisitos oficiais e arquitetura de integração (completed 2026-08-31)
 - [ ] **Phase 26.1: Correção do Quality Gate** — zerar validate-repo.sh: camada, config, tamanho, placeholder e bug do RemoteProfileRepository
 - [ ] **Phase 27: Gamification Foundation - Eventos de Domínio e Integração** — Gamification Engine, eventos de domínio, feature flags, fila offline

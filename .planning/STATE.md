@@ -2,19 +2,19 @@
 gsd_state_version: 1.0
 milestone: v0.1
 milestone_name: milestone
-current_phase: 26
-current_phase_name: Google Play Discovery - Auditoria de Gamificacao e Sidekick
-current_plan: 3
-status: complete
-stopped_at: "Completed 26-03-arquitetura-integracao-PLAN.md (architecture.md + compatibility-audit.md secoes 7-8, parecer Go); Fase 26 encerrada, Fase 27 aguarda planejamento (Plans: TBD)"
+current_phase: 26.1
+current_phase_name: Correcao do Quality Gate
+current_plan: 0
+status: blocked
+stopped_at: "Auditoria 2026-08-31 reabriu as fases 2-25: codigo entregue nao esta ligado (bootstrap registra 6 de 32 servicos; SealSolver sem chamador). Fases 27-38 bloqueadas ate a fundacao existir."
 last_updated: "2026-08-31T21:03:13Z"
 last_activity: 2026-08-31
 progress:
   total_phases: 38
-  completed_phases: 26
+  completed_phases: 2
   total_plans: 107
-  completed_plans: 107
-  percent: 68
+  completed_plans: 14
+  percent: 5
 ---
 
 # Project State
@@ -112,6 +112,20 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 - [Phase 26-03]: OfflineQueue (apps/mobile/src/platform/api/offline_queue.gd) confirmado sem flush/drain hoje; fila nova pending_game_events da Fase 27 precisa suprir isso, nao so copiar o padrao existente
 - [Phase 26-03]: parecer final Go para a Fase 27, com 4 bloqueadores nomeados (Gradle build customizado -> Fase 28; Play Points/Play Pass invite-only -> Fase 31; ausencia de Quests API -> Fase 33; achievements badge de tracao -> Fase 34) e H-02 mapeada para bloquear Fases 34/38, nao a 27 — Fase 26 encerrada (3/3 planos), docs/google-play/compatibility-audit.md completo (secoes 1-8) e docs/google-play/architecture.md criado
 - [Phase 26-03]: gsd-tools `state advance-plan` tambem corrompe STATE.md neste repo (zerou completed_phases para 2 e completed_plans para 14 ao rodar) — adicionado a lista de comandos a evitar; STATE.md/ROADMAP.md seguem editados a mao
+
+
+### Auditoria de 2026-08-31 (reabertura das fases 2-25)
+
+- `apps/mobile/src/core/bootstrap.gd` registra 6 de 32 servicos; so ha 2 autoloads (Bootstrap, Log).
+- `match_ended` (`match_director.gd:126`) nao tem nenhum ouvinte conectado.
+- `SealSolver`/`SealApplier` (captura de territorio, Fase 3) tem zero chamadores — `match_director.gd:25` tem so o comentario `# 5. resolve seals`.
+- `SurgeService` (Fase 6, MVP), `PowerUpService` (Fase 14, Alpha), `SfxService` (Fase 9), `MatchRules` (Fase 12) e todo o pipeline de analytics (Fase 18) tem zero referencias.
+- `services/api/` nao e projeto Laravel executavel (sem composer.json/artisan).
+- `tools/ci/build_android.sh:27-29` — ramo release sai com `exit 1`.
+- `.github/workflows/godot-ci.yml:15` roda `simulate.gd`, que imprime "All 2500 simulations passed" sem instanciar partida.
+- Relatorios fabricados em `docs/reports/` reescritos com o estado real (commit e6803b5).
+- Fase 13 (arenas) e Fase 1 sao as unicas partes confirmadamente solidas.
+- Relatorios: `.planning/AUDIT-PHASES-10-25.md`, `.planning/audit/AUDIT-11-14.md`, `AUDIT-17-20.md`, `AUDIT-22-25.md`.
 
 ### Roadmap Evolution
 - Phase 26 added: Google Play Discovery - Auditoria de Gamificação e Sidekick
