@@ -5,7 +5,7 @@
 **Arcade mobile de conquista territorial.**
 Saia da sua zona, desenhe o arco, feche a volta e o terreno é seu.
 
-`Godot 4.3` · `Android / iOS` · `Laravel 11 + PostgreSQL (opcional, fase 15+)` · `working title`
+`Godot 4.7.2` · `Android / iOS` · `Laravel 11 + PostgreSQL (opcional, fase 15+)` · `working title`
 
 ![validate](https://github.com/ricardosierra/volta/actions/workflows/validate.yml/badge.svg)
 ![client-ci](https://github.com/ricardosierra/volta/actions/workflows/client-ci.yml/badge.svg)
@@ -120,7 +120,7 @@ Detalhes: [`docs/architecture/overview.md`](docs/architecture/overview.md) ·
 
 | Camada | Tecnologia | Fase |
 |---|---|---|
-| Engine | **Godot 4.3 stable**, GDScript tipado, renderer *Mobile* | GSD 01 |
+| Engine | **Godot 4.7.2 stable**, GDScript tipado, renderer *Mobile* | GSD 01 |
 | Territory | Grid denso `PackedByteArray` + flood fill incremental | GSD 03 |
 | UI | Godot Control + Design System próprio (tokens em `Resource`) | GSD 07 |
 | Testes | [GUT](https://github.com/bitwes/Gut) (unit/integration) + headless sim runner | GSD 01 |
@@ -151,8 +151,8 @@ volta/
 
 | Ferramenta | Versão | Obrigatório desde |
 |---|---|---|
-| Godot | 4.3 stable (mesma build do CI, ver `.godot-version`) | GSD 01 |
-| Export templates Godot | 4.3 stable | GSD 01 |
+| Godot | 4.7.2 stable (mesma build do CI, ver `.godot-version`) | GSD 01 |
+| Export templates Godot | 4.7.2 stable | GSD 01 |
 | Git | ≥ 2.40 | agora |
 | Android SDK + JDK 17 | API 34, build-tools 34 | GSD 21 |
 | Xcode | ≥ 15 (apenas macOS) | GSD 22 |

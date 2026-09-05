@@ -20,18 +20,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
----
+Unless a file contains a different notice, this license also covers the original
+artwork, audio, fonts, shaders, icons, and other media distributed in this
+repository. Third-party material, if added later, must keep its own license and
+be listed in `apps/mobile/assets/CREDITS.md`.
 
-## Assets, marca e conteúdo (NÃO cobertos pela licença MIT acima)
-
-A licença MIT aplica-se exclusivamente ao *código-fonte* deste repositório.
-
-Estão explicitamente EXCLUÍDOS e reservados (todos os direitos reservados):
-
-- o nome "VOLTA", logotipo, wordmark e qualquer identidade visual do produto;
-- arte, sprites, shaders artísticos, fontes, ícones e material de loja em `assets/`;
-- trilha sonora, efeitos sonoros e qualquer material de áudio em `assets/audio/`;
-- textos de marketing, descrições de loja e material promocional.
-
-Fontes e áudio de terceiros usados no projeto mantêm suas próprias licenças, listadas em
-`assets/CREDITS.md` (obrigatório manter atualizado — ver quality gate em `.gsd/QUALITY_GATES.md`).
+The names and marks associated with VOLTA may not be used to imply endorsement
+of modified versions without permission.
