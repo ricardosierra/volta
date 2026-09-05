@@ -88,6 +88,26 @@ Isso é o que permite testar o jogo com 500 partidas headless. Quebrar isso queb
 - **Nunca** adicione `Co-Authored-By` de IA.
 - Uma fase = um branch `feature/gsd-NN-nome`.
 
+### 5.1 Commit com índice compartilhado (obrigatório)
+
+Planos da mesma fase executam **em paralelo na mesma árvore de trabalho**, e o índice do git é
+um só. `git add` seguido de `git commit` sem pathspec **varre para dentro do seu commit os
+arquivos que outro plano deixou staged** — aconteceu de verdade em quatro planos da Fase 26.1.
+
+```bash
+# CERTO — compara working-tree contra HEAD só no caminho dado, ignora o resto do índice
+git commit -m "feat(runner): ..." -- apps/mobile/src/runner/runner.gd apps/mobile/src/runner/runner.gd.uid
+
+# ERRADO — leva junto o que não é seu
+git add . && git commit -m "..."
+git add <arquivo> && git commit -m "..."
+```
+
+- Sempre inclua o `.uid` junto do `.gd`/`.tres` no mesmo pathspec.
+- Confira com `git diff --cached --name-status` antes de commitar se precisou usar `git add`.
+- Para desfazer staging alheio: `git restore --staged <path>`. Nunca `HEAD^` num reset
+  (é relativo e outro plano pode ter commitado no meio) — use o hash fixo.
+
 ## 6. Versionamento
 
 Começa em `v0.1.0`. `v1.0.0` é reservado para produção madura — **não** é o primeiro release.
