@@ -7,7 +7,13 @@ extends GutTest
 
 
 func test_version_matches_project_settings() -> void:
-	assert_eq(Build.version(), "0.1.0")
+	var declared: String = str(ProjectSettings.get_setting("application/config/version", ""))
+	assert_ne(declared, "", "project.godot precisa declarar application/config/version")
+	assert_eq(Build.version(), declared)
+
+
+func test_version_is_not_the_missing_setting_fallback() -> void:
+	assert_ne(Build.version(), "0.0.0", "0.0.0 significa que o setting nao foi lido")
 
 
 func test_commit_defaults_to_dev() -> void:
