@@ -100,13 +100,13 @@ Plans:
   4. O buffer de input executa dois comandos recebidos no mesmo tick na ordem correta e descarta comando velho por idade
   5. `latency_test` mede p95 < 50 ms nos três esquemas, em dispositivo real, e o número está em `docs/performance/device-results.md`
   6. A FSM do jogo cobre Boot→Menu→Loading→Countdown→Playing→Paused→Results com transições declaradas; `Paused` congela a simulação inteira (posição, contadores e timers não avançam)
-**Plans**: 2/7 plans executed
+**Plans**: 4/7 plans executed
 
 Plans:
 - [x] 02-01-runner-stat-block-config-PLAN.md — StatBlock/Runner lêem RunnerBalance (fim do literal 300.0/180.0); Bootstrap registra o serviço "config"
 - [x] 02-02-fsm-arena-foundation-PLAN.md — FSM do jogo ganha a transição Boot->Loading; ArenaDefinition ganha dimensão real; open_field.tres corrigido para 2048x2048
-- [ ] 02-03-input-buffer-router-PLAN.md — InputRouter ganha InputBuffer no caminho; SwipeDriver testável sem DisplayServer; cobertura dos 3 esquemas de controle
-- [ ] 02-04-presentation-sync-camera-PLAN.md — RunnerView estende InterpolatedVisual e segue a simulação; GameCamera lê CameraBalance real
+- [x] 02-03-input-buffer-router-PLAN.md — InputRouter ganha InputBuffer no caminho; SwipeDriver testável sem DisplayServer; cobertura dos 3 esquemas de controle
+- [x] 02-04-presentation-sync-camera-PLAN.md — RunnerView estende InterpolatedVisual e segue a simulação; GameCamera lê CameraBalance real
 - [ ] 02-05-match-director-composition-root-PLAN.md — Runner do jogador real movido por InputRouter; root.gd como composition root completo (config, input, câmera, CanvasLayer)
 - [ ] 02-06-match-screen-desimulation-PLAN.md — MatchScreen para de simular (fim do loop de brinquedo); PauseScreen/ResultsScreen ganham UI real; SettingsControls empilhável
 - [ ] 02-07-phase-closeout-PLAN.md — latency_test.gd real (fim do print fabricado); checkpoint humano de latência/FPS/sensação; fechamento formal da fase

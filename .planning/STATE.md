@@ -7,14 +7,14 @@ current_phase_name: Core Movement
 current_plan: 0
 status: in_progress
 stopped_at: "Fase 2 (Core Movement) em execucao autonoma: religacao da fundacao reaberta pela auditoria de 2026-08-31. 7 planos em 4 waves."
-last_updated: "2026-09-05T00:00:00Z"
+last_updated: "2026-09-05T19:03:44Z"
 last_activity: 2026-09-05
 progress:
   total_phases: 38
   completed_phases: 3
   total_plans: 107
-  completed_plans: 20
-  percent: 8
+  completed_plans: 21
+  percent: 20
 ---
 
 # Project State
@@ -71,6 +71,8 @@ Progress: [███████░░░] 68%
 | Phase 26.1 P03 | 25min | 3 tasks | 7 files |
 | Phase 02 P01 | 15min | 2 tasks | 6 files |
 | Phase 02 P02 | 20min | 2 tasks | 6 files |
+| Phase 02 P03 | 30min | 3 tasks | 12 files |
+| Phase 02 P04 | 50min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -135,6 +137,10 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 - [Phase 02-01]: lambda multilinha (3 instrucoes) dentro de dict aninhado em array literal quebra o parser do GDScript 4.7 ("Unindent doesn't match the previous indentation level", confirmado com --check-only) — a fabrica do passo "config" precisou virar metodo privado nomeado (_make_config_service()) chamado por uma lambda de uma linha, em vez da lambda multilinha inline que o texto do plano especificava; mesmo comportamento, so muda a forma da factory.
 - [Phase 02-02]: variante nova da corrida de indice/arquivo compartilhado (alem da ja documentada em git add+commit sem pathspec): STATE.md/ROADMAP.md/REQUIREMENTS.md sao editados a mao por CADA plano em paralelo, e `git commit -m ... -- <path>` comita o CONTEUDO ATUAL do arquivo no disco, nao um snapshot exclusivo do meu proprio plano — o commit `72fe091` (plano 02-01) rodou depois que eu tinha escrito minhas edicoes de 02-02 nesses 3 arquivos e acabou levando as duas juntas (verificado com `git show 72fe091` — conteudo de ambos os planos presente e correto). Meu commit de fechamento (`133eddb`) ficou so com o SUMMARY.md porque os 3 arquivos ja nao tinham diff contra HEAD nesse ponto. Nada foi perdido, mas o pathspec no commit NAO protege um arquivo de metadado compartilhado contra ficar com o credito trocado entre planos — so protege contra arrastar arquivos de OUTROS planos para dentro do commit errado.
 - [Phase 02-01]: bug de teste (nao de codigo) no caso-limite de virada de 180 graus: rotate_toward() do Godot resolve a ambiguidade UP->DOWN sempre girando no sentido negativo (wrapf(PI,-PI,PI)==-PI), entao angle_to() um tick antes de completar e negativo, nao positivo — assert_gt precisou comparar absf(angle_to(...)) em vez do valor bruto; a asserção final de completude (angulo == 0 no tick previsto) nao mudou.
+- [Phase 02-03]: InputRouter ganhou InputBuffer interno no caminho de poll_direction() (ADR-0014) e SwipeDriver ganhou mm_to_px() estatico testavel sem DisplayServer real; InputRouter passou a rastrear _last_pushed_direction para so enfileirar quando a direcao muda de fato — sem isso, o toque inicial e o toque solto empurravam a direcao "parada" como comando fantasma, na frente do comando real do arraste seguinte (achado pelo proprio teste que o plano pediu). 19 testes novos (test_input_router, test_swipe_driver, test_input_buffer, test_joystick_driver, test_relative_driver) provam InputBuffer (MOVE-006) e paridade de qualidade dos 3 esquemas de controle (MOVE-007) sem mudar InputBuffer/JoystickDriver/RelativeDriver.
+- [Phase 02-03]: test_build.gd::test_version_matches_project_settings falha de forma pre-existente e estavel (project.godot tem config/version="0.1.2" do release F-Droid, commit 480eef0, anterior a este plano; teste espera "0.1.0") — fora do escopo de apps/mobile/src/input/, registrado em .planning/phases/02-core-movement/deferred-items.md, nao corrigido.
+- [Phase 02-04]: RunnerView passou a extends InterpolatedVisual (nao mais Node2D vazio), amostrando Runner.state a cada _physics_process e delegando a interpolacao ao _process() herdado; circulo provisorio em _draw() rastreado como PLACEHOLDER-ART-001/Replacement: GSD 08. RunnerViewSpawner guarda view.runner = runner em vez de so copiar a posicao de spawn uma vez. Testes do Runner usam Runner.new() com 3 argumentos (sem o balance opcional que o Plano 02-01, paralelo, adiciona) para nao depender da ordem de conclusao entre planos da mesma wave.
+- [Phase 02-04]: bug real corrigido em GameCamera._process(): o clamp de borda (clamp(value,min,max)) invertia min>max sempre que a metade da viewport excedia a metade da Arena num eixo, colando a camera num canto arbitrario — exposto pelo proprio teste de borda usando a viewport real do runner GUT headless (1920x1920, medida em runtime, nao suposta). Extraido _clamp_to_arena_axis(): centraliza nesse eixo quando o clamp seria invalido, comportamento normal preservado para arenas maiores que a viewport (caso real de producao, ex. open_field.tres 2048x2048 do Plano 02-02). setup(balance, arena) agora aplica follow_smoothing/lookahead/zoom_base reais de CameraBalance (8.0/90.0/1.0), removendo os @export inventados (5.0/150.0).
 
 
 ### Auditoria de 2026-08-31 (reabertura das fases 2-25)
@@ -180,5 +186,5 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 ## Session Continuity
 
 Last session: 2026-09-05
-Stopped at: Completed 02-02-fsm-arena-foundation-PLAN.md (Wave 1, execucao paralela com outros planos da Fase 2). game_state.gd com as 11 transicoes da FSM (Boot->Loading adicionada); ArenaDefinition com get_pixel_size() (bug de runtime corrigido); open_field.tres alinhado a docs/design/balance.md par.1 (128x128@16). Demais planos da Fase 2 (Wave 1-4) podem estar em execucao paralela — conferir SUMMARY.md de cada plano antes de assumir a fase inteira concluida.
-Resume file: .planning/phases/02-core-movement/02-02-SUMMARY.md
+Stopped at: Completed 02-04-presentation-sync-camera-PLAN.md (Wave 1, execucao paralela com outros planos da Fase 2). RunnerView estende InterpolatedVisual e acompanha Runner.state tick a tick; GameCamera.setup() le CameraBalance real e corrige clamp de borda invertido em arena menor que a viewport. Demais planos da Fase 2 (Wave 1-4) podem estar em execucao paralela — conferir SUMMARY.md de cada plano antes de assumir a fase inteira concluida.
+Resume file: .planning/phases/02-core-movement/02-04-SUMMARY.md
