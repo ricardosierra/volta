@@ -8,6 +8,6 @@ func start(region: String) -> void:
 	
 func stop(region: String) -> void:
 	if timers.has(region):
-		var elapsed = Time.get_ticks_usec() - timers[region]
+		var elapsed := Time.get_ticks_usec() - timers[region]
 		# Accumulate or print elapsed time for region
 		pass

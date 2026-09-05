@@ -4,8 +4,8 @@ extends SceneTree
 func _init() -> void:
 	print("--- Running Mode Stress Tests ---")
 	
-	var modes = ["classic", "time_attack", "domination", "survival", "endless"]
-	var arenas = ["standard", "archipelago", "rift", "crossroads", "halo"]
+	var modes := ["classic", "time_attack", "domination", "survival", "endless"]
+	var arenas := ["standard", "archipelago", "rift", "crossroads", "halo"]
 
 	for m in modes:
 		# In a real environment, we'd instantiate MatchDirector, inject the mode, and set Engine.time_scale high
