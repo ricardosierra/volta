@@ -7,14 +7,14 @@ current_phase_name: Core Movement
 current_plan: 0
 status: in_progress
 stopped_at: "Fase 2 (Core Movement) em execucao autonoma: religacao da fundacao reaberta pela auditoria de 2026-08-31. 7 planos em 4 waves."
-last_updated: "2026-09-05T19:03:44Z"
+last_updated: "2026-09-05T19:15:00Z"
 last_activity: 2026-09-05
 progress:
   total_phases: 38
   completed_phases: 3
   total_plans: 107
-  completed_plans: 21
-  percent: 20
+  completed_plans: 22
+  percent: 21
 ---
 
 # Project State
@@ -73,6 +73,7 @@ Progress: [███████░░░] 68%
 | Phase 02 P02 | 20min | 2 tasks | 6 files |
 | Phase 02 P03 | 30min | 3 tasks | 12 files |
 | Phase 02 P04 | 50min | 2 tasks | 5 files |
+| Phase 02 P05 | 25min | 3 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -141,6 +142,9 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 - [Phase 02-03]: test_build.gd::test_version_matches_project_settings falha de forma pre-existente e estavel (project.godot tem config/version="0.1.2" do release F-Droid, commit 480eef0, anterior a este plano; teste espera "0.1.0") — fora do escopo de apps/mobile/src/input/, registrado em .planning/phases/02-core-movement/deferred-items.md, nao corrigido.
 - [Phase 02-04]: RunnerView passou a extends InterpolatedVisual (nao mais Node2D vazio), amostrando Runner.state a cada _physics_process e delegando a interpolacao ao _process() herdado; circulo provisorio em _draw() rastreado como PLACEHOLDER-ART-001/Replacement: GSD 08. RunnerViewSpawner guarda view.runner = runner em vez de so copiar a posicao de spawn uma vez. Testes do Runner usam Runner.new() com 3 argumentos (sem o balance opcional que o Plano 02-01, paralelo, adiciona) para nao depender da ordem de conclusao entre planos da mesma wave.
 - [Phase 02-04]: bug real corrigido em GameCamera._process(): o clamp de borda (clamp(value,min,max)) invertia min>max sempre que a metade da viewport excedia a metade da Arena num eixo, colando a camera num canto arbitrario — exposto pelo proprio teste de borda usando a viewport real do runner GUT headless (1920x1920, medida em runtime, nao suposta). Extraido _clamp_to_arena_axis(): centraliza nesse eixo quando o clamp seria invalido, comportamento normal preservado para arenas maiores que a viewport (caso real de producao, ex. open_field.tres 2048x2048 do Plano 02-02). setup(balance, arena) agora aplica follow_smoothing/lookahead/zoom_base reais de CameraBalance (8.0/90.0/1.0), removendo os @export inventados (5.0/150.0).
+- [Phase 02-05]: MatchDirector ganhou configure(config, arena_definition, router) (injecao de dependencia do composition root, defaults seguros quando nao chamado) e setup_match() passou a criar sempre um Runner de jogador (id 0, sem BotBrain) ANTES dos bots — runner_spawned/runners.size() viram bot_count+1 em qualquer configuracao, inclusive zero bots; step() aplica input_router.poll_direction() no jogador, tick(delta) em todos os Runners e arena.resolve_boundaries() quando configurada, na ordem fixa CMBT-007; o Camera2D cru dentro de gameplay/ foi removido.
+- [Phase 02-05]: root.gd virou o composition root completo da fase: ScreenStack passou a viver dentro de um CanvasLayer proprio (risco descoberto no proprio plano — sem isso, a Camera2D real que passou a existir afetaria a UI inteira, panando/dando zoom junto com o jogo); ConfigService resolvido uma unica vez de Bootstrap.registry.resolve("config"); InputRouter/MatchDirector/RunnerViewSpawner/GameCamera criados e ligados na ordem que respeita as dependencias de cada um (configure() antes de setup_match(), watch() antes de setup_match(), GameCamera.setup()+make_current() antes do loop que acha a RunnerView do jogador).
+- [Phase 02-05]: ./tools/ci/lint.sh tem debito de tipagem estatica pre-existente (confirmado identico em HEAD via git stash) em arquivos totalmente fora do escopo deste plano (gameplay/score/*, progression/**, presentation/** fora dos tocados aqui, arena/arena.gd, input/input_buffer.gd, runner/states/*_state.gd) — registrado em deferred-items.md, nao corrigido (Scope Boundary); os 7 arquivos deste plano passam limpos isoladamente. MOV-01 marcado completo em REQUIREMENTS.md (simulacao 60Hz fixa com Runner real + interpolacao ja entregue pelo 02-04, agora fiada de ponta a ponta).
 
 
 ### Auditoria de 2026-08-31 (reabertura das fases 2-25)
@@ -186,5 +190,5 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 ## Session Continuity
 
 Last session: 2026-09-05
-Stopped at: Completed 02-04-presentation-sync-camera-PLAN.md (Wave 1, execucao paralela com outros planos da Fase 2). RunnerView estende InterpolatedVisual e acompanha Runner.state tick a tick; GameCamera.setup() le CameraBalance real e corrige clamp de borda invertido em arena menor que a viewport. Demais planos da Fase 2 (Wave 1-4) podem estar em execucao paralela — conferir SUMMARY.md de cada plano antes de assumir a fase inteira concluida.
-Resume file: .planning/phases/02-core-movement/02-04-SUMMARY.md
+Stopped at: Completed 02-05-match-director-composition-root-PLAN.md (Wave 2, depende dos 4 planos da Wave 1 ja concluidos). MatchDirector cria um Runner de jogador real movido por InputRouter/Arena/RunnerBalance a cada step(); root.gd virou o composition root completo (CanvasLayer isolando a UI da GameCamera real, ConfigService resolvido do Bootstrap, InputRouter/MatchDirector/RunnerViewSpawner/GameCamera ligados na ordem certa). 112/112 testes verdes, validate-repo.sh 10/10. Faltam 02-06 (MatchScreen para de simular) e 02-07 (fechamento da fase) para a Fase 2 completar.
+Resume file: .planning/phases/02-core-movement/02-05-match-director-composition-root-SUMMARY.md

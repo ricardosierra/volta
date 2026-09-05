@@ -13,7 +13,7 @@ Requisitos derivados de `docs/` e de `.gsd/phases/*/REQUIREMENTS.md`. IDs usados
 
 ## Movimento e controle (MOV)
 
-- [ ] MOV-01 — Simulação 60 Hz fixa com interpolação visual
+- [x] MOV-01 — Simulação 60 Hz fixa com interpolação visual
 - [x] MOV-02 — Movimento em ângulo livre com taxa máxima de giro
 - [x] MOV-03 — Três esquemas de controle (swipe, joystick, relativo)
 - [x] MOV-04 — Buffer de input: nenhum toque descartado
