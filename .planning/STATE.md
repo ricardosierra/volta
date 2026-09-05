@@ -7,13 +7,13 @@ current_phase_name: Core Movement
 current_plan: 0
 status: in_progress
 stopped_at: "Fase 2 (Core Movement) em execucao autonoma: religacao da fundacao reaberta pela auditoria de 2026-08-31. 7 planos em 4 waves."
-last_updated: "2026-09-05T19:15:00Z"
+last_updated: "2026-09-05T19:30:46Z"
 last_activity: 2026-09-05
 progress:
   total_phases: 38
   completed_phases: 3
   total_plans: 107
-  completed_plans: 22
+  completed_plans: 23
   percent: 21
 ---
 
@@ -74,6 +74,7 @@ Progress: [███████░░░] 68%
 | Phase 02 P03 | 30min | 3 tasks | 12 files |
 | Phase 02 P04 | 50min | 2 tasks | 5 files |
 | Phase 02 P05 | 25min | 3 tasks | 7 files |
+| Phase 02 P06 | 35min | 3 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -145,6 +146,9 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 - [Phase 02-05]: MatchDirector ganhou configure(config, arena_definition, router) (injecao de dependencia do composition root, defaults seguros quando nao chamado) e setup_match() passou a criar sempre um Runner de jogador (id 0, sem BotBrain) ANTES dos bots — runner_spawned/runners.size() viram bot_count+1 em qualquer configuracao, inclusive zero bots; step() aplica input_router.poll_direction() no jogador, tick(delta) em todos os Runners e arena.resolve_boundaries() quando configurada, na ordem fixa CMBT-007; o Camera2D cru dentro de gameplay/ foi removido.
 - [Phase 02-05]: root.gd virou o composition root completo da fase: ScreenStack passou a viver dentro de um CanvasLayer proprio (risco descoberto no proprio plano — sem isso, a Camera2D real que passou a existir afetaria a UI inteira, panando/dando zoom junto com o jogo); ConfigService resolvido uma unica vez de Bootstrap.registry.resolve("config"); InputRouter/MatchDirector/RunnerViewSpawner/GameCamera criados e ligados na ordem que respeita as dependencias de cada um (configure() antes de setup_match(), watch() antes de setup_match(), GameCamera.setup()+make_current() antes do loop que acha a RunnerView do jogador).
 - [Phase 02-05]: ./tools/ci/lint.sh tem debito de tipagem estatica pre-existente (confirmado identico em HEAD via git stash) em arquivos totalmente fora do escopo deste plano (gameplay/score/*, progression/**, presentation/** fora dos tocados aqui, arena/arena.gd, input/input_buffer.gd, runner/states/*_state.gd) — registrado em deferred-items.md, nao corrigido (Scope Boundary); os 7 arquivos deste plano passam limpos isoladamente. MOV-01 marcado completo em REQUIREMENTS.md (simulacao 60Hz fixa com Runner real + interpolacao ja entregue pelo 02-04, agora fiada de ponta a ponta).
+- [Phase 02-06]: MatchScreen caiu de 588 para 198 linhas — removido todo o loop de brinquedo (_update_player/_update_bots/_resolve_combat/_seal_trail/_eliminate_bot/_check_win/_read_direction/_input(event)/_set_gesture_direction/_direction_for_key/_polyline_hits_circle/_distance_to_segment com PLAYER_SPEED/BOT_SPEED hardcoded); a tela agora so le MatchDirector.game_state/time_elapsed/runners via set_match_director()/set_input_router(), ligados por root.gd apos setup_match(). Bug pre-existente da Fase 26.1 corrigido: _hud_header_top()/_safe_bottom_inset() (chamados sem nunca terem sido definidos) agora implementados com DisplayServer.get_display_safe_area(), mesmo padrao de safe_area_container.gd.
+- [Phase 02-06]: PauseScreen e ResultsScreen (stubs vazios da Fase 7) ganharam UI real; ResultsScreen passou a extends Screen (era Control) para ser empilhavel. SettingsControls tambem passou a extends Screen com botao Fechar emitindo exit_requested herdado, ligada ao InputRouter real via driver_changed -> set_driver (test drive ao vivo). MatchHudBuilder perdeu territory/kills/overlay de resultado (fim de partida agora e ResultsScreen); MatchFieldRenderer so desenha a moldura do campo (Runners vem de RunnerView real). BL-019/020/021 registrados no BACKLOG para trilha/captura visual (Fase 3), feedback de eliminacao (Fase 4) e placar real/restart sem menu (Fase 6).
+- [Phase 02-06]: ordem de execucao entre tasks do mesmo plano (nao arquivo compartilhado entre planos): Task 2 removeu build_result_overlay() de match_hud_builder.gd, que match_screen.gd (so reescrito na Task 3) ainda chamava — se rodado isoladamente entre as duas tasks, test-client.sh quebraria por erro de compilacao em cascata. Mesmo padrao ja registrado no Plano 02-05: verificacao completa (test-client/validate-repo/lint) rodada uma unica vez com as edicoes de Task 2 e Task 3 juntas na arvore, commits separados por pathspec exato do files_modified de cada task. 119/119 testes verdes ao final, validate-repo.sh 10/10.
 
 
 ### Auditoria de 2026-08-31 (reabertura das fases 2-25)
@@ -190,5 +194,5 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 ## Session Continuity
 
 Last session: 2026-09-05
-Stopped at: Completed 02-05-match-director-composition-root-PLAN.md (Wave 2, depende dos 4 planos da Wave 1 ja concluidos). MatchDirector cria um Runner de jogador real movido por InputRouter/Arena/RunnerBalance a cada step(); root.gd virou o composition root completo (CanvasLayer isolando a UI da GameCamera real, ConfigService resolvido do Bootstrap, InputRouter/MatchDirector/RunnerViewSpawner/GameCamera ligados na ordem certa). 112/112 testes verdes, validate-repo.sh 10/10. Faltam 02-06 (MatchScreen para de simular) e 02-07 (fechamento da fase) para a Fase 2 completar.
-Resume file: .planning/phases/02-core-movement/02-05-match-director-composition-root-SUMMARY.md
+Stopped at: Completed 02-06-match-screen-desimulation-PLAN.md (Wave 3, depende do 02-05 ja concluido). MatchScreen parou de rodar sua propria simulacao (588 -> 198 linhas) e passou a mostrar o MatchDirector/RunnerView reais; PauseScreen/ResultsScreen/SettingsControls viraram telas empilhaveis reais com navegacao PAUSAR/CONTROLES/DESISTIR completa; bug pre-existente de safe area corrigido. 119/119 testes verdes, validate-repo.sh 10/10. Falta 02-07 (fechamento da fase, com checkpoint humano de verificacao visual) para a Fase 2 completar.
+Resume file: .planning/phases/02-core-movement/02-06-match-screen-desimulation-SUMMARY.md
