@@ -58,6 +58,9 @@
 | BL-016 | feature | Modo espectador / compartilhar recorde em vídeo | 00 | pós-launch |
 | BL-017 | debt | Decidir Final Push em Domination | 00 | Alpha |
 | BL-018 | debt | Decidir se roubo dá Surge extra | 00 | Alpha |
+| BL-019 | feature | Trilha e captura de território desenhadas em MatchScreen (MatchFieldRenderer perdeu _draw_claim_and_trail ao remover a simulação própria da tela) | 02 | 03 |
+| BL-020 | feature | Feedback visual de eliminação/combate em MatchScreen (flash de bot eliminado, corte de rastro, hoje sem territ/combate para mostrar) | 02 | 04 |
+| BL-021 | feature | ResultsScreen.show_results() com placar/colocação reais e PLAY AGAIN reiniciando sem passar pelo menu (hoje os dois botões só voltam ao menu) | 02 | 06 |
 
 ## Bugs conhecidos
 

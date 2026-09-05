@@ -1,8 +1,9 @@
 extends GutTest
 
-## Regressão da extração de MatchFieldRenderer (Regra 8 do CLAUDE.md — _draw() tinha 93
-## linhas): uma Control mínima delega para MatchFieldRenderer.draw() dentro do ciclo real
-## de _draw() do motor e não pode lançar erro para um estado típico de partida.
+## Regressão da extração de MatchFieldRenderer (Regra 8 do CLAUDE.md): uma Control mínima
+## delega para MatchFieldRenderer.draw() dentro do ciclo real de _draw() do motor e não
+## pode lançar erro. Desde o Plano 02-06, o renderer só desenha a moldura do campo — o
+## state não carrega mais bots/claim/trail.
 
 class _FakeFieldCanvas extends Control:
 	var state: Dictionary = {}
@@ -17,19 +18,6 @@ func test_draw_runs_without_error_for_a_typical_match_state() -> void:
 	canvas.state = {
 		"size": canvas.size,
 		"field": Rect2(72.0, 260.0, 936.0, 1210.0),
-		"bot_positions": [Vector2(300, 400)],
-		"bot_directions": [Vector2.LEFT],
-		"bot_trails": [[Vector2(300, 400), Vector2(320, 400)]],
-		"bot_home_rects": [Rect2(100, 100, 220, 184)],
-		"bot_alive": [true],
-		"bot_flash": [0.0],
-		"bot_colors": [Color("4cc9f0")],
-		"round_initialized": true,
-		"claim_rect": Rect2(240.0, 340.0, 240.0, 220.0),
-		"trail": [Vector2(400, 500), Vector2(420, 500)],
-		"player_position": Vector2(400, 500),
-		"player_direction": Vector2.RIGHT,
-		"elapsed": 12.0,
 	}
 
 	add_child_autofree(canvas)

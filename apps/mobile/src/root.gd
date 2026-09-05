@@ -63,6 +63,9 @@ func _start_match() -> void:
 			_game_camera.target_visual = view
 			break
 
+	match_screen.set_match_director(_match_director)
+	match_screen.set_input_router(_input_router)
+
 func _return_to_menu() -> void:
 	if is_instance_valid(_match_director):
 		_match_director.queue_free()
