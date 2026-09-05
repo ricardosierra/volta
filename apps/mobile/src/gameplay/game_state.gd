@@ -29,6 +29,7 @@ func _ready() -> void:
 	fsm.add_state(Id.RESULTS, ResultsState.new())
 	
 	fsm.add_transition(Id.BOOT, Id.MENU)
+	fsm.add_transition(Id.BOOT, Id.LOADING)
 	fsm.add_transition(Id.MENU, Id.LOADING)
 	fsm.add_transition(Id.LOADING, Id.COUNTDOWN)
 	fsm.add_transition(Id.COUNTDOWN, Id.PLAYING)
