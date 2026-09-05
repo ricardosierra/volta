@@ -23,7 +23,7 @@ SOFTWARE.
 Unless a file contains a different notice, this license also covers the original
 artwork, audio, fonts, shaders, icons, and other media distributed in this
 repository. Third-party material, if added later, must keep its own license and
-be listed in `apps/mobile/assets/CREDITS.md`.
+be listed in `assets/CREDITS.md`.
 
 The names and marks associated with VOLTA may not be used to imply endorsement
 of modified versions without permission.
