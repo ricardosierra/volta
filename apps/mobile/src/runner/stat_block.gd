@@ -1,13 +1,23 @@
 class_name StatBlock
 extends RefCounted
 
-var speed_multiplier: float = 1.0
+## Estatísticas resolvidas de um Runner. base_speed/base_turn_rate vêm SEMPRE de um
+## RunnerBalance (docs/design/balance.md §2, packages/shared/config/balance/runner.tres) —
+## nunca de um literal aqui (CLAUDE.md regra 4). Sem balance explícito, usa
+## RunnerBalance.new(), cujos defaults tipados JÁ são os valores de balance.md
+## (core/config/runner_balance.gd) — não duplicamos o número numa segunda classe.
 
-var base_speed: float = 300.0
-var base_turn_rate: float = 180.0 # Degrees per second
+var base_speed: float
+var base_turn_rate: float
+var speed_multiplier: float = 1.0
 
 var _speed_modifiers: Array[float] = []
 var _turn_rate_modifiers: Array[float] = []
+
+func _init(balance: RunnerBalance = null) -> void:
+	var b: RunnerBalance = balance if balance else RunnerBalance.new()
+	base_speed = b.base_speed
+	base_turn_rate = b.turn_rate
 
 func add_speed_modifier(value: float) -> void:
 	_speed_modifiers.append(value)
