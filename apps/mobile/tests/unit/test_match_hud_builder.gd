@@ -1,39 +1,23 @@
 extends GutTest
 
 ## Regressão da extração de MatchHudBuilder (Regra 8 do CLAUDE.md). Testa a fábrica direto,
-## sem instanciar MatchScreen inteira — evita depender de _hud_header_top() (achado
-## pré-existente fora de escopo, ver objective do plano 03).
+## sem instanciar MatchScreen inteira. Desde o Plano 02-06 (Fase 2): território/kills
+## saíram da HUD (Fases 3/4 religam), e o overlay de resultado virou a tela dedicada
+## ResultsScreen — build_result_overlay() não existe mais.
 
 func test_build_hud_creates_all_expected_elements() -> void:
 	var parent := Control.new()
 
 	var elements := MatchHudBuilder.build_hud(parent, 40.0)
 
-	var expected_keys := ["top_bar", "territory_label", "kills_label", "opponents_label",
-		"time_label", "status_label", "territory_bar", "countdown_label", "hint_label",
-		"actions", "exit_button"]
+	var expected_keys := ["top_bar", "opponents_label", "time_label", "status_label",
+		"countdown_label", "hint_label", "actions", "pause_button", "settings_button", "exit_button"]
 	for key in expected_keys:
 		assert_true(elements.has(key), "elements deveria conter '%s'" % key)
 		assert_true(is_instance_valid(elements[key]), "'%s' deveria ser um nó válido" % key)
 
-	assert_eq((elements["territory_label"] as Label).text, "ÁREA 00%")
+	assert_eq((elements["opponents_label"] as Label).text, "RIVAIS 0")
 	assert_eq((elements["time_label"] as Label).text, "00:00")
-
-	parent.queue_free()
-
-
-func test_build_result_overlay_creates_all_expected_elements() -> void:
-	var parent := Control.new()
-	var elements: Dictionary = {}
-
-	MatchHudBuilder.build_result_overlay(parent, elements)
-
-	var expected_keys := ["result_overlay", "result_title", "result_detail", "restart_button", "menu_button"]
-	for key in expected_keys:
-		assert_true(elements.has(key), "elements deveria conter '%s'" % key)
-		assert_true(is_instance_valid(elements[key]), "'%s' deveria ser um nó válido" % key)
-
-	assert_false((elements["result_overlay"] as Control).visible, "overlay de resultado começa escondido")
 
 	parent.queue_free()
 

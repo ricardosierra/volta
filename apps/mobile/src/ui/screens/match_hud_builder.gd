@@ -4,6 +4,11 @@ extends RefCounted
 ## Fábrica dos nós de HUD de MatchScreen. Extraída por tamanho de função (Regra 8 do
 ## CLAUDE.md — _build_hud tinha 87 linhas, _build_result_overlay tinha 54). Só cria e
 ## devolve nós; MatchScreen decide o que guardar e a que sinal conectar.
+##
+## Desde o Plano 02-06 (Fase 2): território/kills saíram da HUD (Fases 3/4 religam) e o
+## overlay de fim de partida virou a tela dedicada ResultsScreen
+## (apps/mobile/src/ui/screens/results_screen.gd), empilhada quando o jogo entra em
+## GameState.Id.RESULTS — não existe mais build_result_overlay() aqui.
 
 static func build_hud(parent: Control, header_top: float) -> Dictionary:
 	var elements: Dictionary = {}
@@ -13,11 +18,6 @@ static func build_hud(parent: Control, header_top: float) -> Dictionary:
 	_build_hint_label(parent, elements)
 	_build_actions(parent, elements)
 	return elements
-
-
-static func build_result_overlay(parent: Control, elements: Dictionary) -> void:
-	_build_result_shell(parent, elements)
-	_build_result_content(elements)
 
 
 static func _build_top_bar(parent: Control, header_top: float, elements: Dictionary) -> void:
@@ -31,15 +31,7 @@ static func _build_top_bar(parent: Control, header_top: float, elements: Diction
 	top_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	parent.add_child(top_bar)
 
-	var territory_label := make_hud_label("ÁREA 00%", HORIZONTAL_ALIGNMENT_LEFT, 38)
-	territory_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	top_bar.add_child(territory_label)
-
-	var kills_label := make_hud_label("KOs 0", HORIZONTAL_ALIGNMENT_CENTER, 38)
-	kills_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	top_bar.add_child(kills_label)
-
-	var opponents_label := make_hud_label("RIVAIS 0", HORIZONTAL_ALIGNMENT_CENTER, 38)
+	var opponents_label := make_hud_label("RIVAIS 0", HORIZONTAL_ALIGNMENT_LEFT, 38)
 	opponents_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	top_bar.add_child(opponents_label)
 
@@ -48,14 +40,12 @@ static func _build_top_bar(parent: Control, header_top: float, elements: Diction
 	top_bar.add_child(time_label)
 
 	elements["top_bar"] = top_bar
-	elements["territory_label"] = territory_label
-	elements["kills_label"] = kills_label
 	elements["opponents_label"] = opponents_label
 	elements["time_label"] = time_label
 
 
 static func _build_status_row(parent: Control, header_top: float, elements: Dictionary) -> void:
-	var status_label := make_hud_label("PARTIDA  •  CORTE OS RASTROS", HORIZONTAL_ALIGNMENT_CENTER, 36)
+	var status_label := make_hud_label("PARTIDA  •  VIRE PARA EXPLORAR A ARENA", HORIZONTAL_ALIGNMENT_CENTER, 36)
 	status_label.set_anchors_preset(Control.PRESET_TOP_WIDE)
 	status_label.offset_left = MatchScreen.FIELD_MARGIN
 	status_label.offset_top = header_top + 130.0
@@ -63,21 +53,7 @@ static func _build_status_row(parent: Control, header_top: float, elements: Dict
 	status_label.offset_bottom = header_top + 176.0
 	parent.add_child(status_label)
 
-	var territory_bar := ProgressBar.new()
-	territory_bar.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	territory_bar.offset_left = MatchScreen.FIELD_MARGIN
-	territory_bar.offset_top = header_top + 186.0
-	territory_bar.offset_right = -MatchScreen.FIELD_MARGIN
-	territory_bar.offset_bottom = header_top + 216.0
-	territory_bar.max_value = 100.0
-	territory_bar.show_percentage = false
-	territory_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	territory_bar.add_theme_stylebox_override("background", style_box(Color("102235"), Color("1d3d56"), 1, 12))
-	territory_bar.add_theme_stylebox_override("fill", style_box(Color("2dd4bf"), Color("6fffe9"), 1, 12))
-	parent.add_child(territory_bar)
-
 	elements["status_label"] = status_label
-	elements["territory_bar"] = territory_bar
 
 
 static func _build_countdown_label(parent: Control, elements: Dictionary) -> void:
@@ -120,75 +96,23 @@ static func _build_actions(parent: Control, elements: Dictionary) -> void:
 	actions.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	parent.add_child(actions)
 
-	var exit_button := make_button("VOLTAR AO MENU", Vector2(440.0, MatchScreen.MIN_TOUCH_TARGET_HEIGHT), 40)
-	actions.add_child(exit_button)
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 20)
+	actions.add_child(row)
+
+	var pause_button := make_button("PAUSAR", Vector2(260.0, MatchScreen.MIN_TOUCH_TARGET_HEIGHT), 36)
+	row.add_child(pause_button)
+
+	var settings_button := make_button("CONTROLES", Vector2(280.0, MatchScreen.MIN_TOUCH_TARGET_HEIGHT), 36)
+	row.add_child(settings_button)
+
+	var exit_button := make_button("VOLTAR AO MENU", Vector2(360.0, MatchScreen.MIN_TOUCH_TARGET_HEIGHT), 36)
+	row.add_child(exit_button)
 
 	elements["actions"] = actions
+	elements["pause_button"] = pause_button
+	elements["settings_button"] = settings_button
 	elements["exit_button"] = exit_button
-
-
-static func _build_result_shell(parent: Control, elements: Dictionary) -> void:
-	var result_overlay := Control.new()
-	result_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	result_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
-	parent.add_child(result_overlay)
-
-	var dimmer := ColorRect.new()
-	dimmer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	dimmer.color = Color(0.02, 0.04, 0.08, 0.88)
-	dimmer.mouse_filter = Control.MOUSE_FILTER_STOP
-	result_overlay.add_child(dimmer)
-
-	var center := CenterContainer.new()
-	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	result_overlay.add_child(center)
-
-	var panel := PanelContainer.new()
-	panel.custom_minimum_size = Vector2(760.0, 800.0)
-	panel.add_theme_stylebox_override("panel", style_box(Color("0c1a2a"), Color("2dd4bf"), 2, 24))
-	center.add_child(panel)
-
-	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 28)
-	box.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	box.add_theme_constant_override("margin_left", 48)
-	box.add_theme_constant_override("margin_right", 48)
-	box.add_theme_constant_override("margin_top", 48)
-	box.add_theme_constant_override("margin_bottom", 48)
-	panel.add_child(box)
-
-	result_overlay.hide()
-
-	elements["result_overlay"] = result_overlay
-	elements["result_box"] = box
-
-
-static func _build_result_content(elements: Dictionary) -> void:
-	var box: VBoxContainer = elements["result_box"]
-
-	var kicker := make_result_label("RESULTADO DA RODADA", 30, Color("6fffe9"))
-	box.add_child(kicker)
-
-	var result_title := make_result_label("VITÓRIA", 80, Color("f8fbff"))
-	box.add_child(result_title)
-
-	var result_detail := make_result_label("", 38, Color("b9cce0"))
-	result_detail.custom_minimum_size = Vector2(0.0, 250.0)
-	box.add_child(result_detail)
-
-	var restart_button := make_button("JOGAR NOVAMENTE", Vector2(0.0, MatchScreen.MIN_TOUCH_TARGET_HEIGHT), 40)
-	restart_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	box.add_child(restart_button)
-
-	var menu_button := make_button("VOLTAR AO MENU", Vector2(0.0, MatchScreen.MIN_TOUCH_TARGET_HEIGHT), 38)
-	menu_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	box.add_child(menu_button)
-
-	elements["result_title"] = result_title
-	elements["result_detail"] = result_detail
-	elements["restart_button"] = restart_button
-	elements["menu_button"] = menu_button
 
 
 static func make_hud_label(text: String, alignment: HorizontalAlignment, font_size: int) -> Label:
@@ -202,13 +126,6 @@ static func make_hud_label(text: String, alignment: HorizontalAlignment, font_si
 	label.horizontal_alignment = alignment
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	return label
-
-
-static func make_result_label(text: String, font_size: int, color: Color) -> Label:
-	var label := make_hud_label(text, HORIZONTAL_ALIGNMENT_CENTER, font_size)
-	label.add_theme_color_override("font_color", color)
-	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	return label
 
 
