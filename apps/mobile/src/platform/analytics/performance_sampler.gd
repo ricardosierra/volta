@@ -11,8 +11,8 @@ func _process(delta: float) -> void:
 		_sample()
 		
 func _sample() -> void:
-	var fps = Engine.get_frames_per_second()
-	var mem = OS.get_static_memory_usage() / 1024 / 1024 # MB
+	var fps := Engine.get_frames_per_second()
+	var mem := OS.get_static_memory_usage() / 1024 / 1024 # MB
 	
 	analytics.log_event("perf_sample", {
 		"fps": fps,

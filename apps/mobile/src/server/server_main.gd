@@ -12,7 +12,7 @@ func _ready() -> void:
 	director = MatchDirector.new()
 	add_child(director)
 	
-	var config = Resource.new()
+	var config := Resource.new()
 	config.set_meta("bot_count", 4)
 	director.setup_match(config)
 	

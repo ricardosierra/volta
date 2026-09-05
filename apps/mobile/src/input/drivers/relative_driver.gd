@@ -18,7 +18,7 @@ func process_event(event: InputEvent) -> void:
 			is_touching = false
 			
 	elif event is InputEventScreenDrag and is_touching:
-		var diff_x = event.position.x - last_pos.x
+		var diff_x: float = event.position.x - last_pos.x
 		current_angle += diff_x * sensitivity
 		last_pos = event.position
 

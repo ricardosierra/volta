@@ -14,16 +14,16 @@ func _init(id: int, target_grid: TerritoryGrid) -> void:
 	_cells = PackedInt32Array()
 
 func mark(from_cell: Vector2i, to_cell: Vector2i) -> void:
-	var path = ArcRasterizer.supercover_line(from_cell, to_cell)
+	var path := ArcRasterizer.supercover_line(from_cell, to_cell)
 	for cell in path:
 		if not grid.is_valid(cell.x, cell.y):
 			continue
 			
-		var idx = grid.cell_index(cell.x, cell.y)
+		var idx := grid.cell_index(cell.x, cell.y)
 		
 		# Check self intersection
 		if grid._arc[idx] == runner_id and _cells.size() > 0:
-			var is_last = _cells[_cells.size() - 1] == idx
+			var is_last := _cells[_cells.size() - 1] == idx
 			if not is_last:
 				self_intersect.emit(runner_id, cell)
 				
@@ -33,7 +33,7 @@ func mark(from_cell: Vector2i, to_cell: Vector2i) -> void:
 			
 		# Overload limit handling
 		while _cells.size() > max_cells:
-			var oldest = _cells[0]
+			var oldest := _cells[0]
 			_cells.remove_at(0)
 			if grid._arc[oldest] == runner_id:
 				grid._arc[oldest] = 255

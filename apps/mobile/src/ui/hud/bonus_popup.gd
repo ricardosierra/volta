@@ -13,7 +13,7 @@ func play_popup(text_val: String, start_pos: Vector2) -> void:
 	modulate.a = 1.0
 	show()
 	
-	var tween = create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	var tween := create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "position:y", position.y - 100, 0.8)
 	tween.parallel().tween_property(self, "modulate:a", 0.0, 0.8).set_delay(0.4)
 	tween.tween_callback(hide)

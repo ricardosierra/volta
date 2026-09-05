@@ -12,9 +12,9 @@ func tick(delta: float, grid: TerritoryGrid) -> void:
 	if bots.is_empty():
 		return
 		
-	var evals = 0
+	var evals := 0
 	while evals < max_evals_per_tick and evals < bots.size():
-		var b = bots[current_idx]
+		var b: Dictionary = bots[current_idx]
 		# Run brain logic, skipping for brevity of stub simulation
 		# In full implementation, it feeds runner.set_desired_direction()
 		

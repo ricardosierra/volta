@@ -3,7 +3,7 @@ extends VideoStreamPlayer
 
 func _ready() -> void:
 	# Enable Additive Blending via Material to drop the black background of MP4s
-	var mat = CanvasItemMaterial.new()
+	var mat := CanvasItemMaterial.new()
 	mat.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
 	material = mat
 	
@@ -12,7 +12,7 @@ func _ready() -> void:
 	finished.connect(queue_free)
 
 func play_vfx(stream_path: String, world_pos: Vector2, size_scale: float = 1.0) -> void:
-	var v_stream = load(stream_path)
+	var v_stream := load(stream_path)
 	if v_stream:
 		stream = v_stream
 		

@@ -9,26 +9,26 @@ static func supercover_line(p0: Vector2i, p1: Vector2i) -> Array[Vector2i]:
 	if p0 == p1:
 		return points
 		
-	var dx = p1.x - p0.x
-	var dy = p1.y - p0.y
+	var dx := p1.x - p0.x
+	var dy := p1.y - p0.y
 	
-	var step_x = 1 if dx > 0 else -1
-	var step_y = 1 if dy > 0 else -1
+	var step_x := 1 if dx > 0 else -1
+	var step_y := 1 if dy > 0 else -1
 	
 	dx = abs(dx)
 	dy = abs(dy)
 	
-	var x = p0.x
-	var y = p0.y
+	var x := p0.x
+	var y := p0.y
 	
-	var err = dx - dy
-	var err_x = err
+	var err := dx - dy
+	var err_x := err
 	
 	while x != p1.x or y != p1.y:
-		var e2 = 2 * err
+		var e2 := 2 * err
 		
-		var moved_x = false
-		var moved_y = false
+		var moved_x := false
+		var moved_y := false
 		
 		if e2 > -dy:
 			err -= dy

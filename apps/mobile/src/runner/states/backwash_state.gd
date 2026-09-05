@@ -5,7 +5,7 @@ var runner: Runner
 var penalty_time: float = 2.0
 var _timer: float = 0.0
 
-func _init(r: Runner):
+func _init(r: Runner) -> void:
 	runner = r
 
 func enter() -> void:

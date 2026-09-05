@@ -10,7 +10,7 @@ func check_stats(stats: StatsService, all_achievements: Array[Achievement]) -> v
 		if ach.id in unlocked_ids:
 			continue
 			
-		var unlocked = false
+		var unlocked := false
 		match ach.id:
 			"first_blood": unlocked = stats.total_kills > 0
 			"centurion": unlocked = stats.total_matches >= 100

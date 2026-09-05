@@ -22,7 +22,7 @@ func request(to_id: int) -> void:
 		return
 	
 	if not _is_valid_transition(_current_state_id, to_id):
-		var msg = "Invalid state transition requested: %d -> %d" % [_current_state_id, to_id]
+		var msg := "Invalid state transition requested: %d -> %d" % [_current_state_id, to_id]
 		if OS.is_debug_build():
 			assert(false, msg)
 		else:
@@ -39,7 +39,7 @@ func get_current_state() -> int:
 	return _current_state_id
 
 func _transition_to(to_id: int) -> void:
-	var from_id = _current_state_id
+	var from_id := _current_state_id
 	if _current_state:
 		_current_state.exit()
 	

@@ -3,7 +3,7 @@ extends State
 
 var runner: Runner
 
-func _init(r: Runner):
+func _init(r: Runner) -> void:
 	runner = r
 
 func enter() -> void:

@@ -9,7 +9,7 @@ func _init(def: ArenaDefinition) -> void:
 	limits = Rect2(Vector2.ZERO, def.get_pixel_size())
 
 func resolve_boundaries(runner_state: RunnerState) -> void:
-	var pos = runner_state.position
+	var pos := runner_state.position
 	
 	if pos.x < limits.position.x:
 		runner_state.position.x = limits.position.x

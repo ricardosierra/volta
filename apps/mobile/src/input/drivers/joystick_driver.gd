@@ -22,13 +22,13 @@ func process_event(event: InputEvent) -> void:
 		current_pos = event.position
 		
 		# Clamp to radius visually if we were drawing it
-		var diff = current_pos - center_pos
+		var diff := current_pos - center_pos
 		if diff.length() > radius:
 			current_pos = center_pos + diff.normalized() * radius
 
 func poll(_delta: float) -> Vector2:
 	if is_touching:
-		var diff = current_pos - center_pos
+		var diff := current_pos - center_pos
 		if diff.length() > deadzone:
 			current_dir = diff.normalized()
 			

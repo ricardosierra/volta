@@ -5,7 +5,7 @@ var current_preset: Resource
 
 func apply_preset(preset: Resource) -> void:
 	current_preset = preset
-	var scale = preset.get_meta("resolution_scale", 1.0)
+	var scale: float = preset.get_meta("resolution_scale", 1.0)
 	get_viewport().scaling_3d_scale = scale # Assuming 3D or 2D viewport scaling
 	
 	# Pass shader complexity to global shader parameters

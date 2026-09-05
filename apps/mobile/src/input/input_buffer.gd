@@ -5,7 +5,7 @@ class Command:
 	var dir: Vector2
 	var age: float
 	
-	func _init(d: Vector2):
+	func _init(d: Vector2) -> void:
 		dir = d
 		age = 0.0
 
@@ -20,7 +20,7 @@ func push_command(dir: Vector2) -> void:
 	dir = dir.normalized()
 	
 	if _queue.size() > 0:
-		var last_cmd = _queue[_queue.size() - 1]
+		var last_cmd := _queue[_queue.size() - 1]
 		if last_cmd.dir.dot(dir) > similarity_threshold:
 			# Too similar, don't queue
 			return
@@ -39,7 +39,7 @@ func has_commands() -> bool:
 
 func pop_command() -> Vector2:
 	if _queue.size() > 0:
-		var cmd = _queue.pop_front()
+		var cmd: Command = _queue.pop_front()
 		return cmd.dir
 	return Vector2.ZERO
 

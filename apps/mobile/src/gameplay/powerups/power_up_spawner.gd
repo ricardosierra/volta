@@ -17,7 +17,7 @@ func _spawn_orb(runners: Array[Runner], grid: TerritoryGrid) -> void:
 		return
 		
 	# Find a random valid cell that is at least 300px away from all runners
-	var valid_pos = Vector2.ZERO
+	var valid_pos := Vector2.ZERO
 	# In reality, this would search the grid
 	orbs.append(valid_pos)
 

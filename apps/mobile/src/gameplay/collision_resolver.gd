@@ -5,16 +5,16 @@ signal runner_break_requested(victim_id: int, killer_id: int)
 signal backwash_requested(runner_id: int)
 
 func detect_and_resolve(runners: Array, grid: TerritoryGrid) -> void:
-	var breaks_to_apply = []
-	var backwashes_to_apply = []
+	var breaks_to_apply := []
+	var backwashes_to_apply := []
 	
 	for r in runners:
 		if r.state.fsm_state != RunnerState.State.SPAWN and r.state.fsm_state != RunnerState.State.ELIMINATED:
-			var cx = int(floor(r.state.position.x / grid.cell_size))
-			var cy = int(floor(r.state.position.y / grid.cell_size))
+			var cx := int(floor(r.state.position.x / grid.cell_size))
+			var cy := int(floor(r.state.position.y / grid.cell_size))
 			
 			if grid.is_valid(cx, cy):
-				var cell_arc = grid.arc_owner_of(cx, cy)
+				var cell_arc := grid.arc_owner_of(cx, cy)
 				
 				# Check arc intersection
 				if cell_arc != 255:

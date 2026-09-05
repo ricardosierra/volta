@@ -9,8 +9,8 @@ func _on_size_changed() -> void:
 	_apply_safe_area()
 
 func _apply_safe_area() -> void:
-	var safe_area = DisplayServer.get_display_safe_area()
-	var window_size = DisplayServer.window_get_size()
+	var safe_area := DisplayServer.get_display_safe_area()
+	var window_size := DisplayServer.window_get_size()
 	
 	if safe_area.size.x > 0 and safe_area.size.y > 0:
 		add_theme_constant_override("margin_top", safe_area.position.y)

@@ -23,7 +23,7 @@ func update_simulation_state(new_pos: Vector2, new_rot: float) -> void:
 	curr_rotation = new_rot
 
 func _process(_delta: float) -> void:
-	var fraction = Engine.get_physics_interpolation_fraction()
+	var fraction := Engine.get_physics_interpolation_fraction()
 	
 	global_position = prev_position.lerp(curr_position, fraction)
 	global_rotation = lerp_angle(prev_rotation, curr_rotation, fraction)

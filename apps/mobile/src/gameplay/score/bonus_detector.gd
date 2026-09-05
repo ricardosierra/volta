@@ -11,18 +11,18 @@ func _init(cfg: Resource) -> void:
 
 func on_seal(runner_id: int, cells_size: int, stolen: Dictionary) -> void:
 	# Detect Mega Seal
-	var threshold = config.get_meta("mega_seal_threshold", 200)
+	var threshold := config.get_meta("mega_seal_threshold", 200)
 	if cells_size >= threshold:
 		bonus_awarded.emit(runner_id, "MEGA SEAL", config.get_meta("mega_seal", 2000))
 		
 	# Combo seals (Double, Triple)
-	var time = Time.get_ticks_msec()
+	var time := Time.get_ticks_msec()
 	if not _recent_seals.has(runner_id):
 		_recent_seals[runner_id] = []
 	_recent_seals[runner_id].append(time)
 	
 	# Clean old
-	var valid = []
+	var valid := []
 	for t in _recent_seals[runner_id]:
 		if time - t < 3000: # 3 sec window
 			valid.append(t)

@@ -13,8 +13,8 @@ func _process(delta: float) -> void:
 
 func _apply_shake() -> void:
 	if accessibility and accessibility.reduce_shake > 0.0:
-		var multiplier = 1.0 - accessibility.reduce_shake
-		var amount = pow(_shake_trauma, _shake_power) * 30.0 * multiplier
+		var multiplier := 1.0 - accessibility.reduce_shake
+		var amount := pow(_shake_trauma, _shake_power) * 30.0 * multiplier
 		offset = Vector2(randf_range(-amount, amount), randf_range(-amount, amount))
 	else:
 		offset = Vector2.ZERO
@@ -27,7 +27,7 @@ func on_seal(area: int) -> void:
 	if area >= 200:
 		# Mega Seal: Slight slow-mo
 		Engine.time_scale = 0.5
-		var t = create_tween()
+		var t := create_tween()
 		t.tween_interval(0.12)
 		t.tween_callback(func(): Engine.time_scale = 1.0)
 

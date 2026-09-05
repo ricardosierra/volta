@@ -27,7 +27,7 @@ func replace_root(screen: Screen, args: Dictionary = {}) -> void:
 
 func pop() -> void:
 	if _stack.size() > 1:
-		var current = _stack.pop_back()
+		var current: Screen = _stack.pop_back()
 		current.on_focus_lost()
 		current.on_popped()
 		current.queue_free()
@@ -41,7 +41,7 @@ func can_pop() -> bool:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel") or (event is InputEventKey and event.keycode == KEY_ESCAPE):
 		if _stack.size() > 0:
-			var current = _stack.back()
+			var current: Screen = _stack.back()
 			if not current.handle_back_button():
 				if _stack.size() > 1:
 					pop()

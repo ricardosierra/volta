@@ -15,7 +15,7 @@ func _ready() -> void:
 
 func show_banner() -> void:
 	label.show()
-	var tween = create_tween()
+	var tween := create_tween()
 	tween.tween_property(label, "modulate:a", 0.0, 2.0).set_delay(1.0)
 	tween.tween_callback(label.hide)
 	tween.tween_property(label, "modulate:a", 1.0, 0.0) # Reset

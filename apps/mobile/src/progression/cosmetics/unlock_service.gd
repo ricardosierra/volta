@@ -13,7 +13,7 @@ func attempt_purchase(item_id: String) -> bool:
 		unlock_failed.emit("ALREADY_OWNED")
 		return false
 		
-	var item = catalog.get_item(item_id)
+	var item := catalog.get_item(item_id)
 	if not item: return false
 	
 	if item.price_sparks > 0:

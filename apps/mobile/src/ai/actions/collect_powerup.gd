@@ -5,9 +5,9 @@ func score_action(runner: Runner, orbs: Array[Vector2]) -> float:
 	if orbs.is_empty():
 		return 0.0
 	
-	var closest = INF
+	var closest := INF
 	for o in orbs:
-		var d = runner.state.position.distance_to(o)
+		var d := runner.state.position.distance_to(o)
 		if d < closest:
 			closest = d
 			

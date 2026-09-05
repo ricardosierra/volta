@@ -7,10 +7,10 @@ var stats_service: StatsService
 var wallet: Wallet
 
 func on_match_ended(result: MatchResult) -> void:
-	var p = profile_repo.get_profile()
+	var p := profile_repo.get_profile()
 	
 	# Determine if local user won (assuming local user is always id 0 for this mock)
-	var is_winner = result.winner_id == 0
+	var is_winner := result.winner_id == 0
 	
 	# Stub stats
 	stats_service.add_match_result(result, is_winner, 5, 2, 100)

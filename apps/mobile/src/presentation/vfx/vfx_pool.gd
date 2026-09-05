@@ -1,8 +1,8 @@
 class_name VfxPool
 extends RefCounted
 
-var _inactive: Array = []
-var _active: Array = []
+var _inactive: Array[Node] = []
+var _active: Array[Node] = []
 var _parent: Node
 var _scene: PackedScene
 
@@ -13,7 +13,7 @@ func _init(scene: PackedScene, initial_size: int, parent_node: Node) -> void:
 		_create_one()
 
 func _create_one() -> void:
-	var instance = _scene.instantiate()
+	var instance := _scene.instantiate()
 	_parent.add_child(instance)
 	# Assuming it has a hide() or sleep() method
 	if instance.has_method("hide"):
@@ -29,12 +29,12 @@ func get_instance() -> Node:
 	if _inactive.is_empty():
 		# Degrade gracefully instead of erroring or allocating during gameplay
 		if _active.size() > 0:
-			var oldest = _active.pop_front()
+			var oldest: Node = _active.pop_front()
 			_inactive.append(oldest)
 		else:
 			return null # Absolute fallback
 			
-	var instance = _inactive.pop_back()
+	var instance: Node = _inactive.pop_back()
 	_active.append(instance)
 	return instance
 

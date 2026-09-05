@@ -31,7 +31,7 @@ func setup(w: int, h: int, blocked: Array[Vector2i] = []) -> void:
 	
 	for b in blocked:
 		if is_valid(b.x, b.y):
-			var idx = cell_index(b.x, b.y)
+			var idx := cell_index(b.x, b.y)
 			_owner[idx] = 255
 			_arc[idx] = 255
 
@@ -61,8 +61,8 @@ func is_blocked(x: int, y: int) -> bool:
 
 func set_owner(x: int, y: int, runner_id: int) -> void:
 	if not is_valid(x, y): return
-	var idx = cell_index(x, y)
-	var old = _owner[idx]
+	var idx := cell_index(x, y)
+	var old := _owner[idx]
 	if old == runner_id or old == 255: return
 	
 	if old != 254 and old >= 0 and old < 8:
@@ -73,7 +73,7 @@ func set_owner(x: int, y: int, runner_id: int) -> void:
 		_claim_count[runner_id] += 1
 
 func seed_claim(runner_id: int, center_x: int, center_y: int, size: int) -> void:
-	var half = size / 2
+	var half := size / 2
 	for y in range(center_y - half, center_y - half + size):
 		for x in range(center_x - half, center_x - half + size):
 			if is_valid(x, y) and not is_blocked(x, y):
@@ -86,7 +86,7 @@ func release_claim(runner_id: int) -> void:
 	_claim_count[runner_id] = 0
 
 func claim_percent(runner_id: int) -> float:
-	var playable = 0
+	var playable := 0
 	for i in range(cell_count):
 		if _owner[i] != 255:
 			playable += 1

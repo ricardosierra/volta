@@ -15,15 +15,15 @@ func handle_seal(runner_id: int, cells: PackedInt32Array, stolen: Dictionary, su
 	ensure_runner(runner_id)
 	var state: ScoreState = runner_scores[runner_id]
 	
-	var base_mult = config.get_meta("base_seal_mult", 10)
-	var steal_mult = config.get_meta("steal_mult", 15)
+	var base_mult: int = config.get_meta("base_seal_mult", 10)
+	var steal_mult: int = config.get_meta("steal_mult", 15)
 	
-	var pts = 0
-	var stolen_count = 0
+	var pts := 0
+	var stolen_count := 0
 	for count in stolen.values():
 		stolen_count += count
 		
-	var pure_new = cells.size() - stolen_count
+	var pure_new := cells.size() - stolen_count
 	pts += pure_new * base_mult
 	pts += stolen_count * steal_mult
 	
@@ -42,7 +42,7 @@ func handle_break(killer: int) -> void:
 	_recalc(killer)
 
 func handle_survival_tick(runners: Array) -> void:
-	var tick_pts = config.get_meta("survival_tick", 1)
+	var tick_pts: int = config.get_meta("survival_tick", 1)
 	for r in runners:
 		if r.state.fsm_state != RunnerState.State.ELIMINATED:
 			ensure_runner(r.state.id)
@@ -51,5 +51,5 @@ func handle_survival_tick(runners: Array) -> void:
 			_recalc(r.state.id)
 
 func _recalc(id: int) -> void:
-	var state = runner_scores[id]
+	var state: ScoreState = runner_scores[id]
 	state.total_score = state.territory_points + state.break_points + state.survival_points

@@ -7,8 +7,8 @@ signal squeezed(victim: int, by_runner: int)
 
 func apply(result: SealResult, grid: TerritoryGrid, tracker: ArcTracker) -> void:
 	for cell_idx in result.captured_cells:
-		var x = cell_idx % grid.width
-		var y = cell_idx / grid.width
+		var x := cell_idx % grid.width
+		var y := cell_idx / grid.width
 		grid.set_owner(x, y, result.runner_id)
 		
 	tracker.clear()

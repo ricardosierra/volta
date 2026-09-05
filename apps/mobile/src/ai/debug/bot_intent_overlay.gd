@@ -23,8 +23,8 @@ func _draw() -> void:
 		if r.state.fsm_state == RunnerState.State.ELIMINATED:
 			continue
 			
-		var pos = r.state.position
-		var text = "ID: %d" % r.state.id
+		var pos := r.state.position
+		var text := "ID: %d" % r.state.id
 		if brain.current_action:
 			text += "\n%s" % brain.current_action.action_name
 			

@@ -21,12 +21,12 @@ func decide(ctx: Dictionary, delta: float) -> Vector2:
 			return current_action.direction(ctx)
 		return Vector2.ZERO
 		
-	var best_score = -1.0
-	var best_action = null
-	var second_best_action = null
+	var best_score := -1.0
+	var best_action: BotAction = null
+	var second_best_action: BotAction = null
 	
 	for a in actions:
-		var score = a.score(ctx)
+		var score := a.score(ctx)
 		if a == current_action:
 			score += hysteresis_bonus
 			

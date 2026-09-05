@@ -14,7 +14,7 @@ func vibrate(duration_ms: int) -> void:
 func play_seal(area: int) -> void:
 	if current_intensity == Intensity.OFF: return
 	
-	var duration = 50
+	var duration := 50
 	if area > 100: duration = 100
 	if area > 200: duration = 200
 	
