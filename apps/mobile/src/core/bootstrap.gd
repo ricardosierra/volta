@@ -46,6 +46,7 @@ func boot() -> void:
 
 func _default_steps() -> Array[Dictionary]:
 	return [
+		{"name": "config", "factory": func() -> Object: return _make_config_service()},
 		{"name": "log", "factory": func(): return Log},
 		{"name": "quality", "factory": func(): return QualityService.new()},
 		{"name": "haptics", "factory": func(): return HapticService.new()},
@@ -54,6 +55,16 @@ func _default_steps() -> Array[Dictionary]:
 		{"name": "catalog", "factory": func(): return Catalog.new()},
 		{"name": "profile_repo", "factory": func(): return LocalProfileRepository.new()}
 	]
+
+func _make_config_service() -> Object:
+	# Factory nomeada (não lambda multilinha) porque um bloco de função com mais de uma
+	# instrução dentro de um dicionário aninhado num array literal quebra o parser do
+	# GDScript 4.7 ("Unindent doesn't match the previous indentation level") — confirmado
+	# com --check-only neste arquivo. svc nunca é null: load_all() cai nos defaults
+	# embutidos de RunnerBalance/etc. quando o .tres falha em carregar ou validar.
+	var svc := ConfigService.new()
+	svc.load_all()
+	return svc
 
 func _load_next_scene() -> void:
 	if next_scene_path == "" or not is_inside_tree():

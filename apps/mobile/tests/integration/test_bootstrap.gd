@@ -59,3 +59,15 @@ func test_essential_failure_stops_boot() -> void:
 
 	assert_true(bootstrap.boot_order.is_empty(), "boot deveria parar no primeiro passo essencial que falhou")
 	assert_false(bootstrap.registry.has("b"), "passo seguinte ao essencial que falhou não deveria rodar")
+
+
+func test_default_steps_register_a_loaded_config_service() -> void:
+	var bootstrap := BootstrapScript.new()
+	bootstrap.configure_steps(bootstrap._default_steps())
+
+	bootstrap.boot()
+
+	assert_true(bootstrap.registry.has("config"), "Bootstrap deveria registrar um serviço 'config'")
+	var config := bootstrap.registry.resolve("config")
+	assert_true(config is ConfigService)
+	assert_eq((config as ConfigService).runner().base_speed, 220.0, "ConfigService deveria ter carregado runner.tres, não só o fallback por coincidência")
