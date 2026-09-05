@@ -13,6 +13,7 @@ func watch(director: MatchDirector) -> void:
 func _on_runner_spawned(runner: Runner) -> void:
 	var view := RunnerView.new()
 	add_child(view)
-	view.position = runner.state.position
+	view.runner = runner
+	view.global_position = runner.state.position
 
 	# If catalog/loadout are available via Autoload, we would apply cosmetics here
