@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v0.1
 milestone_name: milestone
-current_phase: 27
-current_phase_name: BLOQUEADA - religacao da fundacao pendente
+current_phase: 2
+current_phase_name: Core Movement
 current_plan: 0
-status: blocked
-stopped_at: "Fase 26.1 concluida em 2026-09-01: validate-repo.sh verde nas 10 regras. Fases 27-38 seguem BLOQUEADAS: a fundacao das fases 2-25 continua desligada (bootstrap registra 6 de 32 servicos; SealSolver e match_ended sem ligacao). Proximo passo e uma fase de religacao, nao a 27."
-last_updated: "2026-08-31T21:03:13Z"
-last_activity: 2026-08-31
+status: in_progress
+stopped_at: "Fase 2 (Core Movement) em execucao autonoma: religacao da fundacao reaberta pela auditoria de 2026-08-31. 7 planos em 4 waves."
+last_updated: "2026-09-05T00:00:00Z"
+last_activity: 2026-09-05
 progress:
   total_phases: 38
   completed_phases: 3
@@ -69,6 +69,8 @@ Progress: [███████░░░] 68%
 | Phase 26.1 P04 | 8min | 2 tasks | 17 files |
 | Phase 26.1 P05 | 17min | 4 tasks | 3 files |
 | Phase 26.1 P03 | 25min | 3 tasks | 7 files |
+| Phase 02 P01 | 15min | 2 tasks | 6 files |
+| Phase 02 P02 | 20min | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -127,6 +129,11 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 - [Phase 26.1-05]: confirmando o padrao de corrida de indice ja descrito pelos planos 01/02: `git add tools/ci/validate-repo.sh` + `git commit -m` sem pathspec (Task 1) varreu match_director.gd (plano 01) e test_seal_solver.gd (plano 02) para dentro de efcb19a. Conteudo conferido intacto para os tres; nao reescrevi historico (ja havia commit de outro plano em cima). A partir da Task 3 usei `git commit -m ... -- <caminho>` isolado em cada commit.
 - [Phase 26.1-03]: match_screen.gd (867 linhas, 3 funcoes >50) decomposto em MatchHudBuilder (fabrica de HUD/overlay) e MatchFieldRenderer (desenho de campo), ambos RefCounted so com static func, sem estado proprio — parent/canvas e Dictionary de estado recebidos por parametro para nao mudar nenhum valor/cor/offset/ordem de add_child ou draw_*; arquivo cai para 588 linhas. main_menu_screen.gd: on_pushed() (55 linhas) dividido em _build_title_block()/_build_play_controls(). _hud_header_top()/_safe_bottom_inset() preservados dentro de MatchScreen de proposito (bug pre-existente fora do escopo de QLT-06, ja registrado pela auditoria da Fase 26).
 - [Phase 26.1-03]: mesma corrida de indice git compartilhado ja descrita pelos planos 01/02/05: `git add` dos meus 3 arquivos da Task 2 tambem capturou uma exclusao (D) de test_match_director_runner_spawned.gd staged pelo plano 01 — corrigido com `git restore --staged <path>` nos dois caminhos (arquivo .gd e .uid) antes de commitar, sem tocar no worktree. Confirmado por `git diff --cached --name-status` antes de cada commit.
+- [Phase 02-02]: game_state.gd ganhou fsm.add_transition(Id.BOOT, Id.LOADING), fechando as 11 transicoes de docs/architecture/state-machines.md par.2; ArenaDefinition ganhou width_cells/height_cells/cell_size (default 128/128/16.0) + get_pixel_size(), que arena.gd ja chamava sem existir (bug real de runtime); open_field.tres corrigido de 100x100@32 com campo orfao blocked_cells para 128x128@16 (2048x2048), uid preservado; as 4 arenas da Fase 13 (archipelago/crossroads/halo/rift) confirmadas intocadas.
+- [Phase 02-02]: teste de GameState fora da arvore precisa de add_child_autofree(gs) em vez de chamar gs._ready() direto — PausedState.new(get_tree()) reclama "Parameter data.tree is null" se o Node nunca entrou na SceneTree; assert(false) de transicao invalida em StateMachine.request vira erro de engine no GUT, consumido com assert_engine_error_count (contagem cumulativa por chamada — soma-se uma vez, com o total, apos o loop, nao a cada iteracao).
+- [Phase 02-01]: StatBlock/Runner fechavam a lacuna MOVE-003 (literais 300.0/180.0 em vez de RunnerBalance 220.0/540.0); Bootstrap ganhou o passo "config" (ConfigService.new()+load_all(), primeiro da lista), resolvivel via Bootstrap.registry.resolve("config") no jogo real — desbloqueia o Plano 02-05 (MatchDirector) sem precisar de um segundo mecanismo de acesso a config.
+- [Phase 02-01]: lambda multilinha (3 instrucoes) dentro de dict aninhado em array literal quebra o parser do GDScript 4.7 ("Unindent doesn't match the previous indentation level", confirmado com --check-only) — a fabrica do passo "config" precisou virar metodo privado nomeado (_make_config_service()) chamado por uma lambda de uma linha, em vez da lambda multilinha inline que o texto do plano especificava; mesmo comportamento, so muda a forma da factory.
+- [Phase 02-01]: bug de teste (nao de codigo) no caso-limite de virada de 180 graus: rotate_toward() do Godot resolve a ambiguidade UP->DOWN sempre girando no sentido negativo (wrapf(PI,-PI,PI)==-PI), entao angle_to() um tick antes de completar e negativo, nao positivo — assert_gt precisou comparar absf(angle_to(...)) em vez do valor bruto; a asserção final de completude (angulo == 0 no tick previsto) nao mudou.
 
 
 ### Auditoria de 2026-08-31 (reabertura das fases 2-25)
@@ -171,6 +178,6 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 
 ## Session Continuity
 
-Last session: 2026-08-31
-Stopped at: Completed 26-03-arquitetura-integracao-PLAN.md; docs/google-play/architecture.md criado (5 secoes) e docs/google-play/compatibility-audit.md completo (secoes 1-8, parecer Go). Fase 26 encerrada (3/3 planos). Fase 27 (Gamification Foundation) ainda nao tem PLAN.md — precisa passar por /gsd:plan-phase antes de ser executada.
-Resume file: .planning/phases/26-google-play-discovery-auditoria-de-gamifica-o-e-sidekick/26-03-SUMMARY.md
+Last session: 2026-09-05
+Stopped at: Completed 02-02-fsm-arena-foundation-PLAN.md (Wave 1, execucao paralela com outros planos da Fase 2). game_state.gd com as 11 transicoes da FSM (Boot->Loading adicionada); ArenaDefinition com get_pixel_size() (bug de runtime corrigido); open_field.tres alinhado a docs/design/balance.md par.1 (128x128@16). Demais planos da Fase 2 (Wave 1-4) podem estar em execucao paralela — conferir SUMMARY.md de cada plano antes de assumir a fase inteira concluida.
+Resume file: .planning/phases/02-core-movement/02-02-SUMMARY.md

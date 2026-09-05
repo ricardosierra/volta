@@ -14,12 +14,12 @@ Requisitos derivados de `docs/` e de `.gsd/phases/*/REQUIREMENTS.md`. IDs usados
 ## Movimento e controle (MOV)
 
 - [ ] MOV-01 — Simulação 60 Hz fixa com interpolação visual
-- [ ] MOV-02 — Movimento em ângulo livre com taxa máxima de giro
+- [x] MOV-02 — Movimento em ângulo livre com taxa máxima de giro
 - [ ] MOV-03 — Três esquemas de controle (swipe, joystick, relativo)
 - [ ] MOV-04 — Buffer de input: nenhum toque descartado
 - [ ] MOV-05 — Latência toque → direção < 50 ms
 - [ ] MOV-06 — Câmera com follow, lookahead e zoom dinâmico
-- [ ] MOV-07 — FSM do jogo e FSM do Runner com transições declaradas
+- [x] MOV-07 — FSM do jogo e FSM do Runner com transições declaradas
 
 ## Território (TER)
 
