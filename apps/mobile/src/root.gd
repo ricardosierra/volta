@@ -8,6 +8,10 @@ var _game_camera: GameCamera
 var _config: ConfigService
 
 func _ready() -> void:
+	# Mesma razao do ScreenStack: o composition root nao e um widget. Sem isso ele
+	# consome o toque antes de virar unhandled_input (GSD 02, Plano 02-07).
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+
 	var ui_layer := CanvasLayer.new()
 	add_child(ui_layer)
 

@@ -24,9 +24,15 @@ var _top_bar: HBoxContainer
 var _actions: CenterContainer
 
 
+func _init() -> void:
+	# Nao consumir toque e propriedade da tela, nao do fato de ela ter sido empilhada:
+	# a MatchScreen cobre a arena inteira e o InputRouter escuta _unhandled_input
+	# (GSD 02, Plano 02-07).
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+
 func on_pushed(_args: Dictionary = {}) -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_build_hud()
 	resized.connect(_layout_hud)
 	call_deferred("_layout_hud")
