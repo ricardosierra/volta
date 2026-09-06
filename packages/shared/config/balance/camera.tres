@@ -4,6 +4,8 @@
 
 [resource]
 script = ExtResource("1")
+visible_cells_x = 42.0
+visible_cells_y = 24.0
 zoom_base = 1.0
 zoom_min = 0.75
 zoom_max = 1.35

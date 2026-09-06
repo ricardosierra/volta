@@ -9,6 +9,6 @@ name = "Open Field"
 width_cells = 128
 height_cells = 128
 cell_size = 16.0
-spawn_points = Array[Vector2]([Vector2(1024, 1024)])
+spawn_points = Array[Vector2]([Vector2(1024, 1024), Vector2(512, 512), Vector2(1536, 512), Vector2(1024, 1536)])
 blocked_rects = Array[Rect2]([])
 hazard_rects = Array[Rect2]([])

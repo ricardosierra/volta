@@ -70,18 +70,44 @@ func step(delta: float) -> void:
 	clock.advance()
 
 
+## Posição de nascimento do runner `index`, vinda dos spawn_points da ArenaDefinition —
+## nunca de literal no código (CLAUDE.md regra 4). Antes disto os bots nasciam todos em
+## Vector2(100 + i*50, 100): empilhados no canto da arena, a 1300 unidades do jogador, que
+## nasce no centro. Se faltarem pontos para todos, distribui os que sobram num círculo em
+## volta do centro, para nunca empilhar dois runners no mesmo lugar.
+func _spawn_position(index: int, total: int) -> Vector2:
+	if arena and arena.definition:
+		var points: Array[Vector2] = arena.definition.spawn_points
+		if index < points.size():
+			return points[index]
+
+	if not arena:
+		return Vector2.ZERO
+
+	var spawn_count := arena.definition.spawn_points.size() if arena.definition else 0
+	var center := arena.limits.get_center()
+	var radius := minf(arena.limits.size.x, arena.limits.size.y) * 0.25
+	var placed := maxi(spawn_count, 1)
+	var extra := index - placed
+	var remaining := maxi(1, total - placed)
+	var angle := TAU * float(extra) / float(remaining)
+	return center + Vector2.RIGHT.rotated(angle) * radius
+
+
 func setup_match(mode_config: Resource) -> void:
 	ai_scheduler = AIScheduler.new()
 	add_child(ai_scheduler)
 
-	var spawn_pos: Vector2 = arena.limits.get_center() if arena else Vector2(540, 960)
+	var bot_count: int = mode_config.get_meta("bot_count", 0)
+	var total_runners := bot_count + 1
+
+	var spawn_pos: Vector2 = _spawn_position(0, total_runners) if arena else Vector2(540, 960)
 	player_runner = Runner.new(0, spawn_pos, Vector2.UP, _runner_balance)
 	runners.append(player_runner)
 	runner_spawned.emit(player_runner)
 
-	var bot_count: int = mode_config.get_meta("bot_count", 0)
 	for i in range(bot_count):
-		var r := Runner.new(i + 1, Vector2(100 + i*50, 100), Vector2.UP, _runner_balance)
+		var r := Runner.new(i + 1, _spawn_position(i + 1, total_runners), Vector2.UP, _runner_balance)
 		runners.append(r)
 
 		# Load archetype based on config

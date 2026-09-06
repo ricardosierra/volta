@@ -11,7 +11,7 @@ func _init(cfg: Resource) -> void:
 
 func on_seal(runner_id: int, cells_size: int, stolen: Dictionary) -> void:
 	# Detect Mega Seal
-	var threshold := config.get_meta("mega_seal_threshold", 200)
+	var threshold: int = config.get_meta("mega_seal_threshold", 200)
 	if cells_size >= threshold:
 		bonus_awarded.emit(runner_id, "MEGA SEAL", config.get_meta("mega_seal", 2000))
 		

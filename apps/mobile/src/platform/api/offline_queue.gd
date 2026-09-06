@@ -21,7 +21,7 @@ func _load_queue() -> void:
 		var file := FileAccess.open(file_path, FileAccess.READ)
 		var json := JSON.new()
 		if json.parse(file.get_as_text()) == OK:
-			var parsed := json.get_data()
+			var parsed: Variant = json.get_data()
 			if parsed is Array:
 				for item in parsed:
 					queue.append(item as Dictionary)

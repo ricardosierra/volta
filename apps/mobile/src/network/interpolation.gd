@@ -19,7 +19,7 @@ func get_interpolated_position(current_time: float) -> Vector2:
 		var s1 := snapshots[i]
 		var s2 := snapshots[i+1]
 		if s1.time <= target and s2.time >= target:
-			var t := (target - s1.time) / (s2.time - s1.time)
+			var t: float = (target - s1.time) / (s2.time - s1.time)
 			return s1.pos.lerp(s2.pos, t)
 			
 	return snapshots[-1].pos

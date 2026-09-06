@@ -5,6 +5,7 @@ var _match_director: MatchDirector
 var _runner_view_spawner: RunnerViewSpawner
 var _input_router: InputRouter
 var _game_camera: GameCamera
+var _arena_view: ArenaView
 var _config: ConfigService
 
 func _ready() -> void:
@@ -47,6 +48,11 @@ func _start_match() -> void:
 	add_child(_match_director)
 	_match_director.configure(_config, arena_definition, _input_router)
 
+	# Antes do spawner: a ArenaView e o chao sob os Runners (z_index -100).
+	_arena_view = ArenaView.new()
+	add_child(_arena_view)
+	_arena_view.setup(_match_director.arena)
+
 	_runner_view_spawner = RunnerViewSpawner.new()
 	add_child(_runner_view_spawner)
 	_runner_view_spawner.watch(_match_director)
@@ -70,6 +76,16 @@ func _start_match() -> void:
 	match_screen.set_match_director(_match_director)
 	match_screen.set_input_router(_input_router)
 
+	# A camera enquadra a faixa util medida da HUD real, nao a viewport inteira, e
+	# reenquadra sozinha se a tela mudar de tamanho (rotacao, split screen).
+	_frame_camera_to(match_screen)
+	match_screen.resized.connect(func() -> void: _frame_camera_to(match_screen))
+
+
+func _frame_camera_to(match_screen: MatchScreen) -> void:
+	if is_instance_valid(_game_camera) and is_instance_valid(match_screen):
+		_game_camera.frame_to(match_screen.play_area_rect())
+
 func _return_to_menu() -> void:
 	if is_instance_valid(_match_director):
 		_match_director.queue_free()
@@ -86,6 +102,10 @@ func _return_to_menu() -> void:
 	if is_instance_valid(_game_camera):
 		_game_camera.queue_free()
 		_game_camera = null
+
+	if is_instance_valid(_arena_view):
+		_arena_view.queue_free()
+		_arena_view = null
 
 	if screen_stack and screen_stack.can_pop():
 		screen_stack.pop()

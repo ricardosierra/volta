@@ -166,6 +166,13 @@ func _on_settings_pressed() -> void:
 	(get_parent() as ScreenStack).push(settings)
 
 
+## Área útil de jogo em pixels de tela, medida da HUD real desta tela. A GameCamera enquadra
+## a partir daqui em vez de usar a viewport inteira — se a HUD mudar, o enquadramento muda
+## junto (regra de enquadramento do Jogos/CLAUDE.md).
+func play_area_rect() -> Rect2:
+	return _field_rect()
+
+
 func _field_rect() -> Rect2:
 	var top := minf(FIELD_TOP, size.y * 0.22)
 	var bottom := minf(FIELD_BOTTOM, size.y - 350.0)

@@ -1,32 +1,38 @@
 class_name MatchFieldRenderer
 extends RefCounted
 
-## Desenha a moldura do campo de MatchScreen. Extraído por tamanho de função (Regra 8 do
-## CLAUDE.md). Desde o Plano 02-06 (Fase 2): Runners não são mais desenhados aqui — as
-## RunnerView reais (apps/mobile/src/presentation/runner_view.gd), sob a GameCamera real,
-## já os mostram. Este renderer só desenha a moldura estática do campo.
+## Desenha a moldura de HUD de MatchScreen. Extraído por tamanho de função (Regra 8 do
+## CLAUDE.md).
+##
+## Desde o Plano 02-06 (Fase 2) os Runners não são mais desenhados aqui — as RunnerView
+## reais (apps/mobile/src/presentation/runner_view.gd), sob a GameCamera real, já os mostram.
+##
+## Desde o Plano 02-07: este renderer NUNCA pinta área opaca sobre a área de jogo. A
+## MatchScreen vive num CanvasLayer, que desenha por cima do mundo 2D — o fundo de viewport
+## inteira que existia aqui (#050b15) e o preenchimento do campo (#091f2d) escondiam a
+## partida inteira. No aparelho aparecia só um retângulo vazio, sem jogador e sem inimigos.
+## As faixas de HUD são translúcidas de propósito: o jogo ocupa a tela e a interface flutua
+## por cima.
+
+## Opacidade das faixas de HUD. Alta o bastante para o texto ler, baixa o bastante para o
+## jogo continuar visível atrás.
+const BAND_ALPHA: float = 0.72
+
 
 static func draw(canvas: CanvasItem, state: Dictionary) -> void:
 	var size: Vector2 = state["size"]
 	if size.x <= 0.0 or size.y <= 0.0:
 		return
 
-	_draw_background(canvas, state)
-	_draw_field(canvas, state)
-	_draw_footer(canvas, state)
+	_draw_header_band(canvas, state)
+	_draw_play_area_frame(canvas, state)
+	_draw_footer_band(canvas, state)
 
 
-static func _draw_background(canvas: CanvasItem, state: Dictionary) -> void:
+static func _draw_header_band(canvas: CanvasItem, state: Dictionary) -> void:
 	var size: Vector2 = state["size"]
-	var viewport_rect := Rect2(Vector2.ZERO, size)
-	canvas.draw_rect(viewport_rect, Color("050b15"))
-
-	for diagonal in range(-8, 18):
-		var start := Vector2(float(diagonal) * 160.0, 0.0)
-		canvas.draw_line(start, start + Vector2(-size.y * 0.42, size.y), Color(0.08, 0.20, 0.30, 0.18), 2.0)
-
 	var header := Rect2(MatchScreen.PANEL_MARGIN, 28.0, size.x - MatchScreen.PANEL_MARGIN * 2.0, 190.0)
-	canvas.draw_rect(header, Color("0a1726"))
+	canvas.draw_rect(header, Color("0a1726", BAND_ALPHA))
 	canvas.draw_rect(Rect2(header.position, Vector2(6.0, header.size.y)), Color("2dd4bf"))
 	canvas.draw_line(
 		Vector2(header.position.x + 28.0, header.end.y - 2.0),
@@ -36,20 +42,11 @@ static func _draw_background(canvas: CanvasItem, state: Dictionary) -> void:
 	)
 
 
-static func _draw_field(canvas: CanvasItem, state: Dictionary) -> void:
+static func _draw_play_area_frame(canvas: CanvasItem, state: Dictionary) -> void:
+	# Só contorno e cantos: o interior é o mundo real, visto pela GameCamera. Preencher
+	# aqui é o bug que o Plano 02-07 corrigiu.
 	var field: Rect2 = state["field"]
-	canvas.draw_rect(field.grow(24.0), Color(0.0, 0.0, 0.0, 0.26))
-	canvas.draw_rect(field.grow(12.0), Color("0a1a29"))
-	canvas.draw_rect(field, Color("091f2d"))
-	canvas.draw_rect(field, Color("2dd4bf"), false, 3.0)
-
-	for column in range(1, 12):
-		var x := field.position.x + field.size.x * float(column) / 12.0
-		canvas.draw_line(Vector2(x, field.position.y), Vector2(x, field.end.y), Color(0.15, 0.52, 0.58, 0.16), 1.0)
-	for row in range(1, 13):
-		var y := field.position.y + field.size.y * float(row) / 13.0
-		canvas.draw_line(Vector2(field.position.x, y), Vector2(field.end.x, y), Color(0.15, 0.52, 0.58, 0.16), 1.0)
-
+	canvas.draw_rect(field, Color("2dd4bf", 0.55), false, 3.0)
 	_draw_field_brackets(canvas, field)
 
 
@@ -71,10 +68,10 @@ static func _draw_field_brackets(canvas: CanvasItem, field: Rect2) -> void:
 	canvas.draw_line(Vector2(right, bottom - length), Vector2(right, bottom), color, 5.0)
 
 
-static func _draw_footer(canvas: CanvasItem, state: Dictionary) -> void:
+static func _draw_footer_band(canvas: CanvasItem, state: Dictionary) -> void:
 	var size: Vector2 = state["size"]
 	var footer := Rect2(MatchScreen.PANEL_MARGIN, MatchScreen.FIELD_BOTTOM + 58.0, size.x - MatchScreen.PANEL_MARGIN * 2.0, 160.0)
-	canvas.draw_rect(footer, Color("081521"))
+	canvas.draw_rect(footer, Color("081521", BAND_ALPHA))
 	canvas.draw_line(
 		Vector2(footer.position.x + 24.0, footer.position.y),
 		Vector2(footer.end.x - 24.0, footer.position.y),

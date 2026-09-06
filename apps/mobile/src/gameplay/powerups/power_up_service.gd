@@ -14,7 +14,7 @@ func tick(delta: float, runners: Array[Runner]) -> void:
 	for r in runners:
 		var id := r.state.id
 		if active_effects.has(id):
-			var eff := active_effects[id]
+			var eff: Variant = active_effects[id]
 			eff.on_tick(delta, r.stats)
 			if eff.is_expired():
 				eff.on_expire(r.stats)

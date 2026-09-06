@@ -37,7 +37,33 @@ func test_setup_applies_camera_balance_values() -> void:
 
 	assert_eq(camera._follow_smoothing, 12.0)
 	assert_eq(camera._lookahead_distance, 55.0)
-	assert_eq(camera.zoom, Vector2(1.25, 1.25))
+
+	# zoom_base e um MULTIPLICADOR sobre o enquadramento calculado, nao o zoom cru de
+	# Camera2D. Aplica-lo direto era o bug do Plano 02-07: num 2340x1080 a camera mostrava
+	# 146x67 celulas em vez das 42x24 de balance.md, e tudo ficava ilegivel no aparelho.
+	var viewport := camera.get_viewport_rect().size
+	var cell := _small_arena().definition.cell_size
+	var wanted := Vector2(balance.visible_cells_x * cell, balance.visible_cells_y * cell)
+	var expected_fit := minf(viewport.x / wanted.x, viewport.y / wanted.y) * balance.zoom_base
+	assert_almost_eq(camera.zoom.x, expected_fit, 0.001)
+	assert_almost_eq(camera.zoom.y, expected_fit, 0.001)
+
+
+func test_zoom_frames_the_designed_number_of_cells() -> void:
+	# O contrato que importa: a area util mostra ~visible_cells_x celulas de largura,
+	# independente da resolucao da tela.
+	var camera := GameCamera.new()
+	add_child_autofree(camera)
+	var balance := CameraBalance.new()
+	var arena := _small_arena()
+
+	camera.setup(balance, arena)
+
+	var usable := camera.get_viewport_rect()
+	var visible_world_width := usable.size.x / camera.zoom.x
+	var visible_cells := visible_world_width / arena.definition.cell_size
+	assert_gte(visible_cells, balance.visible_cells_x - 0.01,
+		"nunca pode mostrar MENOS celulas que o enquadramento pedido")
 
 func test_camera_converges_toward_target_over_several_frames() -> void:
 	var camera := GameCamera.new()
