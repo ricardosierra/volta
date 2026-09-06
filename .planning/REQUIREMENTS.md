@@ -17,8 +17,8 @@ Requisitos derivados de `docs/` e de `.gsd/phases/*/REQUIREMENTS.md`. IDs usados
 - [x] MOV-02 — Movimento em ângulo livre com taxa máxima de giro
 - [x] MOV-03 — Três esquemas de controle (swipe, joystick, relativo)
 - [x] MOV-04 — Buffer de input: nenhum toque descartado
-- [ ] MOV-05 — Latência toque → direção < 50 ms
-- [ ] MOV-06 — Câmera com follow, lookahead e zoom dinâmico
+- [ ] MOV-05 — Latência toque → direção < 50 ms — **medido e REPROVADO** em 2026-09-05 (p95 108-126 ms, Galaxy S23); ver `docs/performance/device-results.md`
+- [ ] MOV-06 — Câmera com follow, lookahead e zoom dinâmico — follow e lookahead prontos e testados (`test_game_camera.gd`); **zoom ainda é estático** (`setup()` aplica `zoom_base` e nada mais altera), então o requisito não fecha
 - [x] MOV-07 — FSM do jogo e FSM do Runner com transições declaradas
 
 ## Território (TER)

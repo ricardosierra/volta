@@ -96,7 +96,7 @@ Contrato de game feel — os sete canais:
 |---|---|---|---|
 | 00 | ✅ fechado | 2026-08-24 | Master Plan READY; 14 ADRs aceitos; nenhuma decisão fundamental em aberto |
 | 01 | ⬜ | | |
-| 02 | ⬜ | | |
+| 02 | 🟡 parcial | 2026-09-05 | 7 planos executados, 127 testes verdes, 4 gates de CI limpos. **MOV-05 REPROVADO** em Galaxy S23: p95 108-126 ms contra meta de 50 ms (`docs/performance/device-results.md`). Bug de UI engolindo o toque achado e corrigido no aparelho. FPS Mid/Low e teste de sensação pendentes. |
 | 03 | ⬜ | | |
 | 04 | ⬜ | | |
 | 05 | ⬜ | | |

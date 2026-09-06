@@ -20,7 +20,7 @@ de descoberta.
 ## Phases
 
 - [x] **Phase 1: Repository Foundation** — projeto Godot, config em dados, save, log, CI e verificadores (completed 2026-08-25)
-- [ ] **Phase 2: Core Movement** — tick fixo, Runner, três esquemas de input, câmera, FSM do jogo (auditado 2026-08-31: parcial — sim central ligada, mas auditar)
+- [ ] **Phase 2: Core Movement** — tick fixo, Runner, três esquemas de input, câmera, FSM do jogo (re-executada 2026-09-05: 7/7 planos, composition root real, 127 testes verdes; **não fecha** — MOV-05 reprovado em aparelho, p95 108-126 ms contra meta de 50 ms; MOV-06 com zoom ainda estático)
 - [ ] **Phase 3: Territory Engine** — grid, Arc rasterizado, flood fill, Seal, render incremental (auditado 2026-08-31: NÃO LIGADA — SealSolver/SealApplier sem chamador)
 - [ ] **Phase 4: Combat & Elimination** — Break, Backwash, Squeeze, respawn, aviso de ameaça (auditado 2026-08-31: parcial — auditar)
 - [ ] **Phase 5: Bot AI** — IA por utilidade, 4 arquétipos, 3 dificuldades, stress test (auditado 2026-08-31: parcial — auditar)
@@ -98,9 +98,9 @@ Plans:
   2. O Runner tem posição e direção contínuas com taxa máxima de giro vinda de `RunnerBalance`; inverter 180° leva exatamente `180/turn_rate` segundos
   3. Os três esquemas de input (swipe com zona morta em mm físicos, joystick flutuante, relativo) produzem apenas um vetor de direção — nenhum `InputEvent` chega ao Runner — e podem ser trocados em runtime com test drive ao vivo
   4. O buffer de input executa dois comandos recebidos no mesmo tick na ordem correta e descarta comando velho por idade
-  5. `latency_test` mede p95 < 50 ms nos três esquemas, em dispositivo real, e o número está em `docs/performance/device-results.md`
+  5. `latency_test` mede p95 < 50 ms nos três esquemas, em dispositivo real, e o número está em `docs/performance/device-results.md` — ❌ **REPROVADO 2026-09-05**: swipe 108,0 ms · joystick 109,0 ms · relativo 126,4 ms (Galaxy S23)
   6. A FSM do jogo cobre Boot→Menu→Loading→Countdown→Playing→Paused→Results com transições declaradas; `Paused` congela a simulação inteira (posição, contadores e timers não avançam)
-**Plans**: 6/7 plans executed
+**Plans**: 7 plans
 
 Plans:
 - [x] 02-01-runner-stat-block-config-PLAN.md — StatBlock/Runner lêem RunnerBalance (fim do literal 300.0/180.0); Bootstrap registra o serviço "config"
@@ -109,7 +109,7 @@ Plans:
 - [x] 02-04-presentation-sync-camera-PLAN.md — RunnerView estende InterpolatedVisual e segue a simulação; GameCamera lê CameraBalance real
 - [x] 02-05-match-director-composition-root-PLAN.md — Runner do jogador real movido por InputRouter; root.gd como composition root completo (config, input, câmera, CanvasLayer)
 - [x] 02-06-match-screen-desimulation-PLAN.md — MatchScreen para de simular (fim do loop de brinquedo, 588->198 linhas); PauseScreen/ResultsScreen ganham UI real; SettingsControls empilhável ligada ao InputRouter real
-- [ ] 02-07-phase-closeout-PLAN.md — latency_test.gd real (fim do print fabricado); checkpoint humano de latência/FPS/sensação; fechamento formal da fase
+- [x] 02-07-phase-closeout-PLAN.md — latency_test.gd real (fim do print fabricado); medição feita em Galaxy S23; MOV-05 reprovado (p95 108-126 ms) e registrado, não fabricado
 
 ### Phase 3: Territory Engine
 **Goal**: Sair do Claim desenha um Arc e voltar captura exatamente a região cercada — correto em todos os casos topológicos, dentro do orçamento de CPU e com render de custo constante

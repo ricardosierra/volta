@@ -6,7 +6,7 @@ current_phase: 2
 current_phase_name: Core Movement
 current_plan: 0
 status: in_progress
-stopped_at: "Fase 2 (Core Movement) em execucao autonoma: religacao da fundacao reaberta pela auditoria de 2026-08-31. 7 planos em 4 waves."
+stopped_at: "Fase 2 re-executada em 2026-09-05: 7/7 planos, composition root real, 127 testes verdes, 4 gates de CI limpos. A fase NAO fecha: MOV-05 medido em Galaxy S23 e REPROVADO (p95 108-126 ms contra meta de 50 ms) e MOV-06 com zoom ainda estatico. Bug critico achado e corrigido no aparelho: a UI engolia todo toque e o jogo estava sem controle."
 last_updated: "2026-09-05T19:30:46Z"
 last_activity: 2026-09-05
 progress:
@@ -151,6 +151,12 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 - [Phase 02-06]: ordem de execucao entre tasks do mesmo plano (nao arquivo compartilhado entre planos): Task 2 removeu build_result_overlay() de match_hud_builder.gd, que match_screen.gd (so reescrito na Task 3) ainda chamava — se rodado isoladamente entre as duas tasks, test-client.sh quebraria por erro de compilacao em cascata. Mesmo padrao ja registrado no Plano 02-05: verificacao completa (test-client/validate-repo/lint) rodada uma unica vez com as edicoes de Task 2 e Task 3 juntas na arvore, commits separados por pathspec exato do files_modified de cada task. 119/119 testes verdes ao final, validate-repo.sh 10/10.
 
 
+- [Phase 02]: BUG CRITICO achado so no aparelho, com 124 testes headless verdes: ScreenStack (Control full rect) nunca setava mouse_filter, ficava com o MOUSE_FILTER_STOP padrao e consumia todo toque; o InputRouter escuta _unhandled_input e nunca era chamado — o jogo estava SEM CONTROLE no Android. root.gd tinha o mesmo problema e a MatchScreen so setava IGNORE dentro de on_pushed(). Corrigido em f0be3b2 com regressao ponta a ponta (test_touch_reaches_input_router.gd) que empurra o evento por get_tree().root.push_input() em vez de chamar o InputRouter direto — que era exatamente por que a suite nao pegava.
+- [Phase 02]: o texto do plano 02-07 definia a amostra de latencia como "view chega a 2 graus da direcao desejada", o que mede a DURACAO DO GIRO (540 graus/s => 167ms para 90 graus), nao a latencia; p95 < 50ms seria impossivel por construcao. docs/gameplay/controls.md e autoritativo e diz "toque -> mudanca de direcao", entao a amostra passou a fechar na primeira mudanca visivel (> 0.5 grau). Antes: p50 141.7/p95 174.1. Depois: p50 75.1/p95 108.0.
+- [Phase 02]: MOV-05 REPROVADO com medicao real (Galaxy S23, toque sintetico via adb): swipe p95 108.0ms, joystick 109.0ms, relativo 126.4ms. Todas as ressalvas trabalham a favor da meta (adb subestima ~5-15ms do digitalizador; S23 e tier High e o alvo e Mid), entao o vao de 58ms e real. Investigar a origem dos ~75ms de p50 e trabalho de fase propria.
+- [Phase 02]: lint.sh estava vermelho com 155 violacoes de tipagem em 63 arquivos herdados das fases 3-25 (fora do escopo da fase, mas e um dos tres gates obrigatorios do CLAUDE.md secao 3 — toda fase futura fecharia com check reprovando). Zerado. Onde ':=' nao infere, tipo explicito: get_meta() devolve Variant, pop_front()/back() em Array devolvem Variant, 'var x := null' precisa da classe.
+- [Phase 02]: gsd-tools phase-plan-index casa o SUMMARY pelo id COMPLETO do plano — 02-02-SUMMARY.md nao e detectado, 02-02-fsm-arena-foundation-SUMMARY.md e. Dois planos abreviaram e a fase parecia inacabada; corrigido com git mv.
+
 ### Auditoria de 2026-08-31 (reabertura das fases 2-25)
 
 - `apps/mobile/src/core/bootstrap.gd` registra 6 de 32 servicos; so ha 2 autoloads (Bootstrap, Log).
@@ -186,7 +192,10 @@ Decisões arquiteturais completas em `docs/decisions/ADR-0001..0014` e resumidas
 ### Blockers/Concerns
 
 - [Phase 1] GATE ABERTO (F01-07): `dist/android/volta-debug.apk` foi gerado (Plano 01-10) mas ainda NÃO foi instalado/verificado num Android real — A01-12/A01-13/A01-14 e Success Criterion 6 pendentes. Para fechar: conectar um Android (tier Mid), `./tools/ci/build_android.sh debug` se o APK não existir mais, `adb install -r dist/android/volta-debug.apk`, seguir o roteiro de 01-11-PLAN.md Task 2 e preencher a linha Phase 1 de docs/performance/device-results.md.
-- [Phase 2] É necessário um aparelho Android intermediário real para medir latência de input (< 50 ms) — sem ele, a Phase 2 não fecha.
+- [Phase 2] **MOV-05 REPROVADO, não pendente.** Medido em 2026-09-05 num Galaxy S23 (SM-S911B): swipe p95 108,0 ms · joystick 109,0 ms · relativo 126,4 ms, contra meta dura de 50 ms em `docs/gameplay/controls.md`. O melhor caso é 2,2× a meta e as ressalvas (toque sintético via adb, tier High em vez de Mid) trabalham a favor da meta. Precisa de uma fase de otimização de latência — candidatos: quantização do tick de 60 Hz, cadeia `_unhandled_input`→`InputBuffer`→`poll_direction`, e separar o custo de injeção do adb com medição de dedo real.
+- [Phase 2] MOV-06 não fecha: `GameCamera` tem follow e lookahead, mas o zoom é estático — falta o "zoom dinâmico" do requisito.
+- [Phase 2] FPS em tier Mid e Low e o teste de sensação com 3 pessoas seguem pendentes (só havia um aparelho High disponível; sensação exige gente de fora jogando).
+- [Phase 2] A moldura de campo da `MatchScreen` não coincide com onde os `RunnerView`s aparecem (tela vs. mundo sob a `GameCamera`) — precisa de dono antes de a Fase 3 desenhar território.
 - [Phase 15] Hospedagem da API e domínio dependem de decisão humana (H-03). Desenvolvimento roda em Docker local, então não bloqueia.
 - [Phase 21] Busca de anterioridade da marca "VOLTA" é decisão humana (H-01) com prazo **antes** desta fase.
 - [Phase 21/22] Contas Google Play e Apple Developer são decisão humana (H-02).
